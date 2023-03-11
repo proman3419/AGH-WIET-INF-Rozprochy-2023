@@ -1,5 +1,6 @@
 package chat.server;
 
+import chat.common.ClientServerUtils;
 import chat.common.message.Message;
 import chat.common.message.MessageBuilder;
 import chat.common.message.MessageType;
@@ -14,10 +15,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import static chat.common.Constants.FAIL;
+import static chat.common.Constants.OK;
+
 public class ClientHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
-    private static final boolean FAIL = true;
-    private static final boolean OK = false;
+    private static final String NICK_TAKEN_RESP = "The nick is already taken";
     private final Socket clientSocket;
     private final Server server;
     private String nick;
@@ -36,12 +39,14 @@ public class ClientHandler implements Runnable {
                 testConnection() ||
                 runMainLoop()
         ) {
-
+            // If's purpose is to fail early
         }
+        LOGGER.info("Client handler shutdown");
     }
 
     private boolean initClientSocket() {
         try {
+            Thread.currentThread().setName(String.format("%d", clientSocket.getPort()));
             out = new PrintWriterWrapper(
                     new PrintWriter(clientSocket.getOutputStream(), true),
                     clientSocket.getLocalPort(),
@@ -53,9 +58,10 @@ public class ClientHandler implements Runnable {
                     clientSocket.getLocalPort()
             );
         } catch (IOException e) {
-            LOGGER.error("Couldn't connect to the server on port " + clientSocket);
+            LOGGER.error("Couldn't connect to the client");
             return FAIL;
         }
+        LOGGER.info("Client handler started");
         return OK;
     }
 
@@ -65,19 +71,21 @@ public class ClientHandler implements Runnable {
             return FAIL;
         }
         if (!message.checkMessageType(MessageType.INIT)) {
-            LOGGER.warn("Expected `INIT~<nick>~` message");
+            LOGGER.error("Expected INIT");
             return FAIL;
         }
         nick = message.getArguments()[0];
 
         if (server.checkIfNickTaken(nick)) {
+            LOGGER.info("Rejected the client, cause: " + NICK_TAKEN_RESP);
             out.sendMessage(MessageBuilder.getInstance()
                     .setMessageType(MessageType.INIT_NACK)
-                    .setText("The nick is already taken")
+                    .setText(NICK_TAKEN_RESP)
                     .build());
             return FAIL;
         }
 
+        LOGGER.info("Accepted the client");
         out.sendMessage(MessageBuilder.getInstance()
                 .setMessageType(MessageType.INIT_ACK)
                 .build()
@@ -87,19 +95,36 @@ public class ClientHandler implements Runnable {
     }
 
     private boolean testConnection() {
-        System.out.println(in.readMessage().getMessageType());
+        boolean result = OK;
+        Message message = in.readMessage();
+        if (message == null || !message.checkMessageType(MessageType.HELLO)) {
+            result = FAIL;
+        }
 
-        out.sendMessage(MessageBuilder.getInstance()
-                .setMessageType(MessageType.HELLO)
-                .build()
-        );
-        return OK;
+        if (OK == result) {
+            out.sendMessage(MessageBuilder.getInstance()
+                    .setMessageType(MessageType.HELLO)
+                    .build()
+            );
+
+            message = in.readMessage();
+            if (message == null || !message.checkMessageType(MessageType.HELLO)) {
+                result = FAIL;
+            }
+        }
+
+        if (OK == result) {
+            LOGGER.info("Connection test succeeded");
+        } else {
+            LOGGER.error("Connection test failed");
+        }
+        return result;
     }
 
     private boolean runMainLoop() {
         boolean quit = false;
         while (!quit && !server.getQuit().get()) {
-            Message message = in.readMessage();
+            Message message = in.readMessage(server.getQuit());
             if (message != null) {
                 switch (message.getMessageType()) {
                     case QUIT:
@@ -119,6 +144,7 @@ public class ClientHandler implements Runnable {
                 }
             }
         }
+        ClientServerUtils.closeSocket(clientSocket, LOGGER);
         server.removeClient(nick);
         return OK;
     }

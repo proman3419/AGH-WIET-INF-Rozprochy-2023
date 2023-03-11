@@ -21,6 +21,6 @@ public class PrintWriterWrapper {
 
     public void sendMessage(Message message) {
         printWriter.println(message);
-        LOGGER.debug("Sent message from " + senderPort + " to " + receiverPort + " with content '" + message + "'");
+        LOGGER.debug("Sent message from {} to {} with content '{}'", senderPort, receiverPort, message);
     }
 }

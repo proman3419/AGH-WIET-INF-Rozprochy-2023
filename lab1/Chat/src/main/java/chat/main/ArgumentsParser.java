@@ -18,7 +18,7 @@ public class ArgumentsParser {
             }
             configuration = new Configuration(chatInstanceType, portNumber, nick);
         } catch (Exception e) {
-            LOGGER.error("Failed to parse the passed arguments, error message: " + e.getMessage());
+            LOGGER.error("Failed to parse the passed arguments, error message: {}", e.getMessage());
         }
         return configuration;
     }

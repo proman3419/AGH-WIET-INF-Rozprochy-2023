@@ -9,10 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Server implements ChatInstance {
@@ -21,7 +18,7 @@ public class Server implements ChatInstance {
     private ServerSocket mainSocket;
     private final HashMap<String, Socket> clientSockets = new HashMap<>(); // nick -> socket
     private final HashMap<String, PrintWriterWrapper> clientWriters = new HashMap<>(); // nick -> writer
-    private AtomicBoolean quit = new AtomicBoolean(false);
+    private final AtomicBoolean quit = new AtomicBoolean(false);
     private final List<Thread> clientThreads = new ArrayList<>();
 
     public Server(int portNumber) {
@@ -30,14 +27,15 @@ public class Server implements ChatInstance {
 
     @Override
     public void start() {
-        Runtime.getRuntime().addShutdownHook(new Thread(new ServerShutdownHook(this)));
-
-        LOGGER.info("Server starting on port " + portNumber);
+        Thread shutdownHookThread = new Thread(new ServerShutdownHook(this));
+        shutdownHookThread.setName("Shutdown hook");
+        Runtime.getRuntime().addShutdownHook(shutdownHookThread);
         try {
             mainSocket = new ServerSocket(portNumber);
         } catch (IOException e) {
-            LOGGER.error("Server startup failed, error message: `" + e.getMessage() + "`");
+            LOGGER.error("Server startup failed, error message: '{}'", e.getMessage());
         }
+        LOGGER.info("Server started on port {}", portNumber);
         while (!quit.get()) {
             Socket clientSocket = null;
             try {
@@ -51,8 +49,7 @@ public class Server implements ChatInstance {
         for (Thread thread : clientThreads) {
             try {
                 thread.join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -73,7 +70,7 @@ public class Server implements ChatInstance {
 
     void toAll(String sender, Message message) {
         for (Map.Entry<String, PrintWriterWrapper> entry : clientWriters.entrySet()) {
-            if (entry.getKey() != sender) {
+            if (!Objects.equals(entry.getKey(), sender)) {
                 entry.getValue().sendMessage(message);
             }
         }
@@ -83,7 +80,11 @@ public class Server implements ChatInstance {
         return clientSockets.containsKey(nick);
     }
 
-    public AtomicBoolean getQuit() {
+    AtomicBoolean getQuit() {
         return quit;
+    }
+
+    HashMap<String, Socket> getClientSockets() {
+        return clientSockets;
     }
 }

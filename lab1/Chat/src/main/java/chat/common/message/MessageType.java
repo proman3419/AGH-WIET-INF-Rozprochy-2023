@@ -8,7 +8,7 @@ public enum MessageType {
     TEXT(0),
     TEXT_RESP(1),
     QUIT(0),
-    UNKN(0); // replace with HELLO?
+    UNKN(0);
 
     private final int argumentsCount;
 

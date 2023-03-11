@@ -25,8 +25,7 @@ public class Message {
                 text = messageSplit[messageSplit.length - 1];
             }
         } catch (Exception e) {
-            LOGGER.warn("Error while parsing the message `" + messageRaw + "`, error message: " + e.getMessage());
-            throw e;
+            LOGGER.warn("Error while parsing the message '{}', error message: '{}'", messageRaw, e.getMessage());
         }
     }
 

@@ -9,15 +9,6 @@ public class ClientShutdownHook implements Runnable {
 
     @Override
     public void run() {
-//        client.getOut().sendMessage(MessageBuilder.getInstance()
-//                .setMessageType(MessageType.QUIT)
-//                .build());
-//        try {
-//            client.getServerSocket().close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        client.getQuit().set(true);
         client.quitSequence();
     }
 }

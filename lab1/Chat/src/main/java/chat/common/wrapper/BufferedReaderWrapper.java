@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BufferedReaderWrapper {
     private static final Logger LOGGER = LogManager.getLogger(BufferedReaderWrapper.class);
@@ -20,15 +21,26 @@ public class BufferedReaderWrapper {
         this.receiverPort = receiverPort;
     }
 
+    // The suppressLogger variable is used to prevent logging when a chat instance shutdowns
+    // In such case the socket has been closed to stop BufferedReader::readLine
     @Nullable
-    public Message readMessage() {
+    public Message readMessage(AtomicBoolean suppressLogger) {
         Message message = null;
         try {
             message = new Message(bufferedReader.readLine());
-            LOGGER.debug("Read message from " + senderPort + " to " + receiverPort + " with content '" + message + "'");
+            if (!suppressLogger.get()) {
+                LOGGER.debug("Read message from {} to {} with content '{}'", senderPort, receiverPort, message);
+            }
         } catch (IOException e) {
-            LOGGER.error("Failed to read message from " + senderPort + " to " + receiverPort);
+            if (!suppressLogger.get()) {
+                LOGGER.error("Failed to read message from {} to {}", senderPort, receiverPort);
+            }
         }
         return message;
+    }
+
+    @Nullable
+    public Message readMessage() {
+        return readMessage(new AtomicBoolean(false));
     }
 }

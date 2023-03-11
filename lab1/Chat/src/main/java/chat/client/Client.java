@@ -1,5 +1,6 @@
 package chat.client;
 
+import chat.common.ClientServerUtils;
 import chat.common.instance.ChatInstance;
 import chat.common.message.Message;
 import chat.common.message.MessageBuilder;
@@ -14,21 +15,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static chat.common.Constants.FAIL;
+import static chat.common.Constants.OK;
 
 public class Client implements ChatInstance {
     private static final Logger LOGGER = LogManager.getLogger(Client.class);
     private static final String HOSTNAME = "localhost";
-    private static final boolean FAIL = true;
-    private static final boolean OK = false;
+    private static final int CHECK_QUIT_SLEEP_MS = 300;
     private final int serverPortNumber;
     private final String nick;
     private Socket serverSocket;
     private PrintWriterWrapper out;
     private BufferedReaderWrapper in;
-    private AtomicBoolean quit = new AtomicBoolean(false);
-    private AtomicBoolean quitSequenceExecuted = new AtomicBoolean(false);
+    private final AtomicBoolean quit = new AtomicBoolean(false);
+    private final AtomicBoolean quitSequenceExecuted = new AtomicBoolean(false);
 
     public Client(int serverPortNumber, String nick) {
         this.serverPortNumber = serverPortNumber;
@@ -37,15 +39,15 @@ public class Client implements ChatInstance {
 
     @Override
     public void start() {
-        Runtime.getRuntime().addShutdownHook(new Thread(new ClientShutdownHook(this)));
-
+        Thread shutdownHookThread = new Thread(new ClientShutdownHook(this));
+        shutdownHookThread.setName("Shutdown hook");
+        Runtime.getRuntime().addShutdownHook(shutdownHookThread);
         if (initServerSocket() ||
                 initConnection() ||
                 testConnection() ||
                 runMainLoop()
         ) {
             // If's purpose is to fail early
-            System.out.println("Shutdown");
         }
     }
 
@@ -63,9 +65,10 @@ public class Client implements ChatInstance {
                     serverSocket.getLocalPort()
             );
         } catch (IOException e) {
-            LOGGER.error("Couldn't connect to the server on port " + serverPortNumber);
+            LOGGER.error("Couldn't connect to the server");
             return FAIL;
         }
+        LOGGER.info("Client started on port {}", serverSocket.getLocalPort());
         return OK;
     }
 
@@ -80,37 +83,58 @@ public class Client implements ChatInstance {
         if (message == null) {
             return FAIL;
         }
+
         if (message.checkMessageType(MessageType.INIT_ACK)) {
+            LOGGER.info("Connected to the server");
             return OK;
         } else if (message.checkMessageType(MessageType.INIT_NACK)) {
-            System.out.println(message.getText());
+            LOGGER.error("Couldn't connect to the server, cause: '{}'", message.getText());
+        } else {
+            LOGGER.error("Expected INIT_ACK/INIT_NACK");
         }
         return FAIL;
     }
 
     private boolean testConnection() {
+        boolean result = OK;
         out.sendMessage(MessageBuilder.getInstance()
                 .setMessageType(MessageType.HELLO)
                 .build()
         );
 
         Message message = in.readMessage();
-        System.out.println(message.getMessageType());
-        return OK;
+        if (message == null || !message.checkMessageType(MessageType.HELLO)) {
+            result = FAIL;
+        }
+
+        if (OK == result) {
+            out.sendMessage(MessageBuilder.getInstance()
+                    .setMessageType(MessageType.HELLO)
+                    .build()
+            );
+        }
+
+        if (OK == result) {
+            LOGGER.info("Connection test succeeded");
+        } else {
+            LOGGER.error("Connection test failed");
+        }
+        return result;
     }
 
     private boolean runMainLoop() {
-        Scanner console = new Scanner(System.in);
-        ClientReadHandler clientReadHandler = new ClientReadHandler(this, in, nick);
-        Thread clientReadThread = new Thread(clientReadHandler);
-        ClientWriteHandler clientWriteHandler = new ClientWriteHandler(this, console, out, nick);
-        Thread clientWriteThread = new Thread(clientWriteHandler);
-
+        Thread clientReadThread = new Thread(new ClientReadHandler(this));
+        Thread clientWriteThread = new Thread(new ClientWriteHandler(this));
+        clientReadThread.setName("Read");
+        clientWriteThread.setName("Write");
         clientReadThread.start();
         clientWriteThread.start();
 
         while (!quit.get()) {
-
+            try {
+                Thread.sleep(CHECK_QUIT_SLEEP_MS);
+            } catch (InterruptedException ignored) {
+            }
         }
 
         quitSequence();
@@ -124,11 +148,7 @@ public class Client implements ChatInstance {
             out.sendMessage(MessageBuilder.getInstance()
                     .setMessageType(MessageType.QUIT)
                     .build());
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            ClientServerUtils.closeSocket(serverSocket, LOGGER);
             quit.set(true);
         }
     }
@@ -137,11 +157,19 @@ public class Client implements ChatInstance {
         return quit;
     }
 
+    public AtomicBoolean getQuitSequenceExecuted() {
+        return quitSequenceExecuted;
+    }
+
     PrintWriterWrapper getOut() {
         return out;
     }
 
-    public Socket getServerSocket() {
-        return serverSocket;
+    BufferedReaderWrapper getIn() {
+        return in;
+    }
+
+    String getNick() {
+        return nick;
     }
 }
