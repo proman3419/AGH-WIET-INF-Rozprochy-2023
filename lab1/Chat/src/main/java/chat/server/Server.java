@@ -1,7 +1,10 @@
 package chat.server;
 
+import chat.common.ClientServerUtils;
 import chat.common.instance.ChatInstance;
 import chat.common.message.Message;
+import chat.common.message.MessageBuilder;
+import chat.common.message.MessageType;
 import chat.common.wrapper.PrintWriterWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,10 +18,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Server implements ChatInstance {
     private static final Logger LOGGER = LogManager.getLogger(Server.class);
     private final int portNumber;
-    private ServerSocket mainSocket;
+    private ServerSocket serverSocket;
     private final HashMap<String, Socket> clientSockets = new HashMap<>(); // nick -> socket
     private final HashMap<String, PrintWriterWrapper> clientWriters = new HashMap<>(); // nick -> writer
     private final AtomicBoolean quit = new AtomicBoolean(false);
+    private final AtomicBoolean quitSequenceExecuted = new AtomicBoolean(false);
     private final List<Thread> clientThreads = new ArrayList<>();
 
     public Server(int portNumber) {
@@ -31,7 +35,7 @@ public class Server implements ChatInstance {
         shutdownHookThread.setName("Shutdown hook");
         Runtime.getRuntime().addShutdownHook(shutdownHookThread);
         try {
-            mainSocket = new ServerSocket(portNumber);
+            serverSocket = new ServerSocket(portNumber);
         } catch (IOException e) {
             LOGGER.error("Server startup failed, error message: '{}'", e.getMessage());
         }
@@ -39,11 +43,13 @@ public class Server implements ChatInstance {
         while (!quit.get()) {
             Socket clientSocket = null;
             try {
-                clientSocket = mainSocket.accept();
-                Thread clientThread = new Thread(new ClientHandler(clientSocket, this));
-                clientThread.start();
-            } catch (IOException e) {
-                LOGGER.error(e.getMessage());
+                if (serverSocket != null && !serverSocket.isClosed()) {
+                    clientSocket = serverSocket.accept();
+                    Thread clientThread = new Thread(new ClientHandler(clientSocket, this));
+                    clientThreads.add(clientThread);
+                    clientThread.start();
+                }
+            } catch (IOException ignored) {
             }
         }
         for (Thread thread : clientThreads) {
@@ -52,6 +58,7 @@ public class Server implements ChatInstance {
             } catch (InterruptedException ignored) {
             }
         }
+        quitSequence();
     }
 
     void addClient(String nick, Socket socket, PrintWriterWrapper writer) {
@@ -80,11 +87,34 @@ public class Server implements ChatInstance {
         return clientSockets.containsKey(nick);
     }
 
-    AtomicBoolean getQuit() {
-        return quit;
+    void quitSequence() {
+        if (!quitSequenceExecuted.getAndSet(true)) {
+            toAll("",
+                    MessageBuilder.getInstance()
+                            .setMessageType(MessageType.QUIT)
+                            .build());
+            closeServerSocket();
+            clientSockets.forEach((s, socket) -> {
+                ClientServerUtils.closeSocket(socket, LOGGER);
+            });
+            quit.set(true);
+        }
     }
 
-    HashMap<String, Socket> getClientSockets() {
-        return clientSockets;
+    private void closeServerSocket() {
+        try {
+            if (serverSocket.isClosed()) {
+                LOGGER.info("Attempted to close the server socket but it has already been closed");
+            } else {
+                serverSocket.close();
+                LOGGER.info("Closed the server socket");
+            }
+        } catch (IOException e) {
+            LOGGER.error("Failed to close the server socket, error message: '{}'", e.getMessage());
+        }
+    }
+
+    AtomicBoolean getQuit() {
+        return quit;
     }
 }

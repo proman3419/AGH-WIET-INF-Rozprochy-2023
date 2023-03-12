@@ -49,6 +49,7 @@ public class Client implements ChatInstance {
         ) {
             // If's purpose is to fail early
         }
+        quitSequence();
     }
 
     private boolean initServerSocket() {
@@ -143,8 +144,7 @@ public class Client implements ChatInstance {
     }
 
     void quitSequence() {
-        if (!quitSequenceExecuted.get()) {
-            quitSequenceExecuted.set(true);
+        if (!quitSequenceExecuted.getAndSet(true)) {
             out.sendMessage(MessageBuilder.getInstance()
                     .setMessageType(MessageType.QUIT)
                     .build());

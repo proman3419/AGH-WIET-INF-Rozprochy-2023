@@ -10,9 +10,14 @@ public class ClientServerUtils {
         try {
             int localPort = socket.getLocalPort();
             int port = socket.getPort();
-            socket.close();
-            logger.info("Closed socket (localPort: {}, port: {})", localPort, port);
+            if (socket.isClosed()) {
+                logger.info("Attempted to close (localPort: {}, port: {}) but it has already been closed", localPort, port);
+            } else {
+                socket.close();
+                logger.info("Closed socket (localPort: {}, port: {})", localPort, port);
+            }
         } catch (IOException e) {
+            logger.error("'{}' '{}'", e.getClass().getCanonicalName(), e.getMessage());
             logger.error("Failed to close the socket, error message: '{}'", e.getMessage());
         }
     }
