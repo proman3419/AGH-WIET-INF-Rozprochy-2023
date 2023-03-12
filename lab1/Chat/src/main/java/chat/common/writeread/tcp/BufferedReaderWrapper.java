@@ -1,4 +1,4 @@
-package chat.common.wrapper;
+package chat.common.writeread.tcp;
 
 import chat.common.message.Message;
 import org.apache.logging.log4j.LogManager;
@@ -13,12 +13,10 @@ public class BufferedReaderWrapper {
     private static final Logger LOGGER = LogManager.getLogger(BufferedReaderWrapper.class);
     private final BufferedReader bufferedReader;
     private final int senderPort;
-    private final int receiverPort;
 
-    public BufferedReaderWrapper(BufferedReader bufferedReader, int senderPort, int receiverPort) {
-        this.bufferedReader = bufferedReader;
+    public BufferedReaderWrapper(BufferedReader bufferedReader, int senderPort) {
         this.senderPort = senderPort;
-        this.receiverPort = receiverPort;
+        this.bufferedReader = bufferedReader;
     }
 
     // The suppressLogger variable is used to prevent logging when a chat instance shutdowns
@@ -29,11 +27,11 @@ public class BufferedReaderWrapper {
         try {
             message = new Message(bufferedReader.readLine());
             if (!suppressLogger.get()) {
-                LOGGER.debug("Read message from {} to {} with content '{}'", senderPort, receiverPort, message);
+                LOGGER.debug("Read message from {} with content '{}'", senderPort, message);
             }
         } catch (IOException e) {
             if (!suppressLogger.get()) {
-                LOGGER.error("Failed to read message from {} to {}", senderPort, receiverPort);
+                LOGGER.error("Failed to read message from {}, error message: '{}'", senderPort, e.getMessage());
             }
         }
         return message;

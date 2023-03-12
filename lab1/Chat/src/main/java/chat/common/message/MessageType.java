@@ -5,8 +5,10 @@ public enum MessageType {
     INIT_ACK(1),
     INIT_NACK(0),
     HELLO(0),
-    TEXT(0),
-    TEXT_RESP(1),
+    TEXT_TCP(0),
+    TEXT_TCP_RESP(1),
+    TEXT_UDP(1),
+    TEXT_UDP_RESP(1),
     QUIT(0),
     UNKN(0);
 
