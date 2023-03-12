@@ -6,17 +6,15 @@ import chat.common.message.MessageType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import static chat.client.Client.MULTICAST_PORT;
 import static chat.common.Constants.SERVER_HOSTNAME;
 
 public class ClientWriteHandler implements Runnable {
     private static final Logger LOGGER = LogManager.getLogger(ClientWriteHandler.class);
     private static final String SEPARATOR = "`";
-    private final Client client;
-    private final String asciiArt = "                            _\n" +
+    private static final String ASCII_ART = "                            _\n" +
             "                          .' `'.__\n" +
             "                         /      \\ `'\"-,\n" +
             "        .-''''--...__..-/ .     |      \\\n" +
@@ -34,6 +32,7 @@ public class ClientWriteHandler implements Runnable {
             "   \\  ,,/ |    \\   D    .'  \\\n" +
             "jgs `\"\"`   \\  nnh  D_.-'L__nnh";
     // from https://www.asciiart.eu/animals/elephants
+    private final Client client;
 
     public ClientWriteHandler(Client client) {
         this.client = client;
@@ -63,16 +62,25 @@ public class ClientWriteHandler implements Runnable {
                             client.getUdpWriteReader().writeMessage(MessageBuilder.getInstance()
                                             .setMessageType(MessageType.TEXT_UDP)
                                             .setArguments(client.getNick())
-                                            .setText(asciiArt)
+                                            .setText(ASCII_ART)
                                             .build(),
-                                    InetAddress.getByName(SERVER_HOSTNAME),
+                                    client.getInetAddressByName(SERVER_HOSTNAME),
                                     client.getTcpSocket().getPort()
                             );
+                            break;
+                        case 'M':
+                            client.getMulticastWriteReader().writeMessage(MessageBuilder.getInstance()
+                                            .setMessageType(MessageType.TEXT_UDP_RESP)
+                                            .setArguments(client.getNick())
+                                            .setText(ASCII_ART)
+                                            .build(),
+                                    client.getMulticastGroup(),
+                                    MULTICAST_PORT
+                            );
+                            break;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
                     LOGGER.info("Incomplete/incorrect command");
-                } catch (UnknownHostException e) {
-                    throw new RuntimeException(e);
                 }
             }
         }

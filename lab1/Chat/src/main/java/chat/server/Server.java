@@ -46,6 +46,7 @@ public class Server implements ChatInstance {
             udpServerSocket.setSoTimeout(UDP_SOCKET_TIMEOUT_MS);
         } catch (IOException e) {
             LOGGER.error("Server startup failed, error message: '{}'", e.getMessage());
+            System.exit(1);
         }
         LOGGER.info("Server started on port {}", portNumber);
         Thread udpHandlerThread = new Thread(new ClientUDPHandler(udpServerSocket, this));
@@ -53,7 +54,7 @@ public class Server implements ChatInstance {
         udpHandlerThread.start();
         while (!quit.get()) {
             try {
-                if (tcpServerSocket != null && !tcpServerSocket.isClosed()) {
+                if (!tcpServerSocket.isClosed()) {
                     Socket tcpClientSocket = tcpServerSocket.accept();
                     Thread tcpHandlerThread = new Thread(new ClientTCPHandler(tcpClientSocket, this));
                     tcpThreads.add(tcpHandlerThread);
@@ -102,25 +103,14 @@ public class Server implements ChatInstance {
             toAll("",
                     MessageBuilder.getInstance()
                             .setMessageType(MessageType.QUIT)
-                            .build());
-            closeServerSocket();
+                            .build()
+            );
+            ClientServerUtils.closeCloseable(tcpServerSocket, "TCP server socket", LOGGER);
             clientSockets.forEach((s, socket) -> {
-                ClientServerUtils.closeSocket(socket, LOGGER);
+                ClientServerUtils.closeCloseable(socket, s, LOGGER);
             });
+            ClientServerUtils.closeCloseable(udpServerSocket, "UDP server socket", LOGGER);
             quit.set(true);
-        }
-    }
-
-    private void closeServerSocket() {
-        try {
-            if (tcpServerSocket.isClosed()) {
-                LOGGER.info("Attempted to close the server socket but it has already been closed");
-            } else {
-                tcpServerSocket.close();
-                LOGGER.info("Closed the server socket");
-            }
-        } catch (IOException e) {
-            LOGGER.error("Failed to close the server socket, error message: '{}'", e.getMessage());
         }
     }
 
