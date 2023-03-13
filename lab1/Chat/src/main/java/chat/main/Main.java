@@ -11,19 +11,18 @@ import org.apache.logging.log4j.core.config.DefaultConfiguration;
 public class Main {
     public static void main(String[] args) {
         Configurator.initialize(new DefaultConfiguration());
-        Configurator.setRootLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.ERROR);
 
         ArgumentsParser argumentsParser = new ArgumentsParser();
         Configuration configuration = argumentsParser.parse(args);
-
         if (configuration == null) {
             System.exit(1);
         }
 
+        Configurator.setRootLevel(configuration.getLogLevel());
         ChatInstance chatInstance = configuration.getChatInstanceType() == ChatInstanceType.CLIENT ?
                 new Client(configuration.getPortNumber(), configuration.getNick()) :
                 new Server(configuration.getPortNumber());
-
         chatInstance.start();
     }
 }

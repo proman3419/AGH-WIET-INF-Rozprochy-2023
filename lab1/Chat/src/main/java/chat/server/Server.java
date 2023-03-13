@@ -42,7 +42,9 @@ public class Server implements ChatInstance {
         Runtime.getRuntime().addShutdownHook(shutdownHookThread);
         try {
             tcpServerSocket = new ServerSocket(portNumber);
+            LOGGER.info("Opened TCP socket");
             udpServerSocket = new DatagramSocket(portNumber);
+            LOGGER.info("Opened UDP socket");
             udpServerSocket.setSoTimeout(UDP_SOCKET_TIMEOUT_MS);
         } catch (IOException e) {
             LOGGER.error("Server startup failed, error message: '{}'", e.getMessage());
@@ -72,21 +74,21 @@ public class Server implements ChatInstance {
         quitSequence();
     }
 
-    public void addClient(String nick, Socket socket, PrintWriterWrapper writer) {
+    public synchronized void addClient(String nick, Socket socket, PrintWriterWrapper writer) {
         clientSockets.put(nick, socket);
         clientWriters.put(nick, writer);
     }
 
-    public void removeClient(String nick) {
+    public synchronized void removeClient(String nick) {
         clientSockets.remove(nick);
         clientWriters.remove(nick);
     }
 
-    public void toOne(String receiver, Message message) {
+    public synchronized void toOne(String receiver, Message message) {
         clientWriters.get(receiver).writeMessage(message);
     }
 
-    public void toAll(String sender, Message message) {
+    public synchronized void toAll(String sender, Message message) {
         for (Map.Entry<String, PrintWriterWrapper> entry : clientWriters.entrySet()) {
             if (!Objects.equals(entry.getKey(), sender)) {
                 entry.getValue().writeMessage(message);
@@ -105,11 +107,11 @@ public class Server implements ChatInstance {
                             .setMessageType(MessageType.QUIT)
                             .build()
             );
-            ClientServerUtils.closeCloseable(tcpServerSocket, "TCP server socket", LOGGER);
+            ClientServerUtils.closeCloseable(tcpServerSocket, "TCP socket", LOGGER);
             clientSockets.forEach((s, socket) -> {
-                ClientServerUtils.closeCloseable(socket, s, LOGGER);
+                ClientServerUtils.closeSocket(socket, LOGGER);
             });
-            ClientServerUtils.closeCloseable(udpServerSocket, "UDP server socket", LOGGER);
+            ClientServerUtils.closeCloseable(udpServerSocket, "UDP socket", LOGGER);
             quit.set(true);
         }
     }

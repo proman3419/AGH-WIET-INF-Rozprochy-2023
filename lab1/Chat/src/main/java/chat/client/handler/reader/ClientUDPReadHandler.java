@@ -31,6 +31,6 @@ public class ClientUDPReadHandler extends ClientReadHandler {
     }
 
     protected void printAsciiArt(Message message) {
-        System.out.println(">>> from: '" + message.getArguments()[0] + "'\n" + message.getText());
+        System.out.println("\n>>> from: '" + message.getArguments()[0] + "'\n" + message.getText());
     }
 }

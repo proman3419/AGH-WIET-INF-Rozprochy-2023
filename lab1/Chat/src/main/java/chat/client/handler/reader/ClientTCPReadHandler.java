@@ -37,6 +37,6 @@ public class ClientTCPReadHandler extends ClientReadHandler {
     }
 
     private void printUserMessage(Message message) {
-        System.out.println(">>> from: '" + message.getArguments()[0] + "' ||| content: '" + message.getText() + "' <<<");
+        System.out.println("\n>>> from: '" + message.getArguments()[0] + "' ||| content: '" + message.getText() + "' <<<");
     }
 }

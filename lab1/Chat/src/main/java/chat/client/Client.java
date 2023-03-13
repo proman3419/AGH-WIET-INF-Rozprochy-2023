@@ -66,6 +66,7 @@ public class Client implements ChatInstance {
     private boolean initSockets() {
         try {
             tcpSocket = new Socket(SERVER_HOSTNAME, serverPortNumber);
+            LOGGER.info("Opened TCP socket");
             out = new PrintWriterWrapper(
                     new PrintWriter(tcpSocket.getOutputStream(), true),
                     tcpSocket.getPort()
@@ -77,10 +78,12 @@ public class Client implements ChatInstance {
 
             portNumber = tcpSocket.getLocalPort();
             udpSocket = new DatagramSocket(portNumber);
+            LOGGER.info("Opened UDP socket");
             udpSocket.setSoTimeout(UDP_SOCKET_TIMEOUT_MS); // To break the blocking DatagramSocket::receive call
             udpWriteReader = new UDPWriteReader(udpSocket);
 
             multicastSocket = new MulticastSocket(MULTICAST_PORT);
+            LOGGER.info("Opened Multicast socket");
             multicastGroup = getInetAddressByName(MULTICAST_IP);
             multicastSocket.joinGroup(multicastGroup);
             LOGGER.info("Joined a multicast group '{}'", multicastGroup);
@@ -179,13 +182,15 @@ public class Client implements ChatInstance {
                         .build()
                 );
             }
-            ClientServerUtils.closeSocket(tcpSocket, LOGGER);
+            ClientServerUtils.closeCloseable(tcpSocket, "TCP socket", LOGGER);
             ClientServerUtils.closeCloseable(udpSocket, "UDP socket", LOGGER);
-            try {
-                multicastSocket.leaveGroup(multicastGroup);
-                LOGGER.info("Left the multicast group '{}'", multicastGroup);
-            } catch (IOException e) {
-                LOGGER.error("Failed to leave the multicast group '{}'", multicastGroup);
+            if (multicastSocket != null) {
+                try {
+                    multicastSocket.leaveGroup(multicastGroup);
+                    LOGGER.info("Left the multicast group '{}'", multicastGroup);
+                } catch (IOException e) {
+                    LOGGER.error("Failed to leave the multicast group '{}'", multicastGroup);
+                }
             }
             ClientServerUtils.closeCloseable(multicastSocket, "Multicast socket", LOGGER);
             quit.set(true);

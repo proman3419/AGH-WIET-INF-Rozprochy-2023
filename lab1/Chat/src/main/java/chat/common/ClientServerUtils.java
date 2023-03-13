@@ -16,8 +16,6 @@ public class ClientServerUtils {
             } catch (IOException e) {
                 logger.error("Failed to close closeable '{}', error message: '{}'", closeableName, e.getMessage());
             }
-        } else {
-            logger.warn("The passed closeable was null");
         }
     }
 
@@ -31,8 +29,6 @@ public class ClientServerUtils {
             } else {
                 closeCloseable(socket, socketName, logger);
             }
-        } else {
-            logger.warn("The passed socket was null");
         }
     }
 }
