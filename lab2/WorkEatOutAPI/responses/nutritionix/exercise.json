@@ -1,0 +1,36 @@
+{
+  "exercises": [
+    {
+      "tag_id": 63,
+      "user_input": "swimming",
+      "duration_min": 30,
+      "met": 6,
+      "nf_calories": 210,
+      "photo": {
+        "highres": "https://d2xdmhkmkbyw75.cloudfront.net/exercise//63_highres.jpg",
+        "thumb": "https://d2xdmhkmkbyw75.cloudfront.net/exercise//63_thumb.jpg",
+        "is_user_uploaded": false
+      },
+      "compendium_code": 18310,
+      "name": "swimming",
+      "description": null,
+      "benefits": null
+    },
+    {
+      "tag_id": 317,
+      "user_input": "running",
+      "duration_min": 100,
+      "met": 9.8,
+      "nf_calories": 1143.33,
+      "photo": {
+        "highres": "https://d2xdmhkmkbyw75.cloudfront.net/exercise/317_highres.jpg",
+        "thumb": "https://d2xdmhkmkbyw75.cloudfront.net/exercise/317_thumb.jpg",
+        "is_user_uploaded": false
+      },
+      "compendium_code": 12050,
+      "name": "running",
+      "description": null,
+      "benefits": null
+    }
+  ]
+}

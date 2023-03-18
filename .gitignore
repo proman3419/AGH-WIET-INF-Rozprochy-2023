@@ -25,3 +25,7 @@ hs_err_pid*
 # Idea
 .idea/
 target/
+
+# API keys
+lab2/WorkEatOutAPI/private_constants.py
+lab2/WorkEatOutAPI/p.py
