@@ -69,7 +69,7 @@ def get_meal_details(meal: str) -> Tuple[JSONResponse, Any]:
         response_body = load_response_body("responses/edamam/food.json")
     else:
         response = requests.get(url=EDAMAM_FOOD_PARSER_URL,
-                                params=EDAMAM_FOOD_PARAMS | {"ingr": meal.replace(DELIMITER, EDAMAM_DELIMITER)})
+                                params=EDAMAM_FOOD_PARAMS | {"ingr": EDAMAM_DELIMITER.join([x.strip() for x in meal.split(DELIMITER)])})
         response_body = response.json()
         if response.status_code != status.HTTP_200_OK:
             error_response = JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -173,7 +173,7 @@ def get_plan_exercise_raw(exercise: str, exercise_percs: str, meal: str, to_burn
     to_burn_perc = float_to_perc(to_burn_perc)
     sub_meals_names, sub_meals_weights = get_sub_meals_names_weights(meal)
 
-    error_response, sub_exercises, sub_meals = get_all_data(exercise, meal, sub_meals_names)
+    error_response, sub_exercises, sub_meals = get_all_data(exercise, DELIMITER.join(sub_meals_names), sub_meals_names)
     if error_response is not None:
         return error_response, None
 
