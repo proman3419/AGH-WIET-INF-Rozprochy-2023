@@ -1,4 +1,8 @@
+<h2>Plan exercise</h2>
+<p>Calculate how much one needs to exercise to burn the specified percentage of the meal's energy</p>
 <form action="/plan_exercise">
+    <label for="pe_api_key">API key:</label>
+    <input type="text" id="pe_api_key" name="api_key"><br><br>
     <label for="pe_exercise">Exercise:</label>
     <input type="text" id="pe_exercise" name="exercise"><br><br>
     <label for="pe_exercise_percs">Exercise percentages:</label>
@@ -10,7 +14,11 @@
     <input type="submit" value="Submit">
 </form>
 
+<h2>Plan meal</h2>
+<p>Calculate how much one needs to eat to regain the specified percentage of the burned energy during the exercise</p>
 <form action="/plan_meal">
+    <label for="pm_api_key">API key:</label>
+    <input type="text" id="pm_api_key" name="api_key"><br><br>
     <label for="pm_exercise">Exercise:</label>
     <input type="text" id="pm_exercise" name="exercise"><br><br>
     <label for="pm_meal">Meal:</label>

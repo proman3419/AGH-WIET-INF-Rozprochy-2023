@@ -2,11 +2,13 @@ from private_constants import *
 
 
 MOCK_RESPONSES = True
+AUTHORIZED_KEYS_FILE_PATH = "authorized_keys"
 
 DELIMITER = ","
 
 ERROR_MESSAGE = "error_message"
 ERROR_WRONG_ARGS_COUNT = "Wrong arguments count"
+ERROR_UNAUTHORIZED = "Invalid API key, if you don't own one contact the administrator via email: admin@workeatout.com"
 
 NUTRITIONIX_DELIMITER = ","
 NUTRITIONIX_EXERCISE_PREFIX = " 1 min "

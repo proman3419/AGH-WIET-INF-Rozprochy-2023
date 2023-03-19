@@ -3,8 +3,15 @@ from fastapi import FastAPI, status
 from starlette.responses import JSONResponse, HTMLResponse
 import requests
 import json
-from typing import List, Dict, Tuple, Any, Optional, Union
+from typing import List, Dict, Tuple, Any, Optional, Set
 
+
+def load_authorized_keys() -> Set:
+    with open(AUTHORIZED_KEYS_FILE_PATH, "r+") as f:
+        return set(f.read().splitlines())
+
+
+authorized_keys = load_authorized_keys()
 app = FastAPI()
 
 
@@ -69,7 +76,8 @@ def get_meal_details(meal: str) -> Tuple[JSONResponse, Any]:
         response_body = load_response_body("responses/edamam/food.json")
     else:
         response = requests.get(url=EDAMAM_FOOD_PARSER_URL,
-                                params=EDAMAM_FOOD_PARAMS | {"ingr": EDAMAM_DELIMITER.join([x.strip() for x in meal.split(DELIMITER)])})
+                                params=EDAMAM_FOOD_PARAMS | {
+                                    "ingr": EDAMAM_DELIMITER.join([x.strip() for x in meal.split(DELIMITER)])})
         response_body = response.json()
         if response.status_code != status.HTTP_200_OK:
             error_response = JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -105,35 +113,36 @@ def sub_exercises_to_html(plan: Dict[str, Any]) -> str:
     return "".join([x.to_html() for x in plan["sub_exercises"]])
 
 
-def get_sub_exercises(response_body: Any) -> Tuple[JSONResponse, List[Exercise]]:
-    error_response = None
+def get_sub_exercises(response_body: Any) -> List[Exercise]:
     sub_exercises = []
-    print(response_body)
-    for i, sub_exercise in enumerate(response_body["exercises"]):
-        try:
-            sub_exercises.append(Exercise(sub_exercise["user_input"],
-                                          sub_exercise["nf_calories"] / sub_exercise["duration_min"],
-                                          1))
-        except IndexError as e:
-            error_response = JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                                          content={ERROR_MESSAGE: str(e)})
-    return error_response, sub_exercises
+    for sub_exercise in response_body["exercises"]:
+        sub_exercises.append(Exercise(sub_exercise["user_input"],
+                                      sub_exercise["nf_calories"] / sub_exercise["duration_min"],
+                                      1))
+    return sub_exercises
 
 
 def get_sub_meals(response_body: Any, sub_meals_names: List[str]) -> Tuple[JSONResponse, List[Meal]]:
     error_response = None
     sub_meals = []
-    print(response_body)
     for i, sub_meal in enumerate(map(lambda x: x["food"], response_body["parsed"])):
         kcal_per_serving = sub_meal["nutrients"]["ENERC_KCAL"]
         try:
             sub_meals.append(Meal(sub_meals_names[i],
                                   kcal_per_serving / EDAMAM_GRAMS_PER_SERVING,
                                   1))
-        except IndexError as e:
+        except IndexError:
             error_response = JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                                          content={ERROR_MESSAGE: str(e)})
+                                          content={ERROR_MESSAGE: f"Index: {i}, length: {len(sub_meals_names)}, "
+                                                                  f"collection: {sub_meals_names}"})
     return error_response, sub_meals
+
+
+def authorize(key: str) -> Optional[JSONResponse]:
+    if key in authorized_keys:
+        return None
+    return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED,
+                        content={ERROR_MESSAGE: ERROR_UNAUTHORIZED})
 
 
 # Return:
@@ -155,12 +164,10 @@ def get_all_data(exercise: str, meal: str, sub_meals_names: List[str]) -> [JSONR
         exercise = exercise.replace(DELIMITER, NUTRITIONIX_DELIMITER)
 
         response_body = take_error_into_account(get_exercise_details(exercise))
-        sub_exercises = take_error_into_account(get_sub_exercises(response_body))
-        print(len(sub_exercises))
+        sub_exercises = get_sub_exercises(response_body)
 
         response_body = take_error_into_account(get_meal_details(meal))
         sub_meals = take_error_into_account(get_sub_meals(response_body, sub_meals_names))
-        print(len(sub_meals))
     except Exception as ignored:
         pass
     return error_response, sub_exercises, sub_meals
@@ -207,7 +214,10 @@ def get_plan_exercise_raw(exercise: str, exercise_percs: str, meal: str, to_burn
 
 # Return a json response
 @app.get("/plan_exercise_raw")
-async def plan_exercise_raw(exercise: str, exercise_percs: str, meal: str, to_burn_perc: float):
+async def plan_exercise_raw(api_key: str, exercise: str, exercise_percs: str, meal: str, to_burn_perc: float):
+    error_response = authorize(api_key)
+    if error_response is not None:
+        return error_response
     error_response, exercise_plan = get_plan_exercise_raw(exercise, exercise_percs, meal, to_burn_perc)
     if error_response is not None:
         return error_response
@@ -218,24 +228,20 @@ async def plan_exercise_raw(exercise: str, exercise_percs: str, meal: str, to_bu
 
 # Return a form with results
 @app.get("/plan_exercise")
-async def plan_exercise(exercise: str, exercise_percs: str, meal: str, to_burn_perc: float):
+async def plan_exercise(api_key: str, exercise: str, exercise_percs: str, meal: str, to_burn_perc: float):
+    error_response = authorize(api_key)
+    if error_response is not None:
+        return error_response
     error_response, exercise_plan = get_plan_exercise_raw(exercise, exercise_percs, meal, to_burn_perc)
     if error_response is not None:
         return error_response
     sub_meals_html = sub_meals_to_html(exercise_plan)
     sub_exercises_html = sub_exercises_to_html(exercise_plan)
-    html_content = f"<p>INPUT SUMMARY</p><ol><li>Energy provided by the meal: {exercise_plan['meal_provided_energy']:.2f} kcal</li>" + \
+    html_content = f"<h2>INPUT SUMMARY</h2><ol><li>Energy provided by the meal: {exercise_plan['meal_provided_energy']:.2f} kcal</li>" + \
                    f"<li>Meal:<ol>{sub_meals_html}</ol></li></ol>" + \
-                   f"<p>OUTPUT</p><ol><li>Exercise time: {exercise_plan['exercise_time']:.2f} min</li>" + \
+                   f"<h2>OUTPUT</h2><ol><li>Exercise time: {exercise_plan['exercise_time']:.2f} min</li>" + \
                    f"<li>Energy to burn: {exercise_plan['to_burn_energy']:.2f} kcal</li>" + \
                    f"<li>Exercise:<ol>{sub_exercises_html}</ol></li></ol>"
-    return HTMLResponse(content=html_content, status_code=status.HTTP_200_OK)
-
-
-@app.get("/input")
-async def plan_exercise():
-    with open("input.html", "r") as f:
-        html_content = f.read()
     return HTMLResponse(content=html_content, status_code=status.HTTP_200_OK)
 
 
@@ -261,13 +267,13 @@ def get_plan_meal_raw(exercise: str, meal: str, meal_percs: str, to_regain_perc:
     # Calculate total energy to be regained
     to_regain_energy = to_regain_perc * total_exercise_energy
 
-    # Calculate energy to be regained and time for each sub_meal
+    # Calculate energy to be regained and weight for each sub_meal
     for i, sub_meal in enumerate(sub_meals):
         sub_meal_to_regain_energy = to_regain_energy * meal_percs[i]
         sub_meal.weight = sub_meal_to_regain_energy / sub_meal.energy
         sub_meal.energy = sub_meal_to_regain_energy
 
-    return error_response,\
+    return error_response, \
            {"exercise_burned_energy": total_exercise_energy,
             "sub_exercises": sub_exercises,
             "to_regain_energy": to_regain_energy,
@@ -276,7 +282,10 @@ def get_plan_meal_raw(exercise: str, meal: str, meal_percs: str, to_regain_perc:
 
 # Return a json response
 @app.get("/plan_meal_raw")
-async def plan_meal_raw(exercise: str, meal: str, meal_percs: str, to_regain_perc: float):
+async def plan_meal_raw(api_key: str, exercise: str, meal: str, meal_percs: str, to_regain_perc: float):
+    error_response = authorize(api_key)
+    if error_response is not None:
+        return error_response
     error_response, exercise_plan = get_plan_meal_raw(exercise, meal, meal_percs, to_regain_perc)
     if error_response is not None:
         return error_response
@@ -287,14 +296,26 @@ async def plan_meal_raw(exercise: str, meal: str, meal_percs: str, to_regain_per
 
 # Return a form with results
 @app.get("/plan_meal")
-async def plan_meal(exercise: str, meal: str, meal_percs: str, to_regain_perc: float):
+async def plan_meal(api_key: str, exercise: str, meal: str, meal_percs: str, to_regain_perc: float):
+    error_response = authorize(api_key)
+    if error_response is not None:
+        return error_response
     error_response, exercise_plan = get_plan_meal_raw(exercise, meal, meal_percs, to_regain_perc)
     if error_response is not None:
         return error_response
     sub_meals_html = sub_meals_to_html(exercise_plan)
     sub_exercises_html = sub_exercises_to_html(exercise_plan)
-    html_content = f"<p>INPUT SUMMARY</p><ol><li>Energy burned during exercise: {exercise_plan['exercise_burned_energy']:.2f} kcal</li>" + \
+    html_content = f"<h2>INPUT SUMMARY</h2><ol><li>Energy burned during exercise: {exercise_plan['exercise_burned_energy']:.2f} kcal</li>" + \
                    f"<li>Exercise:<ol>{sub_exercises_html}</ol></li></ol>" + \
-                   f"<p>OUTPUT</p><ol><li>Energy to regain: {exercise_plan['to_regain_energy']:.2f} kcal</li>" + \
+                   f"<h2>OUTPUT</h2><ol><li>Energy to regain: {exercise_plan['to_regain_energy']:.2f} kcal</li>" + \
                    f"<li>Meal:<ol>{sub_meals_html}</ol></li>"
     return HTMLResponse(content=html_content, status_code=status.HTTP_200_OK)
+
+
+@app.get("/input")
+async def plan_exercise():
+    with open("input.html", "r") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content, status_code=status.HTTP_200_OK)
+
+# copy paste oriented programming ^-^
