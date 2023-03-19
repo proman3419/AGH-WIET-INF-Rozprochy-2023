@@ -3,7 +3,7 @@ from fastapi import FastAPI, status
 from starlette.responses import JSONResponse
 import requests
 import json
-from typing import List, Dict, Tuple, Any, Union, Optional
+from typing import List, Dict, Tuple, Any, Optional
 
 
 app = FastAPI()
@@ -35,36 +35,21 @@ def get_sub_meals_names_weights(meal: str) -> Tuple[List[str], List[float]]:
     return sub_meals_names, sub_meals_weights
 
 
-def get_sub_exercises_raw(exercise: str) -> List[Tuple[str, float]]:
-    sub_exercises_raw = []
+def get_sub_exercises_times(exercise: str) -> List[float]:
+    sub_exercises_times = []
     for sub_exercise in exercise.split(DELIMITER):
         time_raw, name_raw = sub_exercise.split(maxsplit=1)
         time = float(time_raw[:-3])  # Remove the "min"
-        name = name_raw.strip()
-        sub_exercises_raw.append((name, time))
-    return sub_exercises_raw
+        sub_exercises_times.append(time)
+    return sub_exercises_times
 
 
 def objects_to_list(objects: List[object]) -> list[dict[str, Any]]:
     return list(map(vars, objects))
 
 
-class Exercise:
-    def __init__(self, name: str, energy: float, time: float):
-        self.name = name
-        self.energy = energy
-        self.time = time
-
-
-class Meal:
-    def __init__(self, name: str, energy: float, weight: float):
-        self.name = name
-        self.energy = energy
-        self.weight = weight
-
-
-# Get information about the exercise's kcal consumption
 def get_exercise_details(exercise: str) -> Tuple[JSONResponse, Any]:
+    print(exercise)
     error_response = None
     if MOCK_RESPONSES:
         response_body = load_response_body("responses/nutritionix/exercise.json")
@@ -79,7 +64,6 @@ def get_exercise_details(exercise: str) -> Tuple[JSONResponse, Any]:
     return error_response, response_body
 
 
-# Get information about the meal's kcal
 def get_meal_details(meal: str) -> Tuple[JSONResponse, Any]:
     error_response = None
     if MOCK_RESPONSES:
@@ -92,6 +76,20 @@ def get_meal_details(meal: str) -> Tuple[JSONResponse, Any]:
             error_response = JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                                           content=response_body)
     return error_response, response_body
+
+
+class Exercise:
+    def __init__(self, name: str, energy: float, time: float):
+        self.name = name
+        self.energy = energy
+        self.time = time
+
+
+class Meal:
+    def __init__(self, name: str, energy: float, weight: float):
+        self.name = name
+        self.energy = energy
+        self.weight = weight
 
 
 def get_sub_exercises(response_body: Any) -> Tuple[JSONResponse, List[Exercise]]:
@@ -154,6 +152,7 @@ def get_all_data(exercise: str, meal: str, sub_meals_names: List[str]) -> [JSONR
 # Calculate how much one needs to exercise to burn to_burn_perc% of the meal
 @app.get("/plan_exercise")
 async def plan_exercise(exercise: str, exercise_percs: str, meal: str, to_burn_perc: float):
+    exercise = NUTRITIONIX_EXERCISE_PREFIX + exercise.replace(DELIMITER, NUTRITIONIX_EXERCISE_PREFIX)
     exercise_percs = str_to_percs(exercise_percs)
     to_burn_perc = float_to_perc(to_burn_perc)
     sub_meals_names, sub_meals_weights = get_sub_meals_names_weights(meal)
@@ -173,9 +172,8 @@ async def plan_exercise(exercise: str, exercise_percs: str, meal: str, to_burn_p
     # Calculate total energy to be burned
     to_burn_energy = to_burn_perc * total_meal_energy
 
-    # Calculate energy to be burned and time of each sub_exercise
+    # Calculate energy to be burned and time for each sub_exercise
     for i, sub_exercise in enumerate(sub_exercises):
-        print(sub_exercise.energy)
         sub_exercise_to_burn_energy = to_burn_energy * exercise_percs[i]
         sub_exercise.time = sub_exercise_to_burn_energy / sub_exercise.energy
         sub_exercise.energy = sub_exercise_to_burn_energy
@@ -193,71 +191,33 @@ async def plan_exercise(exercise: str, exercise_percs: str, meal: str, to_burn_p
 # Calculate how much one needs to eat to regain to_regain_perc% of the burned energy
 @app.get("/plan_meal")
 async def plan_meal(exercise: str, meal: str, meal_percs: str, to_regain_perc: float):
-    exercise = exercise.replace(DELIMITER, NUTRITIONIX_DELIMITER)
     meal_percs = str_to_percs(meal_percs)
     to_regain_perc = float_to_perc(to_regain_perc)
-
-    # Get information about the exercise's kcal consumption
-    if MOCK_RESPONSES:
-        response_body = load_response_body("responses/nutritionix/exercise.json")
-    else:
-        response = requests.post(url=NUTRITIONIX_EXERCISE_URL,
-                                 data={"query": exercise},
-                                 headers=NUTRITIONIX_AUTH_HEADERS)
-        response_body = response.json()
-        if response.status_code != status.HTTP_200_OK:
-            return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                                content=response_body)
-
-    # Sum kcal of all exercises
-    sub_exercises_raw = get_sub_exercises_raw(exercise)
-    sub_exercises = []
-    exercise_burned_energy = 0
-    for i, sub_exercise in enumerate(response_body["exercises"]):
-        try:
-            sub_exercises.append(Exercise(sub_exercise["user_input"],
-                                          sub_exercise["nf_calories"] / NUTRITIONIX_DEFAULT_EXERCISE_TIME_MIN *
-                                          sub_exercises_raw[i][1],
-                                          sub_exercises_raw[i][1]))
-            exercise_burned_energy += sub_exercises[-1].energy
-        except IndexError:
-            return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                                content={ERROR_MESSAGE: ERROR_WRONG_ARGS_COUNT})
-
-    # Get information about the meal's kcal
-    if MOCK_RESPONSES:
-        response_body = load_response_body("responses/edamam/food.json")
-    else:
-        response = requests.get(url=EDAMAM_FOOD_PARSER_URL,
-                                params=EDAMAM_FOOD_PARAMS | {"ingr": meal.replace(DELIMITER, EDAMAM_DELIMITER)})
-        response_body = response.json()
-        if response.status_code != status.HTTP_200_OK:
-            return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                                content=response_body)
-
-    # Sum kcal of the meal
     sub_meals_names = list(map(lambda x: x.strip(), meal.split(DELIMITER)))
-    sub_meals = []
-    to_provide_energy = 0
-    for i, sub_meal in enumerate(map(lambda x: x["food"], response_body["parsed"])):
-        kcal_per_serving = sub_meal["nutrients"]["ENERC_KCAL"]
-        try:
-            sub_meals.append(Meal(sub_meals_names[i],
-                                  kcal_per_serving * meal_percs[i],
-                                  EDAMAM_GRAMS_PER_SERVING * meal_percs[i]))
-        except IndexError:
-            return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                                content={ERROR_MESSAGE: ERROR_WRONG_ARGS_COUNT})
-        to_provide_energy += sub_meals[-1].energy
+    sub_exercises_times = get_sub_exercises_times(exercise)
 
-    to_regain_energy = exercise_burned_energy * to_regain_perc
-    servings = to_regain_energy / to_provide_energy
+    error_response, sub_exercises, sub_meals = get_all_data(exercise, meal, sub_meals_names)
+    if error_response is not None:
+        return error_response
 
+    # Take sub_exercises' times into account
+    for i, sub_exercise in enumerate(sub_exercises):
+        sub_exercise.time = sub_exercises_times[i]
+        sub_exercise.energy *= sub_exercises_times[i]
+
+    # Calculate total exercise's energy
+    total_exercise_energy = sum(map(lambda x: x.energy, sub_exercises))
+
+    # Calculate total energy to be regained
+    to_regain_energy = to_regain_perc * total_exercise_energy
+
+    # Calculate energy to be regained and time for each sub_meal
     for i, sub_meal in enumerate(sub_meals):
-        sub_meal.weight *= servings
-        sub_meal.energy *= servings
+        sub_meal_to_regain_energy = to_regain_energy * meal_percs[i]
+        sub_meal.weight = sub_meal_to_regain_energy / sub_meal.energy
+        sub_meal.energy = sub_meal_to_regain_energy
 
-    return {"exercise_burned_energy": exercise_burned_energy,
+    return {"exercise_burned_energy": total_exercise_energy,
             "sub_exercises": objects_to_list(sub_exercises),
             "to_regain_energy": to_regain_energy,
             "sub_meals": objects_to_list(sub_meals)}
