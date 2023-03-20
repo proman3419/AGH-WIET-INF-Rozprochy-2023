@@ -4,6 +4,7 @@ from starlette.responses import JSONResponse, HTMLResponse
 import requests
 import json
 from typing import List, Dict, Tuple, Any, Optional, Set
+import re
 
 
 def load_authorized_keys() -> Set:
@@ -169,12 +170,38 @@ def get_all_data(exercise: str, meal: str, sub_meals_names: List[str]) -> [JSONR
         response_body = take_error_into_account(get_meal_details(meal))
         sub_meals = take_error_into_account(get_sub_meals(response_body, sub_meals_names))
     except Exception as ignored:
-        pass
+        pass # Fail early
     return error_response, sub_exercises, sub_meals
+
+
+def validate_plan_exercise_input(exercise: str, meal: str, exercise_percs: str) -> Optional[JSONResponse]:
+    error_source = None
+    if not re.compile(f"^([A-Za-z ]+{DELIMITER} *)*[A-Za-z ]+$").match(exercise):
+        error_source = "exercise"
+    elif not re.compile(f"^((0|[1-9][0-9]*)g [A-Za-z ]+{DELIMITER} *)*((0|[1-9][0-9]*)g [A-Za-z ]+)$").match(meal):
+        error_source = "meal"
+    elif not re.compile(f"^((0|[1-9][0-9]*){DELIMITER} *)*(0|[1-9][0-9]*)+$").match(exercise_percs):
+        error_source = "exercise_percs"
+    if error_source is not None:
+        return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                     content={ERROR_MESSAGE: f"Invalid {error_source} format"})
+    exercise_percs = exercise_percs.split(DELIMITER)
+    if not len(exercise.split(DELIMITER)) == len(exercise_percs):
+        return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            content={ERROR_MESSAGE: "There should be the same amout of exercise and exercise_percs " +
+                                     f"values separated by {DELIMITER}"})
+    exercise_percs_sum = sum(map(float, exercise_percs))
+    if not exercise_percs_sum == 100:
+        return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            content={ERROR_MESSAGE: f"exercise_percs should sum up to 100%, got {exercise_percs_sum}%"})
+    return None
 
 
 # Calculate how much one needs to exercise to burn to_burn_perc% of the meal
 def get_plan_exercise_raw(exercise: str, exercise_percs: str, meal: str, to_burn_perc: float) -> Tuple[Any, Any]:
+    error_response = validate_plan_exercise_input(exercise, meal, exercise_percs)
+    if error_response is not None:
+        return error_response, None
     exercise = NUTRITIONIX_EXERCISE_PREFIX + exercise.replace(DELIMITER, NUTRITIONIX_EXERCISE_PREFIX)
     exercise_percs = str_to_percs(exercise_percs)
     to_burn_perc = float_to_perc(to_burn_perc)
@@ -245,8 +272,34 @@ async def plan_exercise(api_key: str, exercise: str, exercise_percs: str, meal: 
     return HTMLResponse(content=html_content, status_code=status.HTTP_200_OK)
 
 
+def validate_plan_meal_input(exercise: str, meal: str, meal_percs: str) -> Optional[JSONResponse]:
+    error_source = None
+    if not re.compile(f"^((0|[1-9][0-9]*)min [A-Za-z ]+{DELIMITER} *)*((0|[1-9][0-9]*)min [A-Za-z ]+)$").match(exercise):
+        error_source = "exercise"
+    elif not re.compile("^([A-Za-z ]+, *)*[A-Za-z ]+$").match(meal):
+        error_source = "meal"
+    elif not re.compile("^((0|[1-9][0-9]*), *)*(0|[1-9][0-9]*)$").match(meal_percs):
+        error_source = "meal_percs"
+    if error_source is not None:
+        return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                     content={ERROR_MESSAGE: f"Invalid {error_source} format"})
+    meal_percs = meal_percs.split(DELIMITER)
+    if not len(meal.split(DELIMITER)) == len(meal_percs):
+        return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            content={ERROR_MESSAGE: "There should be the same amout of meal and meal_percs " +
+                                     f"values separated by {DELIMITER}"})
+    meal_percs_sum = sum(map(float, meal_percs))
+    if not meal_percs_sum == 100:
+        return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            content={ERROR_MESSAGE: f"meal_percs should sum up to 100%, got {meal_percs_sum}%"})
+    return None
+
+
 # Calculate how much one needs to eat to regain to_regain_perc% of the burned energy
 def get_plan_meal_raw(exercise: str, meal: str, meal_percs: str, to_regain_perc: float) -> Tuple[Any, Any]:
+    error_response = validate_plan_meal_input(exercise, meal, meal_percs)
+    if error_response is not None:
+        return error_response, None
     meal_percs = str_to_percs(meal_percs)
     to_regain_perc = float_to_perc(to_regain_perc)
     sub_meals_names = list(map(lambda x: x.strip(), meal.split(DELIMITER)))
@@ -317,5 +370,3 @@ async def plan_exercise():
     with open("input.html", "r") as f:
         html_content = f.read()
     return HTMLResponse(content=html_content, status_code=status.HTTP_200_OK)
-
-# copy paste oriented programming ^-^

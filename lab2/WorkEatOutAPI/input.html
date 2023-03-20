@@ -2,15 +2,15 @@
 <p>Calculate how much one needs to exercise to burn the specified percentage of the meal's energy</p>
 <form action="/plan_exercise">
     <label for="pe_api_key">API key:</label>
-    <input type="text" id="pe_api_key" name="api_key"><br><br>
+    <input type="text" id="pe_api_key" name="api_key" placeholder="your API key"><br><br>
     <label for="pe_exercise">Exercise:</label>
-    <input type="text" id="pe_exercise" name="exercise"><br><br>
+    <input type="text" id="pe_exercise" name="exercise" placeholder="dancing, hockey, golf"><br><br>
     <label for="pe_exercise_percs">Exercise percentages:</label>
-    <input type="text" id="pe_exercise_percs" name="exercise_percs"><br><br>
+    <input type="text" id="pe_exercise_percs" name="exercise_percs" placeholder="25, 40, 35"><br><br>
     <label for="pe_meal">Meal:</label>
-    <input type="text" id="pe_meal" name="meal"><br><br>
+    <input type="text" id="pe_meal" name="meal" placeholder="780g pizza, 300g cola, 333g banana, 200g orange, 300g mushroom, 20g ham"><br><br>
     <label for="pe_to_burn_perc">Percentage of the meal's energy to burn:</label>
-    <input type="text" id="pe_to_burn_perc" name="to_burn_perc"><br><br>
+    <input type="text" id="pe_to_burn_perc" name="to_burn_perc" placeholder="100"><br><br>
     <input type="submit" value="Submit">
 </form>
 
@@ -18,14 +18,14 @@
 <p>Calculate how much one needs to eat to regain the specified percentage of the burned energy during the exercise</p>
 <form action="/plan_meal">
     <label for="pm_api_key">API key:</label>
-    <input type="text" id="pm_api_key" name="api_key"><br><br>
+    <input type="text" id="pm_api_key" name="api_key" placeholder="your API key"><br><br>
     <label for="pm_exercise">Exercise:</label>
-    <input type="text" id="pm_exercise" name="exercise"><br><br>
+    <input type="text" id="pm_exercise" name="exercise" placeholder="30min sitting, 120min walking, 15min jumping"><br><br>
     <label for="pm_meal">Meal:</label>
-    <input type="text" id="pm_meal" name="meal"><br><br>
+    <input type="text" id="pm_meal" name="meal" placeholder="pizza, orange juice, apple, cookie"><br><br>
     <label for="pm_meal_percs">Meal percentages:</label>
-    <input type="text" id="pm_meal_percs" name="meal_percs"><br><br>
+    <input type="text" id="pm_meal_percs" name="meal_percs" placeholder="60, 20, 10, 10"><br><br>
     <label for="pm_to_regain_perc">Percentage of the energy burned during exercise to regain:</label>
-    <input type="text" id="pm_to_regain_perc" name="to_regain_perc"><br><br>
+    <input type="text" id="pm_to_regain_perc" name="to_regain_perc" placeholder="75"><br><br>
     <input type="submit" value="Submit">
 </form>
