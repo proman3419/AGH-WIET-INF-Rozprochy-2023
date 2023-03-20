@@ -1,6 +1,27 @@
 # WorkEatOutAPI
 API pozwalające na zaplanowanie posiłku lub treningu pod kątem bilansu energetycznego.
 
+## Uruchomienie
+#### Dodaj plik `WorkEatOutAPI/private_constants.py` zawierający klucze do zewnętrznych API (linki na dole README)
+```
+NUTRITIONIX_APP_ID = ###
+NUTRITIONIX_APP_KEY = ###
+
+EDAMAM_FOOD_APP_ID = ###
+EDAMAM_FOOD_APP_KEY = ###
+```
+
+#### Wygeneruj i dodaj swój klucz do `WorkEatOutAPI/authorized_keys`
+Do generowania kluczy używałem [link](https://codepen.io/corenominal/pen/rxOmMJ).
+
+#### Zainstaluj zależności
+`pip install -r WorkEatOutAPI/requirements.txt`
+
+#### Uruchom
+`cd WorkEatOutAPI`\
+`uvicorn work_eat_out_api:app --reload`\
+[input endpoint](http://127.0.0.1:8000/input)
+
 ## Endpointy
 ### /plan_exercise_raw
 #### GET
