@@ -1,0 +1,602 @@
+{
+	"info": {
+		"_postman_id": "15434574-9445-437b-904a-f4a54595e301",
+		"name": "Work Eat Out API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Edamam",
+			"item": [
+				{
+					"name": "food",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.edamam.com/api/food-database/parser?app_id={{EDAMAM_FOOD_APP_ID}}&app_key={{EDAMAM_FOOD_APP_KEY}}&ingr=pizza and cola and banana and orange",
+							"protocol": "https",
+							"host": [
+								"api",
+								"edamam",
+								"com"
+							],
+							"path": [
+								"api",
+								"food-database",
+								"parser"
+							],
+							"query": [
+								{
+									"key": "app_id",
+									"value": "{{EDAMAM_FOOD_APP_ID}}"
+								},
+								{
+									"key": "app_key",
+									"value": "{{EDAMAM_FOOD_APP_KEY}}"
+								},
+								{
+									"key": "ingr",
+									"value": "pizza and cola and banana and orange"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recipe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.edamam.com/api/recipes/v2?app_id={{EDAMAM_RECIPE_APP_ID}}&app_key={{EDAMAM_RECIPE_APP_KEY}}&type=public&q=pizza",
+							"protocol": "https",
+							"host": [
+								"api",
+								"edamam",
+								"com"
+							],
+							"path": [
+								"api",
+								"recipes",
+								"v2"
+							],
+							"query": [
+								{
+									"key": "app_id",
+									"value": "{{EDAMAM_RECIPE_APP_ID}}"
+								},
+								{
+									"key": "app_key",
+									"value": "{{EDAMAM_RECIPE_APP_KEY}}"
+								},
+								{
+									"key": "type",
+									"value": "public"
+								},
+								{
+									"key": "q",
+									"value": "pizza"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Nutritionix",
+			"item": [
+				{
+					"name": "exercise",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-app-id",
+								"value": "{{NUTRITIONIX_APP_ID}}",
+								"type": "default"
+							},
+							{
+								"key": "x-app-key",
+								"value": "{{NUTRITIONIX_APP_KEY}}",
+								"type": "default"
+							},
+							{
+								"key": "x-remote-user-id",
+								"value": "0",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\": \"100min swimming, 30min running, 40min basketball\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://trackapi.nutritionix.com/v2/natural/exercise",
+							"protocol": "https",
+							"host": [
+								"trackapi",
+								"nutritionix",
+								"com"
+							],
+							"path": [
+								"v2",
+								"natural",
+								"exercise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "doesn't recognize >3 exercises at once",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-app-id",
+								"value": "{{NUTRITIONIX_APP_ID}}",
+								"type": "default"
+							},
+							{
+								"key": "x-app-key",
+								"value": "{{NUTRITIONIX_APP_KEY}}",
+								"type": "default"
+							},
+							{
+								"key": "x-remote-user-id",
+								"value": "0",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\": \"100min swimming, 30min running, 50min hockey, 40min basketball\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://trackapi.nutritionix.com/v2/natural/exercise",
+							"protocol": "https",
+							"host": [
+								"trackapi",
+								"nutritionix",
+								"com"
+							],
+							"path": [
+								"v2",
+								"natural",
+								"exercise"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "plan_exercise_raw",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_exercise_raw?api_key={{API_KEY}}&exercise=swimming, running&exercise_percs=70, 30&meal=250g lasagne, 50g broccoli, 250g tomato soup&to_burn_perc=70",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_exercise_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "swimming, running"
+						},
+						{
+							"key": "exercise_percs",
+							"value": "70, 30"
+						},
+						{
+							"key": "meal",
+							"value": "250g lasagne, 50g broccoli, 250g tomato soup"
+						},
+						{
+							"key": "to_burn_perc",
+							"value": "70"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan_exercise_raw 2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_exercise_raw?api_key={{API_KEY}}&exercise=dancing, hockey, golf&exercise_percs=25, 40, 35&meal=300g spaghetti, 200g wine, 500g beef, 20g ice cream&to_burn_perc=100",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_exercise_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "dancing, hockey, golf"
+						},
+						{
+							"key": "exercise_percs",
+							"value": "25, 40, 35"
+						},
+						{
+							"key": "meal",
+							"value": "300g spaghetti, 200g wine, 500g beef, 20g ice cream"
+						},
+						{
+							"key": "to_burn_perc",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan_exercise_raw 3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_exercise_raw?api_key={{API_KEY}}&exercise=dancing, hockey, golf&exercise_percs=25, 40, 35&meal=780g pizza, 300g cola, 333g banana, 200g orange, 300g mushroom, 20g ham&to_burn_perc=100",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_exercise_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "dancing, hockey, golf"
+						},
+						{
+							"key": "exercise_percs",
+							"value": "25, 40, 35"
+						},
+						{
+							"key": "meal",
+							"value": "780g pizza, 300g cola, 333g banana, 200g orange, 300g mushroom, 20g ham"
+						},
+						{
+							"key": "to_burn_perc",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan_exercise_raw sum(percs) < 100%",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_exercise_raw?api_key={{API_KEY}}&exercise=dancing, hockey, golf&exercise_percs=25, 40, 34&meal=780g pizza, 300g cola, 333g banana, 200g orange, 300g mushroom, 20g ham&to_burn_perc=100",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_exercise_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "dancing, hockey, golf"
+						},
+						{
+							"key": "exercise_percs",
+							"value": "25, 40, 34"
+						},
+						{
+							"key": "meal",
+							"value": "780g pizza, 300g cola, 333g banana, 200g orange, 300g mushroom, 20g ham"
+						},
+						{
+							"key": "to_burn_perc",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan_exercise bad meal format",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_exercise_raw?api_key={{API_KEY}}&exercise=dancing, hockey, golf&exercise_percs=25, 40, 34&meal=780gg pizza, 300 cola&to_burn_perc=100",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_exercise_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "dancing, hockey, golf"
+						},
+						{
+							"key": "exercise_percs",
+							"value": "25, 40, 34"
+						},
+						{
+							"key": "meal",
+							"value": "780gg pizza, 300 cola"
+						},
+						{
+							"key": "to_burn_perc",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan_meal_raw",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_meal_raw?api_key={{API_KEY}}&exercise=100min swimming, 30min running&meal=lasagne, broccoli, tomato soup&meal_percs=60, 10, 30&to_regain_perc=70",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_meal_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "100min swimming, 30min running"
+						},
+						{
+							"key": "meal",
+							"value": "lasagne, broccoli, tomato soup"
+						},
+						{
+							"key": "meal_percs",
+							"value": "60, 10, 30"
+						},
+						{
+							"key": "to_regain_perc",
+							"value": "70"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan_meal_raw 2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_meal_raw?api_key={{API_KEY}}&exercise=30min sitting, 120min walking, 15min jumping&meal=pizza, orange juice, apple, cookie&meal_percs=60, 20, 10, 10&to_regain_perc=75",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_meal_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "30min sitting, 120min walking, 15min jumping"
+						},
+						{
+							"key": "meal",
+							"value": "pizza, orange juice, apple, cookie"
+						},
+						{
+							"key": "meal_percs",
+							"value": "60, 20, 10, 10"
+						},
+						{
+							"key": "to_regain_perc",
+							"value": "75"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan_meal_raw meal, meal_percs amount don't match",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_meal_raw?api_key={{API_KEY}}&exercise=30min sitting, 120min walking, 15min jumping&meal=pizza, orange juice&meal_percs=60, 20, 10, 10&to_regain_perc=100",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_meal_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "30min sitting, 120min walking, 15min jumping"
+						},
+						{
+							"key": "meal",
+							"value": "pizza, orange juice"
+						},
+						{
+							"key": "meal_percs",
+							"value": "60, 20, 10, 10"
+						},
+						{
+							"key": "to_regain_perc",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan_meal_raw meal gibberish input",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_meal_raw?api_key={{API_KEY}}&exercise=adsf$%$^%SAD fddsa5%26^%SAD, sda&meal=$FVDKl fggsfds325 fsadf &meal_percs=60, 20, 10, 10&to_regain_perc=100",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_meal_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "adsf$%$^%SAD fddsa5&^%SAD, sda"
+						},
+						{
+							"key": "meal",
+							"value": "$FVDKl fggsfds325 fsadf "
+						},
+						{
+							"key": "meal_percs",
+							"value": "60, 20, 10, 10"
+						},
+						{
+							"key": "to_regain_perc",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL_BASE",
+			"value": "http://127.0.0.1:8000",
+			"type": "default"
+		},
+		{
+			"key": "API_KEY",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "EDAMAM_FOOD_APP_ID",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "EDAMAM_FOOD_APP_KEY",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "NUTRITIONIX_APP_ID",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "NUTRITIONIX_APP_KEY",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "EDAMAM_RECIPE_APP_ID",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "EDAMAM_RECIPE_APP_KEY",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

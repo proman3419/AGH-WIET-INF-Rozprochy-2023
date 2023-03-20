@@ -50,8 +50,8 @@ def get_exercise_details(exercise: str) -> Tuple[JSONResponse, Any]:
                                  headers=NUTRITIONIX_AUTH_HEADERS)
         response_body = response.json()
         if response.status_code != status.HTTP_200_OK:
-            error_response = JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                                          content=response_body)
+            error_response = JSONResponse(status_code=response.status_code,
+                                          content=f"Edamam API: {response_body}")
     return error_response, response_body
 
 
@@ -74,8 +74,8 @@ def get_meal_details(meal: str) -> Tuple[JSONResponse, Any]:
                                     "ingr": EDAMAM_DELIMITER.join([x.strip() for x in meal.split(DELIMITER)])})
         response_body = response.json()
         if response.status_code != status.HTTP_200_OK:
-            error_response = JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                                          content=response_body)
+            error_response = JSONResponse(status_code=response.status_code,
+                                          content=f"Edamam API: {response_body}")
     return error_response, response_body
 
 
