@@ -1,7 +1,7 @@
 from private_constants import *
 
 
-MOCK_RESPONSES = True
+MOCK_RESPONSES = False
 AUTHORIZED_KEYS_FILE_PATH = "authorized_keys"
 
 DELIMITER = ","
