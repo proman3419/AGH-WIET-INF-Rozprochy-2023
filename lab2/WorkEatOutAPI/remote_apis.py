@@ -1,6 +1,7 @@
 from typing import Tuple, Any, List, Optional
 
-import requests
+import asyncio
+import aiohttp
 from starlette import status
 from starlette.responses import JSONResponse
 
@@ -10,6 +11,12 @@ from constants import MOCK_RESPONSES, NUTRITIONIX_EXERCISE_URL, NUTRITIONIX_AUTH
     EDAMAM_FOOD_PARSER_URL, EDAMAM_FOOD_PARAMS, EDAMAM_DELIMITER, DELIMITER, EDAMAM_GRAMS_PER_SERVING, ERROR_MESSAGE, \
     NUTRITIONIX_DELIMITER
 from helpers import load_response_body
+
+
+async def get_response_bodies(exercise: str, meal: str) -> Any:
+    input_coroutines = [get_exercise_details(exercise), get_meal_details(meal)]
+    result = await asyncio.gather(*input_coroutines)
+    return result
 
 
 # Return:
@@ -30,28 +37,33 @@ def get_all_data(exercise: str, meal: str, sub_meals_names: List[str]) -> [JSONR
     try:
         exercise = exercise.replace(DELIMITER, NUTRITIONIX_DELIMITER)
 
-        response_body = take_error_into_account(get_exercise_details(exercise))
+        # Wait for coroutines to complete
+        exercise_details, meal_details = asyncio.get_event_loop().run_until_complete(get_response_bodies(exercise, meal))
+
+        response_body = take_error_into_account(exercise_details)
         sub_exercises = get_sub_exercises(response_body)
 
-        response_body = take_error_into_account(get_meal_details(meal))
+        response_body = take_error_into_account(meal_details)
         sub_meals = take_error_into_account(get_sub_meals(response_body, sub_meals_names))
     except Exception as ignored:
-        pass # Fail early
+        # Fail early
+        pass
     return error_response, sub_exercises, sub_meals
 
 
-def get_exercise_details(exercise: str) -> Tuple[JSONResponse, Any]:
+async def get_exercise_details(exercise: str) -> Tuple[JSONResponse, Any]:
     error_response = None
     if MOCK_RESPONSES:
         response_body = load_response_body("responses/nutritionix/exercise.json")
     else:
-        response = requests.post(url=NUTRITIONIX_EXERCISE_URL,
-                                 data={"query": exercise},
-                                 headers=NUTRITIONIX_AUTH_HEADERS)
-        response_body = response.json()
-        if response.status_code != status.HTTP_200_OK:
-            error_response = JSONResponse(status_code=response.status_code,
-                                          content=f"Edamam API: {response_body}")
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url=NUTRITIONIX_EXERCISE_URL,
+                                     data={"query": exercise},
+                                     headers=NUTRITIONIX_AUTH_HEADERS) as response:
+                response_body = await response.json()
+                if response.status != status.HTTP_200_OK:
+                    error_response = JSONResponse(status_code=response.status,
+                                                  content=f"Nutritionix API: {response_body}")
     return error_response, response_body
 
 
@@ -64,18 +76,19 @@ def get_sub_exercises(response_body: Any) -> List[Exercise]:
     return sub_exercises
 
 
-def get_meal_details(meal: str) -> Tuple[JSONResponse, Any]:
+async def get_meal_details(meal: str) -> Tuple[JSONResponse, Any]:
     error_response = None
     if MOCK_RESPONSES:
         response_body = load_response_body("responses/edamam/food.json")
     else:
-        response = requests.get(url=EDAMAM_FOOD_PARSER_URL,
-                                params=EDAMAM_FOOD_PARAMS | {
-                                    "ingr": EDAMAM_DELIMITER.join([x.strip() for x in meal.split(DELIMITER)])})
-        response_body = response.json()
-        if response.status_code != status.HTTP_200_OK:
-            error_response = JSONResponse(status_code=response.status_code,
-                                          content=f"Edamam API: {response_body}")
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url=EDAMAM_FOOD_PARSER_URL,
+                                   params=EDAMAM_FOOD_PARAMS | {
+                                       "ingr": EDAMAM_DELIMITER.join([x.strip() for x in meal.split(DELIMITER)])}) as response:
+                response_body = await response.json()
+                if response.status != status.HTTP_200_OK:
+                    error_response = JSONResponse(status_code=response.status,
+                                                  content=f"Edamam API: {response_body}")
     return error_response, response_body
 
 

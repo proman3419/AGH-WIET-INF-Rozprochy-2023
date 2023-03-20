@@ -1,5 +1,6 @@
 from typing import Optional, Set
 
+import nest_asyncio
 from fastapi import FastAPI, status
 from starlette.responses import JSONResponse, HTMLResponse
 
@@ -16,6 +17,7 @@ def load_authorized_keys() -> Set:
         return set(f.read().splitlines())
 
 
+nest_asyncio.apply()
 authorized_keys = load_authorized_keys()
 app = FastAPI()
 
