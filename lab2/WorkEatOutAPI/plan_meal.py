@@ -5,11 +5,12 @@ from starlette import status
 from starlette.responses import JSONResponse
 
 from constants import DELIMITER, ERROR_MESSAGE
-from helpers import str_to_percs, float_to_perc, get_sub_exercises_times
+from helpers import str_to_percs, float_to_perc, get_sub_exercises_names_times
 from remote_apis import get_all_data
 
 
 def validate_plan_meal_input(exercise: str, meal: str, meal_percs: str) -> Optional[JSONResponse]:
+    meal = meal.strip() # Filter spaces only string
     error_source = None
     if not re.compile(f"^((0|[1-9][0-9]*)min [A-Za-z ]+{DELIMITER} *)*((0|[1-9][0-9]*)min [A-Za-z ]+)$").match(exercise):
         error_source = "exercise"
@@ -40,9 +41,9 @@ def get_plan_meal_raw(exercise: str, meal: str, meal_percs: str, to_regain_perc:
     meal_percs = str_to_percs(meal_percs)
     to_regain_perc = float_to_perc(to_regain_perc)
     sub_meals_names = list(map(lambda x: x.strip(), meal.split(DELIMITER)))
-    sub_exercises_times = get_sub_exercises_times(exercise)
+    sub_exercises_names, sub_exercises_times = get_sub_exercises_names_times(exercise)
 
-    error_response, sub_exercises, sub_meals = get_all_data(exercise, meal, sub_meals_names)
+    error_response, sub_exercises, sub_meals = get_all_data(DELIMITER.join(sub_exercises_names), meal, sub_meals_names)
     if error_response is not None:
         return error_response, None
 

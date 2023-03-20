@@ -1,6 +1,6 @@
+import asyncio
 from typing import Tuple, Any, List, Optional
 
-import asyncio
 import aiohttp
 from starlette import status
 from starlette.responses import JSONResponse
@@ -9,12 +9,24 @@ from Exercise import Exercise
 from Meal import Meal
 from constants import MOCK_RESPONSES, NUTRITIONIX_EXERCISE_URL, NUTRITIONIX_AUTH_HEADERS, \
     EDAMAM_FOOD_PARSER_URL, EDAMAM_FOOD_PARAMS, EDAMAM_DELIMITER, DELIMITER, EDAMAM_GRAMS_PER_SERVING, ERROR_MESSAGE, \
-    NUTRITIONIX_DELIMITER
+    NUTRITIONIX_EXERCISE_PREFIX
 from helpers import load_response_body
 
 
-async def get_response_bodies(exercise: str, meal: str) -> Any:
-    input_coroutines = [get_exercise_details(exercise), get_meal_details(meal)]
+# Nutritionix doesn't handle queries with more than 3 exercises
+# Therefore, the query is split into groups of 3, each group is sent in a separate request
+def split_exercise_into_groups(exercise: str) -> List[str]:
+    sub_exercises = exercise.split(DELIMITER)
+    result = [
+        NUTRITIONIX_EXERCISE_PREFIX + NUTRITIONIX_EXERCISE_PREFIX.join(sub_exercises[i:i + 3])
+        for i in range(0, len(sub_exercises), 3)]
+    return result
+
+
+async def get_details(exercise: str, meal: str) -> Any:
+    exercise_groups = split_exercise_into_groups(exercise)
+    input_coroutines = [get_exercise_details(exercise_group) for exercise_group in exercise_groups]
+    input_coroutines.append(get_meal_details(meal))
     result = await asyncio.gather(*input_coroutines)
     return result
 
@@ -35,13 +47,16 @@ def get_all_data(exercise: str, meal: str, sub_meals_names: List[str]) -> [JSONR
             raise Exception("Error response not None")
 
     try:
-        exercise = exercise.replace(DELIMITER, NUTRITIONIX_DELIMITER)
-
         # Wait for coroutines to complete
-        exercise_details, meal_details = asyncio.get_event_loop().run_until_complete(get_response_bodies(exercise, meal))
+        details = asyncio.get_event_loop().run_until_complete(get_details(exercise, meal))
+        exercise_details = details[:-1]
+        meal_details = details[-1]
 
-        response_body = take_error_into_account(exercise_details)
-        sub_exercises = get_sub_exercises(response_body)
+        sub_exercises = []
+        for exercise_detail in exercise_details:
+            response_body = take_error_into_account(exercise_detail)
+            for sub_exercise in get_sub_exercises(response_body):
+                sub_exercises.append(sub_exercise)
 
         response_body = take_error_into_account(meal_details)
         sub_meals = take_error_into_account(get_sub_meals(response_body, sub_meals_names))
@@ -58,8 +73,8 @@ async def get_exercise_details(exercise: str) -> Tuple[JSONResponse, Any]:
     else:
         async with aiohttp.ClientSession() as session:
             async with session.post(url=NUTRITIONIX_EXERCISE_URL,
-                                     data={"query": exercise},
-                                     headers=NUTRITIONIX_AUTH_HEADERS) as response:
+                                    data={"query": exercise},
+                                    headers=NUTRITIONIX_AUTH_HEADERS) as response:
                 response_body = await response.json()
                 if response.status != status.HTTP_200_OK:
                     error_response = JSONResponse(status_code=response.status,
@@ -84,7 +99,8 @@ async def get_meal_details(meal: str) -> Tuple[JSONResponse, Any]:
         async with aiohttp.ClientSession() as session:
             async with session.get(url=EDAMAM_FOOD_PARSER_URL,
                                    params=EDAMAM_FOOD_PARAMS | {
-                                       "ingr": EDAMAM_DELIMITER.join([x.strip() for x in meal.split(DELIMITER)])}) as response:
+                                       "ingr": EDAMAM_DELIMITER.join(
+                                           [x.strip() for x in meal.split(DELIMITER)])}) as response:
                 response_body = await response.json()
                 if response.status != status.HTTP_200_OK:
                     error_response = JSONResponse(status_code=response.status,

@@ -10,6 +10,7 @@ from remote_apis import get_all_data
 
 
 def validate_plan_exercise_input(exercise: str, meal: str, exercise_percs: str) -> Optional[JSONResponse]:
+    exercise = exercise.strip() # Filter spaces only string
     error_source = None
     if not re.compile(f"^([A-Za-z ]+{DELIMITER} *)*[A-Za-z ]+$").match(exercise):
         error_source = "exercise"
@@ -37,7 +38,6 @@ def get_plan_exercise_raw(exercise: str, exercise_percs: str, meal: str, to_burn
     error_response = validate_plan_exercise_input(exercise, meal, exercise_percs)
     if error_response is not None:
         return error_response, None
-    exercise = NUTRITIONIX_EXERCISE_PREFIX + exercise.replace(DELIMITER, NUTRITIONIX_EXERCISE_PREFIX)
     exercise_percs = str_to_percs(exercise_percs)
     to_burn_perc = float_to_perc(to_burn_perc)
     sub_meals_names, sub_meals_weights = get_sub_meals_names_weights(meal)

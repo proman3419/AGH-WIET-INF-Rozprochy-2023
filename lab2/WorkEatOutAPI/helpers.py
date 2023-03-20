@@ -30,13 +30,16 @@ def get_sub_meals_names_weights(meal: str) -> Tuple[List[str], List[float]]:
     return sub_meals_names, sub_meals_weights
 
 
-def get_sub_exercises_times(exercise: str) -> List[float]:
+def get_sub_exercises_names_times(exercise: str) -> Tuple[List[str], List[float]]:
+    sub_exercises_names = []
     sub_exercises_times = []
     for sub_exercise in exercise.split(DELIMITER):
         time_raw, name_raw = sub_exercise.split(maxsplit=1)
+        name = name_raw.strip()
         time = float(time_raw[:-3])  # Remove the "min"
+        sub_exercises_names.append(name)
         sub_exercises_times.append(time)
-    return sub_exercises_times
+    return sub_exercises_names, sub_exercises_times
 
 
 def objects_to_list(objects: List[object]) -> list[dict[str, Any]]:

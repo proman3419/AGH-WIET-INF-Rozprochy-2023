@@ -459,6 +459,45 @@
 			"response": []
 		},
 		{
+			"name": "plan_meal_raw >3 exercises",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL_BASE}}/plan_meal_raw?api_key={{API_KEY}}&exercise=30min sitting, 120min walking, 15min jumping, 100min football, 45min basketball&meal=pizza, orange juice, apple, cookie&meal_percs=60, 20, 10, 10&to_regain_perc=75",
+					"host": [
+						"{{API_URL_BASE}}"
+					],
+					"path": [
+						"plan_meal_raw"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{API_KEY}}"
+						},
+						{
+							"key": "exercise",
+							"value": "30min sitting, 120min walking, 15min jumping, 100min football, 45min basketball"
+						},
+						{
+							"key": "meal",
+							"value": "pizza, orange juice, apple, cookie"
+						},
+						{
+							"key": "meal_percs",
+							"value": "60, 20, 10, 10"
+						},
+						{
+							"key": "to_regain_perc",
+							"value": "75"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "plan_meal_raw meal, meal_percs amount don't match",
 			"request": {
 				"method": "GET",
