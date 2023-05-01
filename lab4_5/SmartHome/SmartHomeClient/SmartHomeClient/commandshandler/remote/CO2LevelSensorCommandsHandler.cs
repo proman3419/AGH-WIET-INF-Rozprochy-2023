@@ -2,7 +2,7 @@
 using Ice;
 using SmartHome;
 
-namespace SmartHomeClient.commandshandler
+namespace SmartHomeClient.commandshandler.remote
 {
     internal class CO2LevelSensorCommandsHandler : SmartDeviceCommandsHandler
     {
@@ -12,7 +12,7 @@ namespace SmartHomeClient.commandshandler
 
         public override bool HandleCommand(Command command)
         {
-            CO2LevelSensorPrx proxy = CO2LevelSensorPrxHelper.checkedCast(_communicator.propertyToProxy(command.GetProxyName()));
+            CO2LevelSensorPrx proxy = CO2LevelSensorPrxHelper.checkedCast(GetProxy(command.command));
             if (proxy != null)
             {
                 switch (command.action)

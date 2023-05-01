@@ -1,7 +1,7 @@
 ﻿using Ice;
 using SmartHome;
 
-namespace SmartHomeClient.commandshandler
+namespace SmartHomeClient.commandshandler.remote
 {
     internal class FridgeWithShoppingListCommandsHandler : FridgeCommandsHandler
     {
@@ -11,7 +11,7 @@ namespace SmartHomeClient.commandshandler
 
         public override bool HandleCommand(Command command)
         {
-            FridgeWithShoppingListPrx proxy = FridgeWithShoppingListPrxHelper.checkedCast(_communicator.propertyToProxy(command.GetProxyName()));
+            FridgeWithShoppingListPrx proxy = FridgeWithShoppingListPrxHelper.checkedCast(GetProxy(command.command));
             if (proxy != null)
             {
                 switch (command.action)
@@ -28,7 +28,7 @@ namespace SmartHomeClient.commandshandler
                         return true;
                     case "addShoppingListRecord":
                         string name = command.arguments[0];
-                        Int32.TryParse(command.arguments[1], out int quantity);
+                        int.TryParse(command.arguments[1], out int quantity);
                         Enum.TryParse("Active", out Unit unit);
                         ShoppingListRecord record = new ShoppingListRecord(name, quantity, unit);
 
@@ -37,7 +37,7 @@ namespace SmartHomeClient.commandshandler
                         Console.WriteLine($"{addedRecord.ToPrettyString()}");
                         return true;
                     case "removeShoppingListRecord":
-                        Int32.TryParse(command.arguments[0], out int id);
+                        int.TryParse(command.arguments[0], out int id);
 
                         ShoppingListRecord removedRecord = proxy.removeShoppingListRecord(id);
                         Console.WriteLine("Removed the record to the shopping list");

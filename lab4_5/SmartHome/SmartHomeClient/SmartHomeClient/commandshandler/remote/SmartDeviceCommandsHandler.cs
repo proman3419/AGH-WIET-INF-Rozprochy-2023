@@ -1,8 +1,8 @@
 ﻿using Ice;
 
-namespace SmartHomeClient.commandshandler
+namespace SmartHomeClient.commandshandler.remote
 {
-    internal class SmartDeviceCommandsHandler : CommandsHandler
+    internal class SmartDeviceCommandsHandler : RemoteCommandsHandler
     {
         public SmartDeviceCommandsHandler(Communicator communicator) : base(communicator)
         {

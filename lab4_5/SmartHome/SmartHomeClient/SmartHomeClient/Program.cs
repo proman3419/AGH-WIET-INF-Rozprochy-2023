@@ -1,9 +1,13 @@
 ﻿using SmartHomeClient.commandshandler;
+using SmartHomeClient.commandshandler.local;
+using SmartHomeClient.commandshandler.remote;
 
 namespace SmartHomeClient
 {
     public class Program
     {
+        public static bool terminate = false;
+
         static string[] AddConfigToArgs(string[] args)
         {
             string[] result = new string[args.Length + 1];
@@ -24,12 +28,13 @@ namespace SmartHomeClient
                 using (Ice.Communicator communicator = Ice.Util.initialize(ref argsWithConfig))
                 {
                     CommandsHandler[] commandsHandlers = new CommandsHandler[] {
+                        new LocalCommandsHandler(),
                         new CO2LevelSensorCommandsHandler(communicator),
                         new FridgeCommandsHandler(communicator),
                         new FridgeWithIceCubeMakerCommandsHandler(communicator),
                         new FridgeWithShoppingListCommandsHandler(communicator)
                     };
-                    for (; ; )
+                    while (!terminate)
                     {
                         Command command = new Command(Console.ReadLine());
                         foreach (CommandsHandler commandsHandler in commandsHandlers)

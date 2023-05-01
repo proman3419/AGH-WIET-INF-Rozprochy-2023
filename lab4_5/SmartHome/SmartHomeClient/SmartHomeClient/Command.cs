@@ -18,10 +18,5 @@
                 .Select(x => x.Trim())
                 .ToArray();
         }
-
-        public string GetProxyName()
-        {
-            return command + ".Proxy";
-        }
     }
 }

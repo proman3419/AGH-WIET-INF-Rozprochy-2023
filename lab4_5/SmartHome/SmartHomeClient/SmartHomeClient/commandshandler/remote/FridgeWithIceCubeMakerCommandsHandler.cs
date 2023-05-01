@@ -1,7 +1,7 @@
 ﻿using Ice;
 using SmartHome;
 
-namespace SmartHomeClient.commandshandler
+namespace SmartHomeClient.commandshandler.remote
 {
     internal class FridgeWithIceCubeMakerCommandsHandler : FridgeCommandsHandler
     {
@@ -11,7 +11,7 @@ namespace SmartHomeClient.commandshandler
 
         public override bool HandleCommand(Command command)
         {
-            FridgeWithIceCubeMakerPrx proxy = FridgeWithIceCubeMakerPrxHelper.checkedCast(_communicator.propertyToProxy(command.GetProxyName()));
+            FridgeWithIceCubeMakerPrx proxy = FridgeWithIceCubeMakerPrxHelper.checkedCast(GetProxy(command.command));
             if (proxy != null)
             {
                 switch (command.action)
@@ -21,7 +21,7 @@ namespace SmartHomeClient.commandshandler
                         Console.WriteLine($"Ice cubes maker capacity: {iceCubesMakerCapacity}");
                         return true;
                     case "getIceCubes":
-                        Int32.TryParse(command.arguments[0], out int count);
+                        int.TryParse(command.arguments[0], out int count);
 
                         int receivedIceCubes = proxy.getIceCubes(count);
                         Console.WriteLine($"Received {receivedIceCubes} ice cubes");

@@ -1,7 +1,7 @@
 ﻿using Ice;
 using SmartHome;
 
-namespace SmartHomeClient.commandshandler
+namespace SmartHomeClient.commandshandler.remote
 {
     internal class FridgeCommandsHandler : SmartDeviceCommandsHandler
     {
@@ -11,7 +11,7 @@ namespace SmartHomeClient.commandshandler
 
         public override bool HandleCommand(Command command)
         {
-            FridgePrx proxy = FridgePrxHelper.checkedCast(_communicator.propertyToProxy(command.GetProxyName()));
+            FridgePrx proxy = FridgePrxHelper.checkedCast(GetProxy(command.command));
             if (proxy != null)
             {
                 switch (command.action)
