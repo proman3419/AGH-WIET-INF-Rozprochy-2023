@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "7NjhE7V1XtefwKgC/nA+2kRND2traT0ZexBcMbtThkhjtimnb4nWWs/YszCbSQMe5nyRUA+KrLAr3nv2Hg9e+Q==",
+  "success": true,
+  "projectFilePath": "D:\\Documents\\agh\\semestr_6\\rozprochy\\AGH-WIET-INF-Rozprochy-2023\\lab4_5\\SmartHome\\SmartHomeClient\\SmartHomeClient\\SmartHomeClient.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\przemek\\.nuget\\packages\\zeroc.ice.net\\3.7.9\\zeroc.ice.net.3.7.9.nupkg.sha512",
+    "C:\\Users\\przemek\\.nuget\\packages\\zeroc.icebuilder.msbuild\\5.0.9\\zeroc.icebuilder.msbuild.5.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}

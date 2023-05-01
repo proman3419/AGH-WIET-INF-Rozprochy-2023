@@ -1,0 +1,78 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "SmartHomeClient/1.0.0": {
+        "dependencies": {
+          "zeroc.ice.net": "3.7.9",
+          "zeroc.icebuilder.msbuild": "5.0.9"
+        },
+        "runtime": {
+          "SmartHomeClient.dll": {}
+        }
+      },
+      "zeroc.ice.net/3.7.9": {
+        "runtime": {
+          "lib/netstandard2.0/Glacier2.dll": {
+            "assemblyVersion": "3.7.9.0",
+            "fileVersion": "3.7.9.0"
+          },
+          "lib/netstandard2.0/Ice.dll": {
+            "assemblyVersion": "3.7.9.0",
+            "fileVersion": "3.7.9.0"
+          },
+          "lib/netstandard2.0/IceBox.dll": {
+            "assemblyVersion": "3.7.9.0",
+            "fileVersion": "3.7.9.0"
+          },
+          "lib/netstandard2.0/IceDiscovery.dll": {
+            "assemblyVersion": "3.7.9.0",
+            "fileVersion": "3.7.9.0"
+          },
+          "lib/netstandard2.0/IceGrid.dll": {
+            "assemblyVersion": "3.7.9.0",
+            "fileVersion": "3.7.9.0"
+          },
+          "lib/netstandard2.0/IceLocatorDiscovery.dll": {
+            "assemblyVersion": "3.7.9.0",
+            "fileVersion": "3.7.9.0"
+          },
+          "lib/netstandard2.0/IceSSL.dll": {
+            "assemblyVersion": "3.7.9.0",
+            "fileVersion": "3.7.9.0"
+          },
+          "lib/netstandard2.0/IceStorm.dll": {
+            "assemblyVersion": "3.7.9.0",
+            "fileVersion": "3.7.9.0"
+          }
+        }
+      },
+      "zeroc.icebuilder.msbuild/5.0.9": {}
+    }
+  },
+  "libraries": {
+    "SmartHomeClient/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "zeroc.ice.net/3.7.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bYDoNR8hiLHf990EERjV3CaumToWyiyvm9f1tkQjoarec2+ArwXjEQ9lpCCpVJ2WnKyhDRN3pFbHn1cNavvwKA==",
+      "path": "zeroc.ice.net/3.7.9",
+      "hashPath": "zeroc.ice.net.3.7.9.nupkg.sha512"
+    },
+    "zeroc.icebuilder.msbuild/5.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7RoW2H94YyK7itGlBgMf4KzdSk7MLOrzTquf8wfg54/2aNAJZRZExwGeXkhC1MuSjfnHkPvb7PH7XNAP4sDXrA==",
+      "path": "zeroc.icebuilder.msbuild/5.0.9",
+      "hashPath": "zeroc.icebuilder.msbuild.5.0.9.nupkg.sha512"
+    }
+  }
+}
