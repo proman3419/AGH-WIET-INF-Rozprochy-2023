@@ -4,8 +4,6 @@ import SmartHome.CO2LevelSensor;
 import com.zeroc.Ice.Current;
 import smart.home.server.Helper;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class CO2LevelSensorImpl extends SmartDeviceImpl implements CO2LevelSensor {
     private static final int SAFE_LEVEL_THRESHOLD = 5000;
     private static final int CHANGE_LEVEL_MIN_VALUE = -5;
