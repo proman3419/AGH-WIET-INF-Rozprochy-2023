@@ -29,6 +29,7 @@ namespace SmartHomeClient
                 {
                     CommandsHandler[] commandsHandlers = new CommandsHandler[] {
                         new LocalCommandsHandler(),
+                        new SmartDeviceCommandsHandler(communicator),
                         new CO2LevelSensorCommandsHandler(communicator),
                         new FridgeCommandsHandler(communicator),
                         new FridgeWithIceCubeMakerCommandsHandler(communicator),

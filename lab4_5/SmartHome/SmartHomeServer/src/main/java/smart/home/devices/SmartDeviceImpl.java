@@ -11,6 +11,9 @@ public class SmartDeviceImpl implements SmartDevice {
 
     @Override
     public Mode setMode(Mode mode, Current current) throws ModeNotChangedError {
+        if (mode == this.mode) {
+            throw new ModeNotChangedError();
+        }
         this.mode = mode;
         return mode;
     }
