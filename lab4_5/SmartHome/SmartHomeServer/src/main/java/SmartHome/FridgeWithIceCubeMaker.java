@@ -126,7 +126,7 @@ public interface FridgeWithIceCubeMaker extends Fridge
         "ice_ids",
         "ice_isA",
         "ice_ping",
-        "isInStandbyMode",
+        "notifyIfInStandbyMode",
         "setMode",
         "setTargetTemperature"
     };
@@ -186,7 +186,7 @@ public interface FridgeWithIceCubeMaker extends Fridge
             }
             case 10:
             {
-                return SmartDevice._iceD_isInStandbyMode(this, in, current);
+                return SmartDevice._iceD_notifyIfInStandbyMode(this, in, current);
             }
             case 11:
             {

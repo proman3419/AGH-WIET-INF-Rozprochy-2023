@@ -15,20 +15,21 @@
 
 package SmartHome;
 
-public class OrderedShoppingListRecord extends ShoppingListRecord
+public class OrderedShoppingListRecord extends com.zeroc.Ice.Value
 {
     public OrderedShoppingListRecord()
     {
-        super();
     }
 
-    public OrderedShoppingListRecord(String name, int quantity, Unit unit, int id)
+    public OrderedShoppingListRecord(int id, ShoppingListRecord shoppingListRecord)
     {
-        super(name, quantity, unit);
         this.id = id;
+        this.shoppingListRecord = shoppingListRecord;
     }
 
     public int id;
+
+    public ShoppingListRecord shoppingListRecord;
 
     public OrderedShoppingListRecord clone()
     {
@@ -47,16 +48,16 @@ public class OrderedShoppingListRecord extends ShoppingListRecord
     }
 
     /** @hidden */
-    public static final long serialVersionUID = 801472788L;
+    public static final long serialVersionUID = -670769723L;
 
     /** @hidden */
     @Override
     protected void _iceWriteImpl(com.zeroc.Ice.OutputStream ostr_)
     {
-        ostr_.startSlice(ice_staticId(), -1, false);
+        ostr_.startSlice(ice_staticId(), -1, true);
         ostr_.writeInt(id);
+        ostr_.writeValue(shoppingListRecord);
         ostr_.endSlice();
-        super._iceWriteImpl(ostr_);
     }
 
     /** @hidden */
@@ -65,7 +66,7 @@ public class OrderedShoppingListRecord extends ShoppingListRecord
     {
         istr_.startSlice();
         id = istr_.readInt();
+        istr_.readValue(v -> shoppingListRecord = v, ShoppingListRecord.class);
         istr_.endSlice();
-        super._iceReadImpl(istr_);
     }
 }

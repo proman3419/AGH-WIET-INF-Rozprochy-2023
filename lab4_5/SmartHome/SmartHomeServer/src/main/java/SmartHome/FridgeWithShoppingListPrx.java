@@ -74,18 +74,18 @@ public interface FridgeWithShoppingListPrx extends FridgePrx
         InStandbyModeError.class
     };
 
-    default void addShoppingListRecord(ShoppingListRecord record)
+    default ShoppingListRecord addShoppingListRecord(ShoppingListRecord record)
         throws InStandbyModeError
     {
-        addShoppingListRecord(record, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return addShoppingListRecord(record, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default void addShoppingListRecord(ShoppingListRecord record, java.util.Map<String, String> context)
+    default ShoppingListRecord addShoppingListRecord(ShoppingListRecord record, java.util.Map<String, String> context)
         throws InStandbyModeError
     {
         try
         {
-            _iceI_addShoppingListRecordAsync(record, context, true).waitForResponseOrUserEx();
+            return _iceI_addShoppingListRecordAsync(record, context, true).waitForResponseOrUserEx();
         }
         catch(InStandbyModeError ex)
         {
@@ -97,12 +97,12 @@ public interface FridgeWithShoppingListPrx extends FridgePrx
         }
     }
 
-    default java.util.concurrent.CompletableFuture<Void> addShoppingListRecordAsync(ShoppingListRecord record)
+    default java.util.concurrent.CompletableFuture<ShoppingListRecord> addShoppingListRecordAsync(ShoppingListRecord record)
     {
         return _iceI_addShoppingListRecordAsync(record, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<Void> addShoppingListRecordAsync(ShoppingListRecord record, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<ShoppingListRecord> addShoppingListRecordAsync(ShoppingListRecord record, java.util.Map<String, String> context)
     {
         return _iceI_addShoppingListRecordAsync(record, context, false);
     }
@@ -114,13 +114,18 @@ public interface FridgeWithShoppingListPrx extends FridgePrx
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_addShoppingListRecordAsync(ShoppingListRecord iceP_record, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<ShoppingListRecord> _iceI_addShoppingListRecordAsync(ShoppingListRecord iceP_record, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "addShoppingListRecord", null, sync, _iceE_addShoppingListRecord);
+        com.zeroc.IceInternal.OutgoingAsync<ShoppingListRecord> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "addShoppingListRecord", null, sync, _iceE_addShoppingListRecord);
         f.invoke(true, context, null, ostr -> {
                      ostr.writeValue(iceP_record);
                      ostr.writePendingValues();
-                 }, null);
+                 }, istr -> {
+                     final com.zeroc.IceInternal.Holder<ShoppingListRecord> ret = new com.zeroc.IceInternal.Holder<>();
+                     istr.readValue(v -> ret.value = v, ShoppingListRecord.class);
+                     istr.readPendingValues();
+                     return ret.value;
+                 });
         return f;
     }
 
@@ -128,6 +133,73 @@ public interface FridgeWithShoppingListPrx extends FridgePrx
     static final Class<?>[] _iceE_addShoppingListRecord =
     {
         InStandbyModeError.class
+    };
+
+    default ShoppingListRecord removeShoppingListRecord(int id)
+        throws InStandbyModeError,
+               InvalidIndexError
+    {
+        return removeShoppingListRecord(id, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default ShoppingListRecord removeShoppingListRecord(int id, java.util.Map<String, String> context)
+        throws InStandbyModeError,
+               InvalidIndexError
+    {
+        try
+        {
+            return _iceI_removeShoppingListRecordAsync(id, context, true).waitForResponseOrUserEx();
+        }
+        catch(InStandbyModeError ex)
+        {
+            throw ex;
+        }
+        catch(InvalidIndexError ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
+    }
+
+    default java.util.concurrent.CompletableFuture<ShoppingListRecord> removeShoppingListRecordAsync(int id)
+    {
+        return _iceI_removeShoppingListRecordAsync(id, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<ShoppingListRecord> removeShoppingListRecordAsync(int id, java.util.Map<String, String> context)
+    {
+        return _iceI_removeShoppingListRecordAsync(id, context, false);
+    }
+
+    /**
+     * @hidden
+     * @param iceP_id -
+     * @param context -
+     * @param sync -
+     * @return -
+     **/
+    default com.zeroc.IceInternal.OutgoingAsync<ShoppingListRecord> _iceI_removeShoppingListRecordAsync(int iceP_id, java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<ShoppingListRecord> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "removeShoppingListRecord", null, sync, _iceE_removeShoppingListRecord);
+        f.invoke(true, context, null, ostr -> {
+                     ostr.writeInt(iceP_id);
+                 }, istr -> {
+                     final com.zeroc.IceInternal.Holder<ShoppingListRecord> ret = new com.zeroc.IceInternal.Holder<>();
+                     istr.readValue(v -> ret.value = v, ShoppingListRecord.class);
+                     istr.readPendingValues();
+                     return ret.value;
+                 });
+        return f;
+    }
+
+    /** @hidden */
+    static final Class<?>[] _iceE_removeShoppingListRecord =
+    {
+        InStandbyModeError.class,
+        InvalidIndexError.class
     };
 
     /**

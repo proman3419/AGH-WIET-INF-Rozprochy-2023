@@ -17,8 +17,6 @@ public class SmartHomeServer {
         this.communicator = Util.initialize(args);
         this.adapter = communicator.createObjectAdapterWithEndpoints(ADAPTER_NAME, ADAPTER_OPTIONS);
         ServantLocator servantLocator = new ServantLocatorImpl();
-        CO2LevelSensor co2LevelSensor = new smart.home.devices.CO2LevelSensor(237);
-        adapter.add(co2LevelSensor, new Identity("CO2LevelSensor1", "CO2LevelSensor"));
         adapter.addServantLocator(servantLocator, SERVANT_LOCATOR_PREFIX);
         LOGGER.info("Initialized the server");
     }

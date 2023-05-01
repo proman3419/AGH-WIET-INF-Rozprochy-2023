@@ -652,12 +652,15 @@ namespace SmartHome
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722")]
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724")]
     [global::System.Serializable]
-    public partial class OrderedShoppingListRecord : ShoppingListRecord
+    public partial class OrderedShoppingListRecord : global::Ice.Value
     {
         #region Slice data members
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
         public int id;
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public ShoppingListRecord shoppingListRecord;
 
         #endregion
 
@@ -666,15 +669,16 @@ namespace SmartHome
         #region Constructors
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        public OrderedShoppingListRecord() : base()
+        public OrderedShoppingListRecord()
         {
             ice_initialize();
         }
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        public OrderedShoppingListRecord(string name, int quantity, Unit unit, int id) : base(name, quantity, unit)
+        public OrderedShoppingListRecord(int id, ShoppingListRecord shoppingListRecord)
         {
             this.id = id;
+            this.shoppingListRecord = shoppingListRecord;
             ice_initialize();
         }
 
@@ -698,10 +702,10 @@ namespace SmartHome
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
         protected override void iceWriteImpl(global::Ice.OutputStream ostr_)
         {
-            ostr_.startSlice(ice_staticId(), -1, false);
+            ostr_.startSlice(ice_staticId(), -1, true);
             ostr_.writeInt(id);
+            ostr_.writeValue(shoppingListRecord);
             ostr_.endSlice();
-            base.iceWriteImpl(ostr_);
         }
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
@@ -709,8 +713,114 @@ namespace SmartHome
         {
             istr_.startSlice();
             id = istr_.readInt();
+            istr_.readValue((ShoppingListRecord v) => { this.shoppingListRecord = v; });
             istr_.endSlice();
-            base.iceReadImpl(istr_);
+        }
+
+        #endregion
+    }
+
+    [global::System.Runtime.InteropServices.ComVisible(false)]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032")]
+    [global::System.Serializable]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1715")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722")]
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724")]
+    public partial class InvalidIndexError : global::Ice.UserException
+    {
+        #region Constructors
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public InvalidIndexError()
+        {
+        }
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public InvalidIndexError(global::System.Exception ex) : base(ex)
+        {
+        }
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public InvalidIndexError(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : base(info, context)
+        {
+        }
+
+        #endregion
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public override string ice_id()
+        {
+            return "::SmartHome::InvalidIndexError";
+        }
+
+        #region Object members
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public override int GetHashCode()
+        {
+            int h_ = 5381;
+            global::IceInternal.HashUtil.hashAdd(ref h_, "::SmartHome::InvalidIndexError");
+            return h_;
+        }
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public override bool Equals(object other)
+        {
+            if(other == null)
+            {
+                return false;
+            }
+            if(object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            InvalidIndexError o = other as InvalidIndexError;
+            if(o == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region Comparison members
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public static bool operator==(InvalidIndexError lhs, InvalidIndexError rhs)
+        {
+            return Equals(lhs, rhs);
+        }
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        public static bool operator!=(InvalidIndexError lhs, InvalidIndexError rhs)
+        {
+            return !Equals(lhs, rhs);
+        }
+
+        #endregion
+
+        #region Marshaling support
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        protected override void iceWriteImpl(global::Ice.OutputStream ostr_)
+        {
+            ostr_.startSlice("::SmartHome::InvalidIndexError", -1, true);
+            ostr_.endSlice();
+        }
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        protected override void iceReadImpl(global::Ice.InputStream istr_)
+        {
+            istr_.startSlice();
+            istr_.endSlice();
         }
 
         #endregion
@@ -735,13 +845,13 @@ namespace SmartHome
 namespace SmartHome
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-    public delegate void Callback_SmartDevice_setMode();
+    public delegate void Callback_SmartDevice_setMode(Mode ret);
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
     public delegate void Callback_SmartDevice_getMode(Mode ret);
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-    public delegate void Callback_SmartDevice_isInStandbyMode(bool ret);
+    public delegate void Callback_SmartDevice_notifyIfInStandbyMode();
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
     public delegate void Callback_CO2LevelSensor_getCO2LevelInPPM(int ret);
@@ -750,7 +860,7 @@ namespace SmartHome
     public delegate void Callback_CO2LevelSensor_isCO2LevelSafe(bool ret);
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-    public delegate void Callback_Fridge_setTargetTemperature();
+    public delegate void Callback_Fridge_setTargetTemperature(float ret);
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
     public delegate void Callback_Fridge_getTargetTemperature(float ret);
@@ -771,7 +881,10 @@ namespace SmartHome
     public delegate void Callback_FridgeWithShoppingList_getShoppingList(OrderedShoppingListRecord[] ret);
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-    public delegate void Callback_FridgeWithShoppingList_addShoppingListRecord();
+    public delegate void Callback_FridgeWithShoppingList_addShoppingListRecord(ShoppingListRecord ret);
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+    public delegate void Callback_FridgeWithShoppingList_removeShoppingListRecord(ShoppingListRecord ret);
 }
 
 namespace SmartHome
@@ -779,9 +892,9 @@ namespace SmartHome
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
     public interface SmartDevicePrx : global::Ice.ObjectPrx
     {
-        void setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+        Mode setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
-        global::System.Threading.Tasks.Task setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+        global::System.Threading.Tasks.Task<Mode> setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
 
         global::Ice.AsyncResult<Callback_SmartDevice_setMode> begin_setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
@@ -789,7 +902,7 @@ namespace SmartHome
 
         global::Ice.AsyncResult begin_setMode(Mode mode, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
 
-        void end_setMode(global::Ice.AsyncResult asyncResult);
+        Mode end_setMode(global::Ice.AsyncResult asyncResult);
 
         Mode getMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
@@ -803,17 +916,17 @@ namespace SmartHome
 
         Mode end_getMode(global::Ice.AsyncResult asyncResult);
 
-        bool isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+        void notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
-        global::System.Threading.Tasks.Task<bool> isInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+        global::System.Threading.Tasks.Task notifyIfInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
 
-        global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+        global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
-        global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.AsyncCallback callback, object cookie);
+        global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.AsyncCallback callback, object cookie);
 
-        global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
+        global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
 
-        bool end_isInStandbyMode(global::Ice.AsyncResult asyncResult);
+        void end_notifyIfInStandbyMode(global::Ice.AsyncResult asyncResult);
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
@@ -847,9 +960,9 @@ namespace SmartHome
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
     public interface FridgePrx : SmartDevicePrx
     {
-        void setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+        float setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
-        global::System.Threading.Tasks.Task setTargetTemperatureAsync(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+        global::System.Threading.Tasks.Task<float> setTargetTemperatureAsync(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
 
         global::Ice.AsyncResult<Callback_Fridge_setTargetTemperature> begin_setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
@@ -857,7 +970,7 @@ namespace SmartHome
 
         global::Ice.AsyncResult begin_setTargetTemperature(float temperature, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
 
-        void end_setTargetTemperature(global::Ice.AsyncResult asyncResult);
+        float end_setTargetTemperature(global::Ice.AsyncResult asyncResult);
 
         float getTargetTemperature(global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
@@ -939,9 +1052,9 @@ namespace SmartHome
 
         OrderedShoppingListRecord[] end_getShoppingList(global::Ice.AsyncResult asyncResult);
 
-        void addShoppingListRecord(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+        ShoppingListRecord addShoppingListRecord(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
-        global::System.Threading.Tasks.Task addShoppingListRecordAsync(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+        global::System.Threading.Tasks.Task<ShoppingListRecord> addShoppingListRecordAsync(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
 
         global::Ice.AsyncResult<Callback_FridgeWithShoppingList_addShoppingListRecord> begin_addShoppingListRecord(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
 
@@ -949,7 +1062,19 @@ namespace SmartHome
 
         global::Ice.AsyncResult begin_addShoppingListRecord(ShoppingListRecord record, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
 
-        void end_addShoppingListRecord(global::Ice.AsyncResult asyncResult);
+        ShoppingListRecord end_addShoppingListRecord(global::Ice.AsyncResult asyncResult);
+
+        ShoppingListRecord removeShoppingListRecord(int id, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::System.Threading.Tasks.Task<ShoppingListRecord> removeShoppingListRecordAsync(int id, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken());
+
+        global::Ice.AsyncResult<Callback_FridgeWithShoppingList_removeShoppingListRecord> begin_removeShoppingListRecord(int id, global::Ice.OptionalContext context = new global::Ice.OptionalContext());
+
+        global::Ice.AsyncResult begin_removeShoppingListRecord(int id, global::Ice.AsyncCallback callback, object cookie);
+
+        global::Ice.AsyncResult begin_removeShoppingListRecord(int id, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie);
+
+        ShoppingListRecord end_removeShoppingListRecord(global::Ice.AsyncResult asyncResult);
     }
 }
 
@@ -959,13 +1084,13 @@ namespace SmartHome
     public interface SmartDeviceOperations_
     {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        void setMode(Mode mode, global::Ice.Current current = null);
+        Mode setMode(Mode mode, global::Ice.Current current = null);
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
         Mode getMode(global::Ice.Current current = null);
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        bool isInStandbyMode(global::Ice.Current current = null);
+        void notifyIfInStandbyMode(global::Ice.Current current = null);
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
@@ -982,7 +1107,7 @@ namespace SmartHome
     public interface FridgeOperations_ : SmartDeviceOperations_
     {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        void setTargetTemperature(float temperature, global::Ice.Current current = null);
+        float setTargetTemperature(float temperature, global::Ice.Current current = null);
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
         float getTargetTemperature(global::Ice.Current current = null);
@@ -1011,7 +1136,10 @@ namespace SmartHome
         OrderedShoppingListRecord[] getShoppingList(global::Ice.Current current = null);
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        void addShoppingListRecord(ShoppingListRecord record, global::Ice.Current current = null);
+        ShoppingListRecord addShoppingListRecord(ShoppingListRecord record, global::Ice.Current current = null);
+
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
+        ShoppingListRecord removeShoppingListRecord(int id, global::Ice.Current current = null);
     }
 }
 
@@ -1032,11 +1160,11 @@ namespace SmartHome
 
         #region Synchronous operations
 
-        public void setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public Mode setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -1056,11 +1184,11 @@ namespace SmartHome
             }
         }
 
-        public bool isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public void notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                return _iceI_isInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Result;
+                _iceI_notifyIfInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Wait();
             }
             catch(global::System.AggregateException ex_)
             {
@@ -1072,15 +1200,15 @@ namespace SmartHome
 
         #region Async Task operations
 
-        public global::System.Threading.Tasks.Task setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<Mode> setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_setModeAsync(mode, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<Mode> _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<Mode>(progress, cancel);
             _iceI_setMode(iceP_mode, context, synchronous, completed);
             return completed.Task;
         }
@@ -1089,7 +1217,7 @@ namespace SmartHome
 
         private void _iceI_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<Mode>(completed);
             outAsync.invoke(
                 _setMode_name,
                 global::Ice.OperationMode.Normal,
@@ -1113,6 +1241,12 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    Mode ret;
+                    ret = (Mode)istr.readEnum(1);
+                    return ret;
                 });
         }
 
@@ -1148,35 +1282,43 @@ namespace SmartHome
                 });
         }
 
-        public global::System.Threading.Tasks.Task<bool> isInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task notifyIfInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
-            return _iceI_isInStandbyModeAsync(context, progress, cancel, false);
+            return _iceI_notifyIfInStandbyModeAsync(context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task<bool> _iceI_isInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task _iceI_notifyIfInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
-            iceCheckTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<bool>(progress, cancel);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+            iceCheckTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed.Task;
         }
 
-        private const string _isInStandbyMode_name = "isInStandbyMode";
+        private const string _notifyIfInStandbyMode_name = "notifyIfInStandbyMode";
 
-        private void _iceI_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        private void _iceI_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<bool>(completed);
+            var outAsync = getOutgoingAsync<object>(completed);
             outAsync.invoke(
-                _isInStandbyMode_name,
+                _notifyIfInStandbyMode_name,
                 global::Ice.OperationMode.Idempotent,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
-                read: (global::Ice.InputStream istr) =>
+                userException: (global::Ice.UserException ex) =>
                 {
-                    bool ret;
-                    ret = istr.readBool();
-                    return ret;
+                    try
+                    {
+                        throw ex;
+                    }
+                    catch(InStandbyModeError)
+                    {
+                        throw;
+                    }
+                    catch(global::Ice.UserException)
+                    {
+                    }
                 });
         }
 
@@ -1199,21 +1341,22 @@ namespace SmartHome
             return begin_setMode(mode, context, callback, cookie, false);
         }
 
-        public void end_setMode(global::Ice.AsyncResult asyncResult)
+        public Mode end_setMode(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _setMode_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<Mode>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_SmartDevice_setMode> begin_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, object>(
-                (Callback_SmartDevice_setMode cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, Mode>(
+                (Callback_SmartDevice_setMode cb, Mode ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _setMode_name, cookie, completedCallback);
@@ -1259,41 +1402,40 @@ namespace SmartHome
             return completed;
         }
 
-        public global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
-            return begin_isInStandbyMode(context, null, null, false);
+            return begin_notifyIfInStandbyMode(context, null, null, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
+            return begin_notifyIfInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(context, callback, cookie, false);
+            return begin_notifyIfInStandbyMode(context, callback, cookie, false);
         }
 
-        public bool end_isInStandbyMode(global::Ice.AsyncResult asyncResult)
+        public void end_notifyIfInStandbyMode(global::Ice.AsyncResult asyncResult)
         {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _isInStandbyMode_name);
-            var outgoing_ = (global::IceInternal.OutgoingAsyncT<bool>)resultI_.OutgoingAsync;
-            return outgoing_.getResult(resultI_.wait());
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _notifyIfInStandbyMode_name);
+            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
         }
 
-        private global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        private global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
-            iceCheckAsyncTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_isInStandbyMode, bool>(
-                (Callback_SmartDevice_isInStandbyMode cb, bool ret) =>
+            iceCheckAsyncTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_notifyIfInStandbyMode, object>(
+                (Callback_SmartDevice_notifyIfInStandbyMode cb, object ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke(ret);
+                        cb.Invoke();
                     }
                 },
-                this, _isInStandbyMode_name, cookie, completedCallback);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+                this, _notifyIfInStandbyMode_name, cookie, completedCallback);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed;
         }
 
@@ -1455,11 +1597,11 @@ namespace SmartHome
 
         #region Synchronous operations
 
-        public void setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public Mode setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -1479,11 +1621,11 @@ namespace SmartHome
             }
         }
 
-        public bool isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public void notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                return _iceI_isInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Result;
+                _iceI_notifyIfInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Wait();
             }
             catch(global::System.AggregateException ex_)
             {
@@ -1519,15 +1661,15 @@ namespace SmartHome
 
         #region Async Task operations
 
-        public global::System.Threading.Tasks.Task setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<Mode> setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_setModeAsync(mode, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<Mode> _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<Mode>(progress, cancel);
             _iceI_setMode(iceP_mode, context, synchronous, completed);
             return completed.Task;
         }
@@ -1536,7 +1678,7 @@ namespace SmartHome
 
         private void _iceI_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<Mode>(completed);
             outAsync.invoke(
                 _setMode_name,
                 global::Ice.OperationMode.Normal,
@@ -1560,6 +1702,12 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    Mode ret;
+                    ret = (Mode)istr.readEnum(1);
+                    return ret;
                 });
         }
 
@@ -1595,35 +1743,43 @@ namespace SmartHome
                 });
         }
 
-        public global::System.Threading.Tasks.Task<bool> isInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task notifyIfInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
-            return _iceI_isInStandbyModeAsync(context, progress, cancel, false);
+            return _iceI_notifyIfInStandbyModeAsync(context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task<bool> _iceI_isInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task _iceI_notifyIfInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
-            iceCheckTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<bool>(progress, cancel);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+            iceCheckTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed.Task;
         }
 
-        private const string _isInStandbyMode_name = "isInStandbyMode";
+        private const string _notifyIfInStandbyMode_name = "notifyIfInStandbyMode";
 
-        private void _iceI_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        private void _iceI_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<bool>(completed);
+            var outAsync = getOutgoingAsync<object>(completed);
             outAsync.invoke(
-                _isInStandbyMode_name,
+                _notifyIfInStandbyMode_name,
                 global::Ice.OperationMode.Idempotent,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
-                read: (global::Ice.InputStream istr) =>
+                userException: (global::Ice.UserException ex) =>
                 {
-                    bool ret;
-                    ret = istr.readBool();
-                    return ret;
+                    try
+                    {
+                        throw ex;
+                    }
+                    catch(InStandbyModeError)
+                    {
+                        throw;
+                    }
+                    catch(global::Ice.UserException)
+                    {
+                    }
                 });
         }
 
@@ -1738,21 +1894,22 @@ namespace SmartHome
             return begin_setMode(mode, context, callback, cookie, false);
         }
 
-        public void end_setMode(global::Ice.AsyncResult asyncResult)
+        public Mode end_setMode(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _setMode_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<Mode>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_SmartDevice_setMode> begin_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, object>(
-                (Callback_SmartDevice_setMode cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, Mode>(
+                (Callback_SmartDevice_setMode cb, Mode ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _setMode_name, cookie, completedCallback);
@@ -1798,41 +1955,40 @@ namespace SmartHome
             return completed;
         }
 
-        public global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
-            return begin_isInStandbyMode(context, null, null, false);
+            return begin_notifyIfInStandbyMode(context, null, null, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
+            return begin_notifyIfInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(context, callback, cookie, false);
+            return begin_notifyIfInStandbyMode(context, callback, cookie, false);
         }
 
-        public bool end_isInStandbyMode(global::Ice.AsyncResult asyncResult)
+        public void end_notifyIfInStandbyMode(global::Ice.AsyncResult asyncResult)
         {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _isInStandbyMode_name);
-            var outgoing_ = (global::IceInternal.OutgoingAsyncT<bool>)resultI_.OutgoingAsync;
-            return outgoing_.getResult(resultI_.wait());
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _notifyIfInStandbyMode_name);
+            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
         }
 
-        private global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        private global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
-            iceCheckAsyncTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_isInStandbyMode, bool>(
-                (Callback_SmartDevice_isInStandbyMode cb, bool ret) =>
+            iceCheckAsyncTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_notifyIfInStandbyMode, object>(
+                (Callback_SmartDevice_notifyIfInStandbyMode cb, object ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke(ret);
+                        cb.Invoke();
                     }
                 },
-                this, _isInStandbyMode_name, cookie, completedCallback);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+                this, _notifyIfInStandbyMode_name, cookie, completedCallback);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed;
         }
 
@@ -2071,11 +2227,11 @@ namespace SmartHome
 
         #region Synchronous operations
 
-        public void setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public Mode setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -2095,11 +2251,11 @@ namespace SmartHome
             }
         }
 
-        public bool isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public void notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                return _iceI_isInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Result;
+                _iceI_notifyIfInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Wait();
             }
             catch(global::System.AggregateException ex_)
             {
@@ -2107,11 +2263,11 @@ namespace SmartHome
             }
         }
 
-        public void setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public float setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_setTargetTemperatureAsync(temperature, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_setTargetTemperatureAsync(temperature, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -2147,15 +2303,15 @@ namespace SmartHome
 
         #region Async Task operations
 
-        public global::System.Threading.Tasks.Task setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<Mode> setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_setModeAsync(mode, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<Mode> _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<Mode>(progress, cancel);
             _iceI_setMode(iceP_mode, context, synchronous, completed);
             return completed.Task;
         }
@@ -2164,7 +2320,7 @@ namespace SmartHome
 
         private void _iceI_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<Mode>(completed);
             outAsync.invoke(
                 _setMode_name,
                 global::Ice.OperationMode.Normal,
@@ -2188,6 +2344,12 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    Mode ret;
+                    ret = (Mode)istr.readEnum(1);
+                    return ret;
                 });
         }
 
@@ -2223,47 +2385,55 @@ namespace SmartHome
                 });
         }
 
-        public global::System.Threading.Tasks.Task<bool> isInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task notifyIfInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
-            return _iceI_isInStandbyModeAsync(context, progress, cancel, false);
+            return _iceI_notifyIfInStandbyModeAsync(context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task<bool> _iceI_isInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task _iceI_notifyIfInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
-            iceCheckTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<bool>(progress, cancel);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+            iceCheckTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed.Task;
         }
 
-        private const string _isInStandbyMode_name = "isInStandbyMode";
+        private const string _notifyIfInStandbyMode_name = "notifyIfInStandbyMode";
 
-        private void _iceI_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        private void _iceI_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<bool>(completed);
+            var outAsync = getOutgoingAsync<object>(completed);
             outAsync.invoke(
-                _isInStandbyMode_name,
+                _notifyIfInStandbyMode_name,
                 global::Ice.OperationMode.Idempotent,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
-                read: (global::Ice.InputStream istr) =>
+                userException: (global::Ice.UserException ex) =>
                 {
-                    bool ret;
-                    ret = istr.readBool();
-                    return ret;
+                    try
+                    {
+                        throw ex;
+                    }
+                    catch(InStandbyModeError)
+                    {
+                        throw;
+                    }
+                    catch(global::Ice.UserException)
+                    {
+                    }
                 });
         }
 
-        public global::System.Threading.Tasks.Task setTargetTemperatureAsync(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<float> setTargetTemperatureAsync(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_setTargetTemperatureAsync(temperature, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_setTargetTemperatureAsync(float iceP_temperature, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<float> _iceI_setTargetTemperatureAsync(float iceP_temperature, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_setTargetTemperature_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<float>(progress, cancel);
             _iceI_setTargetTemperature(iceP_temperature, context, synchronous, completed);
             return completed.Task;
         }
@@ -2272,7 +2442,7 @@ namespace SmartHome
 
         private void _iceI_setTargetTemperature(float iceP_temperature, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _setTargetTemperature_name,
                 global::Ice.OperationMode.Normal,
@@ -2296,6 +2466,12 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    float ret;
+                    ret = istr.readFloat();
+                    return ret;
                 });
         }
 
@@ -2396,21 +2572,22 @@ namespace SmartHome
             return begin_setMode(mode, context, callback, cookie, false);
         }
 
-        public void end_setMode(global::Ice.AsyncResult asyncResult)
+        public Mode end_setMode(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _setMode_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<Mode>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_SmartDevice_setMode> begin_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, object>(
-                (Callback_SmartDevice_setMode cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, Mode>(
+                (Callback_SmartDevice_setMode cb, Mode ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _setMode_name, cookie, completedCallback);
@@ -2456,41 +2633,40 @@ namespace SmartHome
             return completed;
         }
 
-        public global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
-            return begin_isInStandbyMode(context, null, null, false);
+            return begin_notifyIfInStandbyMode(context, null, null, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
+            return begin_notifyIfInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(context, callback, cookie, false);
+            return begin_notifyIfInStandbyMode(context, callback, cookie, false);
         }
 
-        public bool end_isInStandbyMode(global::Ice.AsyncResult asyncResult)
+        public void end_notifyIfInStandbyMode(global::Ice.AsyncResult asyncResult)
         {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _isInStandbyMode_name);
-            var outgoing_ = (global::IceInternal.OutgoingAsyncT<bool>)resultI_.OutgoingAsync;
-            return outgoing_.getResult(resultI_.wait());
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _notifyIfInStandbyMode_name);
+            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
         }
 
-        private global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        private global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
-            iceCheckAsyncTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_isInStandbyMode, bool>(
-                (Callback_SmartDevice_isInStandbyMode cb, bool ret) =>
+            iceCheckAsyncTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_notifyIfInStandbyMode, object>(
+                (Callback_SmartDevice_notifyIfInStandbyMode cb, object ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke(ret);
+                        cb.Invoke();
                     }
                 },
-                this, _isInStandbyMode_name, cookie, completedCallback);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+                this, _notifyIfInStandbyMode_name, cookie, completedCallback);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed;
         }
 
@@ -2509,21 +2685,22 @@ namespace SmartHome
             return begin_setTargetTemperature(temperature, context, callback, cookie, false);
         }
 
-        public void end_setTargetTemperature(global::Ice.AsyncResult asyncResult)
+        public float end_setTargetTemperature(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _setTargetTemperature_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<float>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_Fridge_setTargetTemperature> begin_setTargetTemperature(float iceP_temperature, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_setTargetTemperature_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_Fridge_setTargetTemperature, object>(
-                (Callback_Fridge_setTargetTemperature cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_Fridge_setTargetTemperature, float>(
+                (Callback_Fridge_setTargetTemperature cb, float ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _setTargetTemperature_name, cookie, completedCallback);
@@ -2766,11 +2943,11 @@ namespace SmartHome
 
         #region Synchronous operations
 
-        public void setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public Mode setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -2790,11 +2967,11 @@ namespace SmartHome
             }
         }
 
-        public bool isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public void notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                return _iceI_isInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Result;
+                _iceI_notifyIfInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Wait();
             }
             catch(global::System.AggregateException ex_)
             {
@@ -2802,11 +2979,11 @@ namespace SmartHome
             }
         }
 
-        public void setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public float setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_setTargetTemperatureAsync(temperature, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_setTargetTemperatureAsync(temperature, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -2878,15 +3055,15 @@ namespace SmartHome
 
         #region Async Task operations
 
-        public global::System.Threading.Tasks.Task setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<Mode> setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_setModeAsync(mode, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<Mode> _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<Mode>(progress, cancel);
             _iceI_setMode(iceP_mode, context, synchronous, completed);
             return completed.Task;
         }
@@ -2895,7 +3072,7 @@ namespace SmartHome
 
         private void _iceI_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<Mode>(completed);
             outAsync.invoke(
                 _setMode_name,
                 global::Ice.OperationMode.Normal,
@@ -2919,6 +3096,12 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    Mode ret;
+                    ret = (Mode)istr.readEnum(1);
+                    return ret;
                 });
         }
 
@@ -2954,47 +3137,55 @@ namespace SmartHome
                 });
         }
 
-        public global::System.Threading.Tasks.Task<bool> isInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task notifyIfInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
-            return _iceI_isInStandbyModeAsync(context, progress, cancel, false);
+            return _iceI_notifyIfInStandbyModeAsync(context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task<bool> _iceI_isInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task _iceI_notifyIfInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
-            iceCheckTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<bool>(progress, cancel);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+            iceCheckTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed.Task;
         }
 
-        private const string _isInStandbyMode_name = "isInStandbyMode";
+        private const string _notifyIfInStandbyMode_name = "notifyIfInStandbyMode";
 
-        private void _iceI_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        private void _iceI_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<bool>(completed);
+            var outAsync = getOutgoingAsync<object>(completed);
             outAsync.invoke(
-                _isInStandbyMode_name,
+                _notifyIfInStandbyMode_name,
                 global::Ice.OperationMode.Idempotent,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
-                read: (global::Ice.InputStream istr) =>
+                userException: (global::Ice.UserException ex) =>
                 {
-                    bool ret;
-                    ret = istr.readBool();
-                    return ret;
+                    try
+                    {
+                        throw ex;
+                    }
+                    catch(InStandbyModeError)
+                    {
+                        throw;
+                    }
+                    catch(global::Ice.UserException)
+                    {
+                    }
                 });
         }
 
-        public global::System.Threading.Tasks.Task setTargetTemperatureAsync(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<float> setTargetTemperatureAsync(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_setTargetTemperatureAsync(temperature, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_setTargetTemperatureAsync(float iceP_temperature, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<float> _iceI_setTargetTemperatureAsync(float iceP_temperature, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_setTargetTemperature_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<float>(progress, cancel);
             _iceI_setTargetTemperature(iceP_temperature, context, synchronous, completed);
             return completed.Task;
         }
@@ -3003,7 +3194,7 @@ namespace SmartHome
 
         private void _iceI_setTargetTemperature(float iceP_temperature, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _setTargetTemperature_name,
                 global::Ice.OperationMode.Normal,
@@ -3027,6 +3218,12 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    float ret;
+                    ret = istr.readFloat();
+                    return ret;
                 });
         }
 
@@ -3259,21 +3456,22 @@ namespace SmartHome
             return begin_setMode(mode, context, callback, cookie, false);
         }
 
-        public void end_setMode(global::Ice.AsyncResult asyncResult)
+        public Mode end_setMode(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _setMode_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<Mode>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_SmartDevice_setMode> begin_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, object>(
-                (Callback_SmartDevice_setMode cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, Mode>(
+                (Callback_SmartDevice_setMode cb, Mode ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _setMode_name, cookie, completedCallback);
@@ -3319,41 +3517,40 @@ namespace SmartHome
             return completed;
         }
 
-        public global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
-            return begin_isInStandbyMode(context, null, null, false);
+            return begin_notifyIfInStandbyMode(context, null, null, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
+            return begin_notifyIfInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(context, callback, cookie, false);
+            return begin_notifyIfInStandbyMode(context, callback, cookie, false);
         }
 
-        public bool end_isInStandbyMode(global::Ice.AsyncResult asyncResult)
+        public void end_notifyIfInStandbyMode(global::Ice.AsyncResult asyncResult)
         {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _isInStandbyMode_name);
-            var outgoing_ = (global::IceInternal.OutgoingAsyncT<bool>)resultI_.OutgoingAsync;
-            return outgoing_.getResult(resultI_.wait());
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _notifyIfInStandbyMode_name);
+            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
         }
 
-        private global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        private global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
-            iceCheckAsyncTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_isInStandbyMode, bool>(
-                (Callback_SmartDevice_isInStandbyMode cb, bool ret) =>
+            iceCheckAsyncTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_notifyIfInStandbyMode, object>(
+                (Callback_SmartDevice_notifyIfInStandbyMode cb, object ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke(ret);
+                        cb.Invoke();
                     }
                 },
-                this, _isInStandbyMode_name, cookie, completedCallback);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+                this, _notifyIfInStandbyMode_name, cookie, completedCallback);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed;
         }
 
@@ -3372,21 +3569,22 @@ namespace SmartHome
             return begin_setTargetTemperature(temperature, context, callback, cookie, false);
         }
 
-        public void end_setTargetTemperature(global::Ice.AsyncResult asyncResult)
+        public float end_setTargetTemperature(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _setTargetTemperature_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<float>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_Fridge_setTargetTemperature> begin_setTargetTemperature(float iceP_temperature, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_setTargetTemperature_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_Fridge_setTargetTemperature, object>(
-                (Callback_Fridge_setTargetTemperature cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_Fridge_setTargetTemperature, float>(
+                (Callback_Fridge_setTargetTemperature cb, float ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _setTargetTemperature_name, cookie, completedCallback);
@@ -3778,11 +3976,11 @@ namespace SmartHome
 
         #region Synchronous operations
 
-        public void setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public Mode setMode(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_setModeAsync(mode, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -3802,11 +4000,11 @@ namespace SmartHome
             }
         }
 
-        public bool isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public void notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                return _iceI_isInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Result;
+                _iceI_notifyIfInStandbyModeAsync(context, null, global::System.Threading.CancellationToken.None, true).Wait();
             }
             catch(global::System.AggregateException ex_)
             {
@@ -3814,11 +4012,11 @@ namespace SmartHome
             }
         }
 
-        public void setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public float setTargetTemperature(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_setTargetTemperatureAsync(temperature, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_setTargetTemperatureAsync(temperature, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -3862,11 +4060,23 @@ namespace SmartHome
             }
         }
 
-        public void addShoppingListRecord(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public ShoppingListRecord addShoppingListRecord(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
             try
             {
-                _iceI_addShoppingListRecordAsync(record, context, null, global::System.Threading.CancellationToken.None, true).Wait();
+                return _iceI_addShoppingListRecordAsync(record, context, null, global::System.Threading.CancellationToken.None, true).Result;
+            }
+            catch(global::System.AggregateException ex_)
+            {
+                throw ex_.InnerException;
+            }
+        }
+
+        public ShoppingListRecord removeShoppingListRecord(int id, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            try
+            {
+                return _iceI_removeShoppingListRecordAsync(id, context, null, global::System.Threading.CancellationToken.None, true).Result;
             }
             catch(global::System.AggregateException ex_)
             {
@@ -3878,15 +4088,15 @@ namespace SmartHome
 
         #region Async Task operations
 
-        public global::System.Threading.Tasks.Task setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<Mode> setModeAsync(Mode mode, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_setModeAsync(mode, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<Mode> _iceI_setModeAsync(Mode iceP_mode, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<Mode>(progress, cancel);
             _iceI_setMode(iceP_mode, context, synchronous, completed);
             return completed.Task;
         }
@@ -3895,7 +4105,7 @@ namespace SmartHome
 
         private void _iceI_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<Mode>(completed);
             outAsync.invoke(
                 _setMode_name,
                 global::Ice.OperationMode.Normal,
@@ -3919,6 +4129,12 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    Mode ret;
+                    ret = (Mode)istr.readEnum(1);
+                    return ret;
                 });
         }
 
@@ -3954,47 +4170,55 @@ namespace SmartHome
                 });
         }
 
-        public global::System.Threading.Tasks.Task<bool> isInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task notifyIfInStandbyModeAsync(global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
-            return _iceI_isInStandbyModeAsync(context, progress, cancel, false);
+            return _iceI_notifyIfInStandbyModeAsync(context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task<bool> _iceI_isInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task _iceI_notifyIfInStandbyModeAsync(global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
-            iceCheckTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<bool>(progress, cancel);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+            iceCheckTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed.Task;
         }
 
-        private const string _isInStandbyMode_name = "isInStandbyMode";
+        private const string _notifyIfInStandbyMode_name = "notifyIfInStandbyMode";
 
-        private void _iceI_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        private void _iceI_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<bool>(completed);
+            var outAsync = getOutgoingAsync<object>(completed);
             outAsync.invoke(
-                _isInStandbyMode_name,
+                _notifyIfInStandbyMode_name,
                 global::Ice.OperationMode.Idempotent,
                 global::Ice.FormatType.DefaultFormat,
                 context,
                 synchronous,
-                read: (global::Ice.InputStream istr) =>
+                userException: (global::Ice.UserException ex) =>
                 {
-                    bool ret;
-                    ret = istr.readBool();
-                    return ret;
+                    try
+                    {
+                        throw ex;
+                    }
+                    catch(InStandbyModeError)
+                    {
+                        throw;
+                    }
+                    catch(global::Ice.UserException)
+                    {
+                    }
                 });
         }
 
-        public global::System.Threading.Tasks.Task setTargetTemperatureAsync(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<float> setTargetTemperatureAsync(float temperature, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_setTargetTemperatureAsync(temperature, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_setTargetTemperatureAsync(float iceP_temperature, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<float> _iceI_setTargetTemperatureAsync(float iceP_temperature, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_setTargetTemperature_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<float>(progress, cancel);
             _iceI_setTargetTemperature(iceP_temperature, context, synchronous, completed);
             return completed.Task;
         }
@@ -4003,7 +4227,7 @@ namespace SmartHome
 
         private void _iceI_setTargetTemperature(float iceP_temperature, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<float>(completed);
             outAsync.invoke(
                 _setTargetTemperature_name,
                 global::Ice.OperationMode.Normal,
@@ -4027,6 +4251,12 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    float ret;
+                    ret = istr.readFloat();
+                    return ret;
                 });
         }
 
@@ -4155,15 +4385,15 @@ namespace SmartHome
                 });
         }
 
-        public global::System.Threading.Tasks.Task addShoppingListRecordAsync(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        public global::System.Threading.Tasks.Task<ShoppingListRecord> addShoppingListRecordAsync(ShoppingListRecord record, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
         {
             return _iceI_addShoppingListRecordAsync(record, context, progress, cancel, false);
         }
 
-        private global::System.Threading.Tasks.Task _iceI_addShoppingListRecordAsync(ShoppingListRecord iceP_record, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        private global::System.Threading.Tasks.Task<ShoppingListRecord> _iceI_addShoppingListRecordAsync(ShoppingListRecord iceP_record, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
         {
             iceCheckTwowayOnly(_addShoppingListRecord_name);
-            var completed = new global::IceInternal.OperationTaskCompletionCallback<object>(progress, cancel);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<ShoppingListRecord>(progress, cancel);
             _iceI_addShoppingListRecord(iceP_record, context, synchronous, completed);
             return completed.Task;
         }
@@ -4172,7 +4402,7 @@ namespace SmartHome
 
         private void _iceI_addShoppingListRecord(ShoppingListRecord iceP_record, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
         {
-            var outAsync = getOutgoingAsync<object>(completed);
+            var outAsync = getOutgoingAsync<ShoppingListRecord>(completed);
             outAsync.invoke(
                 _addShoppingListRecord_name,
                 global::Ice.OperationMode.Normal,
@@ -4197,6 +4427,68 @@ namespace SmartHome
                     catch(global::Ice.UserException)
                     {
                     }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    ShoppingListRecord ret = null;
+                    istr.readValue((ShoppingListRecord v) => {ret = v; });
+                    istr.readPendingValues();
+                    return ret;
+                });
+        }
+
+        public global::System.Threading.Tasks.Task<ShoppingListRecord> removeShoppingListRecordAsync(int id, global::Ice.OptionalContext context = new global::Ice.OptionalContext(), global::System.IProgress<bool> progress = null, global::System.Threading.CancellationToken cancel = new global::System.Threading.CancellationToken())
+        {
+            return _iceI_removeShoppingListRecordAsync(id, context, progress, cancel, false);
+        }
+
+        private global::System.Threading.Tasks.Task<ShoppingListRecord> _iceI_removeShoppingListRecordAsync(int iceP_id, global::Ice.OptionalContext context, global::System.IProgress<bool> progress, global::System.Threading.CancellationToken cancel, bool synchronous)
+        {
+            iceCheckTwowayOnly(_removeShoppingListRecord_name);
+            var completed = new global::IceInternal.OperationTaskCompletionCallback<ShoppingListRecord>(progress, cancel);
+            _iceI_removeShoppingListRecord(iceP_id, context, synchronous, completed);
+            return completed.Task;
+        }
+
+        private const string _removeShoppingListRecord_name = "removeShoppingListRecord";
+
+        private void _iceI_removeShoppingListRecord(int iceP_id, global::System.Collections.Generic.Dictionary<string, string> context, bool synchronous, global::IceInternal.OutgoingAsyncCompletionCallback completed)
+        {
+            var outAsync = getOutgoingAsync<ShoppingListRecord>(completed);
+            outAsync.invoke(
+                _removeShoppingListRecord_name,
+                global::Ice.OperationMode.Normal,
+                global::Ice.FormatType.DefaultFormat,
+                context,
+                synchronous,
+                write: (global::Ice.OutputStream ostr) =>
+                {
+                    ostr.writeInt(iceP_id);
+                },
+                userException: (global::Ice.UserException ex) =>
+                {
+                    try
+                    {
+                        throw ex;
+                    }
+                    catch(InStandbyModeError)
+                    {
+                        throw;
+                    }
+                    catch(InvalidIndexError)
+                    {
+                        throw;
+                    }
+                    catch(global::Ice.UserException)
+                    {
+                    }
+                },
+                read: (global::Ice.InputStream istr) =>
+                {
+                    ShoppingListRecord ret = null;
+                    istr.readValue((ShoppingListRecord v) => {ret = v; });
+                    istr.readPendingValues();
+                    return ret;
                 });
         }
 
@@ -4219,21 +4511,22 @@ namespace SmartHome
             return begin_setMode(mode, context, callback, cookie, false);
         }
 
-        public void end_setMode(global::Ice.AsyncResult asyncResult)
+        public Mode end_setMode(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _setMode_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<Mode>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_SmartDevice_setMode> begin_setMode(Mode iceP_mode, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_setMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, object>(
-                (Callback_SmartDevice_setMode cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_setMode, Mode>(
+                (Callback_SmartDevice_setMode cb, Mode ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _setMode_name, cookie, completedCallback);
@@ -4279,41 +4572,40 @@ namespace SmartHome
             return completed;
         }
 
-        public global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        public global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::Ice.OptionalContext context = new global::Ice.OptionalContext())
         {
-            return begin_isInStandbyMode(context, null, null, false);
+            return begin_notifyIfInStandbyMode(context, null, null, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
+            return begin_notifyIfInStandbyMode(new global::Ice.OptionalContext(), callback, cookie, false);
         }
 
-        public global::Ice.AsyncResult begin_isInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        public global::Ice.AsyncResult begin_notifyIfInStandbyMode(global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
         {
-            return begin_isInStandbyMode(context, callback, cookie, false);
+            return begin_notifyIfInStandbyMode(context, callback, cookie, false);
         }
 
-        public bool end_isInStandbyMode(global::Ice.AsyncResult asyncResult)
+        public void end_notifyIfInStandbyMode(global::Ice.AsyncResult asyncResult)
         {
-            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _isInStandbyMode_name);
-            var outgoing_ = (global::IceInternal.OutgoingAsyncT<bool>)resultI_.OutgoingAsync;
-            return outgoing_.getResult(resultI_.wait());
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _notifyIfInStandbyMode_name);
+            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
         }
 
-        private global::Ice.AsyncResult<Callback_SmartDevice_isInStandbyMode> begin_isInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        private global::Ice.AsyncResult<Callback_SmartDevice_notifyIfInStandbyMode> begin_notifyIfInStandbyMode(global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
-            iceCheckAsyncTwowayOnly(_isInStandbyMode_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_isInStandbyMode, bool>(
-                (Callback_SmartDevice_isInStandbyMode cb, bool ret) =>
+            iceCheckAsyncTwowayOnly(_notifyIfInStandbyMode_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_SmartDevice_notifyIfInStandbyMode, object>(
+                (Callback_SmartDevice_notifyIfInStandbyMode cb, object ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke(ret);
+                        cb.Invoke();
                     }
                 },
-                this, _isInStandbyMode_name, cookie, completedCallback);
-            _iceI_isInStandbyMode(context, synchronous, completed);
+                this, _notifyIfInStandbyMode_name, cookie, completedCallback);
+            _iceI_notifyIfInStandbyMode(context, synchronous, completed);
             return completed;
         }
 
@@ -4332,21 +4624,22 @@ namespace SmartHome
             return begin_setTargetTemperature(temperature, context, callback, cookie, false);
         }
 
-        public void end_setTargetTemperature(global::Ice.AsyncResult asyncResult)
+        public float end_setTargetTemperature(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _setTargetTemperature_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<float>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_Fridge_setTargetTemperature> begin_setTargetTemperature(float iceP_temperature, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_setTargetTemperature_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_Fridge_setTargetTemperature, object>(
-                (Callback_Fridge_setTargetTemperature cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_Fridge_setTargetTemperature, float>(
+                (Callback_Fridge_setTargetTemperature cb, float ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _setTargetTemperature_name, cookie, completedCallback);
@@ -4483,25 +4776,64 @@ namespace SmartHome
             return begin_addShoppingListRecord(record, context, callback, cookie, false);
         }
 
-        public void end_addShoppingListRecord(global::Ice.AsyncResult asyncResult)
+        public ShoppingListRecord end_addShoppingListRecord(global::Ice.AsyncResult asyncResult)
         {
             var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _addShoppingListRecord_name);
-            ((global::IceInternal.OutgoingAsyncT<object>)resultI_.OutgoingAsync).getResult(resultI_.wait());
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<ShoppingListRecord>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
         }
 
         private global::Ice.AsyncResult<Callback_FridgeWithShoppingList_addShoppingListRecord> begin_addShoppingListRecord(ShoppingListRecord iceP_record, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
         {
             iceCheckAsyncTwowayOnly(_addShoppingListRecord_name);
-            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FridgeWithShoppingList_addShoppingListRecord, object>(
-                (Callback_FridgeWithShoppingList_addShoppingListRecord cb, object ret) =>
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FridgeWithShoppingList_addShoppingListRecord, ShoppingListRecord>(
+                (Callback_FridgeWithShoppingList_addShoppingListRecord cb, ShoppingListRecord ret) =>
                 {
                     if(cb != null)
                     {
-                        cb.Invoke();
+                        cb.Invoke(ret);
                     }
                 },
                 this, _addShoppingListRecord_name, cookie, completedCallback);
             _iceI_addShoppingListRecord(iceP_record, context, synchronous, completed);
+            return completed;
+        }
+
+        public global::Ice.AsyncResult<Callback_FridgeWithShoppingList_removeShoppingListRecord> begin_removeShoppingListRecord(int id, global::Ice.OptionalContext context = new global::Ice.OptionalContext())
+        {
+            return begin_removeShoppingListRecord(id, context, null, null, false);
+        }
+
+        public global::Ice.AsyncResult begin_removeShoppingListRecord(int id, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_removeShoppingListRecord(id, new global::Ice.OptionalContext(), callback, cookie, false);
+        }
+
+        public global::Ice.AsyncResult begin_removeShoppingListRecord(int id, global::Ice.OptionalContext context, global::Ice.AsyncCallback callback, object cookie)
+        {
+            return begin_removeShoppingListRecord(id, context, callback, cookie, false);
+        }
+
+        public ShoppingListRecord end_removeShoppingListRecord(global::Ice.AsyncResult asyncResult)
+        {
+            var resultI_ = global::IceInternal.AsyncResultI.check(asyncResult, this, _removeShoppingListRecord_name);
+            var outgoing_ = (global::IceInternal.OutgoingAsyncT<ShoppingListRecord>)resultI_.OutgoingAsync;
+            return outgoing_.getResult(resultI_.wait());
+        }
+
+        private global::Ice.AsyncResult<Callback_FridgeWithShoppingList_removeShoppingListRecord> begin_removeShoppingListRecord(int iceP_id, global::System.Collections.Generic.Dictionary<string, string> context, global::Ice.AsyncCallback completedCallback, object cookie, bool synchronous)
+        {
+            iceCheckAsyncTwowayOnly(_removeShoppingListRecord_name);
+            var completed = new global::IceInternal.OperationAsyncResultCompletionCallback<Callback_FridgeWithShoppingList_removeShoppingListRecord, ShoppingListRecord>(
+                (Callback_FridgeWithShoppingList_removeShoppingListRecord cb, ShoppingListRecord ret) =>
+                {
+                    if(cb != null)
+                    {
+                        cb.Invoke(ret);
+                    }
+                },
+                this, _removeShoppingListRecord_name, cookie, completedCallback);
+            _iceI_removeShoppingListRecord(iceP_id, context, synchronous, completed);
             return completed;
         }
 
@@ -4659,11 +4991,11 @@ namespace SmartHome
     {
         #region Slice operations
 
-        public abstract void setMode(Mode mode, global::Ice.Current current = null);
+        public abstract Mode setMode(Mode mode, global::Ice.Current current = null);
 
         public abstract Mode getMode(global::Ice.Current current = null);
 
-        public abstract bool isInStandbyMode(global::Ice.Current current = null);
+        public abstract void notifyIfInStandbyMode(global::Ice.Current current = null);
 
         #endregion
 
@@ -4708,8 +5040,11 @@ namespace SmartHome
             Mode iceP_mode;
             iceP_mode = (Mode)istr.readEnum(1);
             inS.endReadParams();
-            obj.setMode(iceP_mode, current);
-            return inS.setResult(inS.writeEmptyParams());
+            var ret = obj.setMode(iceP_mode, current);
+            var ostr = inS.startWriteParams();
+            ostr.writeEnum((int)ret, 1);
+            inS.endWriteParams(ostr);
+            return inS.setResult(ostr);
         }
 
         [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
@@ -4727,15 +5062,12 @@ namespace SmartHome
 
         [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
         public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
-        iceD_isInStandbyMode(SmartDevice obj, global::IceInternal.Incoming inS, global::Ice.Current current)
+        iceD_notifyIfInStandbyMode(SmartDevice obj, global::IceInternal.Incoming inS, global::Ice.Current current)
         {
             global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Idempotent, current.mode);
             inS.readEmptyParams();
-            var ret = obj.isInStandbyMode(current);
-            var ostr = inS.startWriteParams();
-            ostr.writeBool(ret);
-            inS.endWriteParams(ostr);
-            return inS.setResult(ostr);
+            obj.notifyIfInStandbyMode(current);
+            return inS.setResult(inS.writeEmptyParams());
         }
 
         private static readonly string[] _all =
@@ -4745,7 +5077,7 @@ namespace SmartHome
             "ice_ids",
             "ice_isA",
             "ice_ping",
-            "isInStandbyMode",
+            "notifyIfInStandbyMode",
             "setMode"
         };
 
@@ -4782,7 +5114,7 @@ namespace SmartHome
                 }
                 case 5:
                 {
-                    return iceD_isInStandbyMode(this, inS, current);
+                    return iceD_notifyIfInStandbyMode(this, inS, current);
                 }
                 case 6:
                 {
@@ -4813,9 +5145,9 @@ namespace SmartHome
 
         public abstract Mode getMode(global::Ice.Current current = null);
 
-        public abstract bool isInStandbyMode(global::Ice.Current current = null);
+        public abstract void notifyIfInStandbyMode(global::Ice.Current current = null);
 
-        public abstract void setMode(Mode mode, global::Ice.Current current = null);
+        public abstract Mode setMode(Mode mode, global::Ice.Current current = null);
 
         #endregion
 
@@ -4887,7 +5219,7 @@ namespace SmartHome
             "ice_isA",
             "ice_ping",
             "isCO2LevelSafe",
-            "isInStandbyMode",
+            "notifyIfInStandbyMode",
             "setMode"
         };
 
@@ -4932,7 +5264,7 @@ namespace SmartHome
                 }
                 case 7:
                 {
-                    return SmartDeviceDisp_.iceD_isInStandbyMode(this, inS, current);
+                    return SmartDeviceDisp_.iceD_notifyIfInStandbyMode(this, inS, current);
                 }
                 case 8:
                 {
@@ -4953,7 +5285,7 @@ namespace SmartHome
     {
         #region Slice operations
 
-        public abstract void setTargetTemperature(float temperature, global::Ice.Current current = null);
+        public abstract float setTargetTemperature(float temperature, global::Ice.Current current = null);
 
         public abstract float getTargetTemperature(global::Ice.Current current = null);
 
@@ -4965,9 +5297,9 @@ namespace SmartHome
 
         public abstract Mode getMode(global::Ice.Current current = null);
 
-        public abstract bool isInStandbyMode(global::Ice.Current current = null);
+        public abstract void notifyIfInStandbyMode(global::Ice.Current current = null);
 
-        public abstract void setMode(Mode mode, global::Ice.Current current = null);
+        public abstract Mode setMode(Mode mode, global::Ice.Current current = null);
 
         #endregion
 
@@ -5013,8 +5345,11 @@ namespace SmartHome
             float iceP_temperature;
             iceP_temperature = istr.readFloat();
             inS.endReadParams();
-            obj.setTargetTemperature(iceP_temperature, current);
-            return inS.setResult(inS.writeEmptyParams());
+            var ret = obj.setTargetTemperature(iceP_temperature, current);
+            var ostr = inS.startWriteParams();
+            ostr.writeFloat(ret);
+            inS.endWriteParams(ostr);
+            return inS.setResult(ostr);
         }
 
         [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
@@ -5052,7 +5387,7 @@ namespace SmartHome
             "ice_ids",
             "ice_isA",
             "ice_ping",
-            "isInStandbyMode",
+            "notifyIfInStandbyMode",
             "setMode",
             "setTargetTemperature"
         };
@@ -5098,7 +5433,7 @@ namespace SmartHome
                 }
                 case 7:
                 {
-                    return SmartDeviceDisp_.iceD_isInStandbyMode(this, inS, current);
+                    return SmartDeviceDisp_.iceD_notifyIfInStandbyMode(this, inS, current);
                 }
                 case 8:
                 {
@@ -5137,13 +5472,13 @@ namespace SmartHome
 
         public abstract float getTargetTemperature(global::Ice.Current current = null);
 
-        public abstract void setTargetTemperature(float temperature, global::Ice.Current current = null);
+        public abstract float setTargetTemperature(float temperature, global::Ice.Current current = null);
 
         public abstract Mode getMode(global::Ice.Current current = null);
 
-        public abstract bool isInStandbyMode(global::Ice.Current current = null);
+        public abstract void notifyIfInStandbyMode(global::Ice.Current current = null);
 
-        public abstract void setMode(Mode mode, global::Ice.Current current = null);
+        public abstract Mode setMode(Mode mode, global::Ice.Current current = null);
 
         #endregion
 
@@ -5235,7 +5570,7 @@ namespace SmartHome
             "ice_ids",
             "ice_isA",
             "ice_ping",
-            "isInStandbyMode",
+            "notifyIfInStandbyMode",
             "setMode",
             "setTargetTemperature"
         };
@@ -5293,7 +5628,7 @@ namespace SmartHome
                 }
                 case 10:
                 {
-                    return SmartDeviceDisp_.iceD_isInStandbyMode(this, inS, current);
+                    return SmartDeviceDisp_.iceD_notifyIfInStandbyMode(this, inS, current);
                 }
                 case 11:
                 {
@@ -5320,7 +5655,9 @@ namespace SmartHome
 
         public abstract OrderedShoppingListRecord[] getShoppingList(global::Ice.Current current = null);
 
-        public abstract void addShoppingListRecord(ShoppingListRecord record, global::Ice.Current current = null);
+        public abstract ShoppingListRecord addShoppingListRecord(ShoppingListRecord record, global::Ice.Current current = null);
+
+        public abstract ShoppingListRecord removeShoppingListRecord(int id, global::Ice.Current current = null);
 
         #endregion
 
@@ -5330,13 +5667,13 @@ namespace SmartHome
 
         public abstract float getTargetTemperature(global::Ice.Current current = null);
 
-        public abstract void setTargetTemperature(float temperature, global::Ice.Current current = null);
+        public abstract float setTargetTemperature(float temperature, global::Ice.Current current = null);
 
         public abstract Mode getMode(global::Ice.Current current = null);
 
-        public abstract bool isInStandbyMode(global::Ice.Current current = null);
+        public abstract void notifyIfInStandbyMode(global::Ice.Current current = null);
 
-        public abstract void setMode(Mode mode, global::Ice.Current current = null);
+        public abstract Mode setMode(Mode mode, global::Ice.Current current = null);
 
         #endregion
 
@@ -5399,8 +5736,29 @@ namespace SmartHome
             istr.readValue((ShoppingListRecord v) => {iceP_record = v; });
             istr.readPendingValues();
             inS.endReadParams();
-            obj.addShoppingListRecord(iceP_record, current);
-            return inS.setResult(inS.writeEmptyParams());
+            var ret = obj.addShoppingListRecord(iceP_record, current);
+            var ostr = inS.startWriteParams();
+            ostr.writeValue(ret);
+            ostr.writePendingValues();
+            inS.endWriteParams(ostr);
+            return inS.setResult(ostr);
+        }
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+        public static global::System.Threading.Tasks.Task<global::Ice.OutputStream>
+        iceD_removeShoppingListRecord(FridgeWithShoppingList obj, global::IceInternal.Incoming inS, global::Ice.Current current)
+        {
+            global::Ice.ObjectImpl.iceCheckMode(global::Ice.OperationMode.Normal, current.mode);
+            var istr = inS.startReadParams();
+            int iceP_id;
+            iceP_id = istr.readInt();
+            inS.endReadParams();
+            var ret = obj.removeShoppingListRecord(iceP_id, current);
+            var ostr = inS.startWriteParams();
+            ostr.writeValue(ret);
+            ostr.writePendingValues();
+            inS.endWriteParams(ostr);
+            return inS.setResult(ostr);
         }
 
         private static readonly string[] _all =
@@ -5414,7 +5772,8 @@ namespace SmartHome
             "ice_ids",
             "ice_isA",
             "ice_ping",
-            "isInStandbyMode",
+            "notifyIfInStandbyMode",
+            "removeShoppingListRecord",
             "setMode",
             "setTargetTemperature"
         };
@@ -5468,13 +5827,17 @@ namespace SmartHome
                 }
                 case 9:
                 {
-                    return SmartDeviceDisp_.iceD_isInStandbyMode(this, inS, current);
+                    return SmartDeviceDisp_.iceD_notifyIfInStandbyMode(this, inS, current);
                 }
                 case 10:
                 {
-                    return SmartDeviceDisp_.iceD_setMode(this, inS, current);
+                    return iceD_removeShoppingListRecord(this, inS, current);
                 }
                 case 11:
+                {
+                    return SmartDeviceDisp_.iceD_setMode(this, inS, current);
+                }
+                case 12:
                 {
                     return FridgeDisp_.iceD_setTargetTemperature(this, inS, current);
                 }

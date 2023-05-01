@@ -15,9 +15,9 @@ module SmartHome
     interface SmartDevice
     {
         // Parameters
-        void setMode(Mode mode) throws ModeNotChangedError;
+        Mode setMode(Mode mode) throws ModeNotChangedError;
         idempotent Mode getMode();
-        idempotent bool isInStandbyMode();
+        idempotent void notifyIfInStandbyMode() throws InStandbyModeError;
     };
 
     interface CO2LevelSensor extends SmartDevice
@@ -31,7 +31,7 @@ module SmartHome
     interface Fridge extends SmartDevice
     {
         // Parameters
-        void setTargetTemperature(float temperature) throws TemperatureOutOfSupportedRangeError;
+        float setTargetTemperature(float temperature) throws TemperatureOutOfSupportedRangeError;
         idempotent float getTargetTemperature();
 
         // Activities
@@ -57,17 +57,20 @@ module SmartHome
         Unit unit;
     };
 
-    class OrderedShoppingListRecord extends ShoppingListRecord
+    class OrderedShoppingListRecord
     {
         int id;
+        ShoppingListRecord shoppingListRecord;
     };
     sequence<OrderedShoppingListRecord> orderedShoppingList;
 
+    exception InvalidIndexError {};
     interface FridgeWithShoppingList extends Fridge
     {
         // Activities
         idempotent orderedShoppingList getShoppingList() throws InStandbyModeError;
-        void addShoppingListRecord(ShoppingListRecord record) throws InStandbyModeError;
+        ShoppingListRecord addShoppingListRecord(ShoppingListRecord record) throws InStandbyModeError;
+        ShoppingListRecord removeShoppingListRecord(int id) throws InStandbyModeError, InvalidIndexError;
     };
 };
 

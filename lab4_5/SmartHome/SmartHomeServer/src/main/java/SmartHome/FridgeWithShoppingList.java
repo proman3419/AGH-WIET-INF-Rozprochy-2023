@@ -20,8 +20,12 @@ public interface FridgeWithShoppingList extends Fridge
     OrderedShoppingListRecord[] getShoppingList(com.zeroc.Ice.Current current)
         throws InStandbyModeError;
 
-    void addShoppingListRecord(ShoppingListRecord record, com.zeroc.Ice.Current current)
+    ShoppingListRecord addShoppingListRecord(ShoppingListRecord record, com.zeroc.Ice.Current current)
         throws InStandbyModeError;
+
+    ShoppingListRecord removeShoppingListRecord(int id, com.zeroc.Ice.Current current)
+        throws InStandbyModeError,
+               InvalidIndexError;
 
     /** @hidden */
     static final String[] _iceIds =
@@ -88,8 +92,36 @@ public interface FridgeWithShoppingList extends Fridge
         istr.readPendingValues();
         inS.endReadParams();
         ShoppingListRecord iceP_record = icePP_record.value;
-        obj.addShoppingListRecord(iceP_record, current);
-        return inS.setResult(inS.writeEmptyParams());
+        ShoppingListRecord ret = obj.addShoppingListRecord(iceP_record, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeValue(ret);
+        ostr.writePendingValues();
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
+    /**
+     * @hidden
+     * @param obj -
+     * @param inS -
+     * @param current -
+     * @return -
+     * @throws com.zeroc.Ice.UserException -
+    **/
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_removeShoppingListRecord(FridgeWithShoppingList obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        com.zeroc.Ice.InputStream istr = inS.startReadParams();
+        int iceP_id;
+        iceP_id = istr.readInt();
+        inS.endReadParams();
+        ShoppingListRecord ret = obj.removeShoppingListRecord(iceP_id, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeValue(ret);
+        ostr.writePendingValues();
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
     }
 
     /** @hidden */
@@ -104,7 +136,8 @@ public interface FridgeWithShoppingList extends Fridge
         "ice_ids",
         "ice_isA",
         "ice_ping",
-        "isInStandbyMode",
+        "notifyIfInStandbyMode",
+        "removeShoppingListRecord",
         "setMode",
         "setTargetTemperature"
     };
@@ -160,13 +193,17 @@ public interface FridgeWithShoppingList extends Fridge
             }
             case 9:
             {
-                return SmartDevice._iceD_isInStandbyMode(this, in, current);
+                return SmartDevice._iceD_notifyIfInStandbyMode(this, in, current);
             }
             case 10:
             {
-                return SmartDevice._iceD_setMode(this, in, current);
+                return _iceD_removeShoppingListRecord(this, in, current);
             }
             case 11:
+            {
+                return SmartDevice._iceD_setMode(this, in, current);
+            }
+            case 12:
             {
                 return Fridge._iceD_setTargetTemperature(this, in, current);
             }

@@ -98,7 +98,7 @@ public interface CO2LevelSensor extends SmartDevice
         "ice_isA",
         "ice_ping",
         "isCO2LevelSafe",
-        "isInStandbyMode",
+        "notifyIfInStandbyMode",
         "setMode"
     };
 
@@ -145,7 +145,7 @@ public interface CO2LevelSensor extends SmartDevice
             }
             case 7:
             {
-                return SmartDevice._iceD_isInStandbyMode(this, in, current);
+                return SmartDevice._iceD_notifyIfInStandbyMode(this, in, current);
             }
             case 8:
             {

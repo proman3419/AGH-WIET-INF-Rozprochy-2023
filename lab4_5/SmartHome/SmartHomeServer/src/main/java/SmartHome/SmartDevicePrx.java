@@ -17,18 +17,18 @@ package SmartHome;
 
 public interface SmartDevicePrx extends com.zeroc.Ice.ObjectPrx
 {
-    default void setMode(Mode mode)
+    default Mode setMode(Mode mode)
         throws ModeNotChangedError
     {
-        setMode(mode, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return setMode(mode, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default void setMode(Mode mode, java.util.Map<String, String> context)
+    default Mode setMode(Mode mode, java.util.Map<String, String> context)
         throws ModeNotChangedError
     {
         try
         {
-            _iceI_setModeAsync(mode, context, true).waitForResponseOrUserEx();
+            return _iceI_setModeAsync(mode, context, true).waitForResponseOrUserEx();
         }
         catch(ModeNotChangedError ex)
         {
@@ -40,12 +40,12 @@ public interface SmartDevicePrx extends com.zeroc.Ice.ObjectPrx
         }
     }
 
-    default java.util.concurrent.CompletableFuture<Void> setModeAsync(Mode mode)
+    default java.util.concurrent.CompletableFuture<Mode> setModeAsync(Mode mode)
     {
         return _iceI_setModeAsync(mode, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<Void> setModeAsync(Mode mode, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<Mode> setModeAsync(Mode mode, java.util.Map<String, String> context)
     {
         return _iceI_setModeAsync(mode, context, false);
     }
@@ -57,12 +57,16 @@ public interface SmartDevicePrx extends com.zeroc.Ice.ObjectPrx
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_setModeAsync(Mode iceP_mode, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<Mode> _iceI_setModeAsync(Mode iceP_mode, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "setMode", null, sync, _iceE_setMode);
+        com.zeroc.IceInternal.OutgoingAsync<Mode> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "setMode", null, sync, _iceE_setMode);
         f.invoke(true, context, null, ostr -> {
                      Mode.ice_write(ostr, iceP_mode);
-                 }, null);
+                 }, istr -> {
+                     Mode ret;
+                     ret = Mode.ice_read(istr);
+                     return ret;
+                 });
         return f;
     }
 
@@ -109,24 +113,37 @@ public interface SmartDevicePrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default boolean isInStandbyMode()
+    default void notifyIfInStandbyMode()
+        throws InStandbyModeError
     {
-        return isInStandbyMode(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        notifyIfInStandbyMode(com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default boolean isInStandbyMode(java.util.Map<String, String> context)
+    default void notifyIfInStandbyMode(java.util.Map<String, String> context)
+        throws InStandbyModeError
     {
-        return _iceI_isInStandbyModeAsync(context, true).waitForResponse();
+        try
+        {
+            _iceI_notifyIfInStandbyModeAsync(context, true).waitForResponseOrUserEx();
+        }
+        catch(InStandbyModeError ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
     }
 
-    default java.util.concurrent.CompletableFuture<java.lang.Boolean> isInStandbyModeAsync()
+    default java.util.concurrent.CompletableFuture<Void> notifyIfInStandbyModeAsync()
     {
-        return _iceI_isInStandbyModeAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+        return _iceI_notifyIfInStandbyModeAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<java.lang.Boolean> isInStandbyModeAsync(java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<Void> notifyIfInStandbyModeAsync(java.util.Map<String, String> context)
     {
-        return _iceI_isInStandbyModeAsync(context, false);
+        return _iceI_notifyIfInStandbyModeAsync(context, false);
     }
 
     /**
@@ -135,16 +152,18 @@ public interface SmartDevicePrx extends com.zeroc.Ice.ObjectPrx
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<java.lang.Boolean> _iceI_isInStandbyModeAsync(java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_notifyIfInStandbyModeAsync(java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<java.lang.Boolean> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "isInStandbyMode", com.zeroc.Ice.OperationMode.Idempotent, sync, null);
-        f.invoke(true, context, null, null, istr -> {
-                     boolean ret;
-                     ret = istr.readBool();
-                     return ret;
-                 });
+        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "notifyIfInStandbyMode", com.zeroc.Ice.OperationMode.Idempotent, sync, _iceE_notifyIfInStandbyMode);
+        f.invoke(true, context, null, null, null);
         return f;
     }
+
+    /** @hidden */
+    static final Class<?>[] _iceE_notifyIfInStandbyMode =
+    {
+        InStandbyModeError.class
+    };
 
     /**
      * Contacts the remote server to verify that the object implements this type.

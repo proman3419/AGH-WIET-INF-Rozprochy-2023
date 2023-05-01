@@ -17,18 +17,18 @@ package SmartHome;
 
 public interface FridgePrx extends SmartDevicePrx
 {
-    default void setTargetTemperature(float temperature)
+    default float setTargetTemperature(float temperature)
         throws TemperatureOutOfSupportedRangeError
     {
-        setTargetTemperature(temperature, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return setTargetTemperature(temperature, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default void setTargetTemperature(float temperature, java.util.Map<String, String> context)
+    default float setTargetTemperature(float temperature, java.util.Map<String, String> context)
         throws TemperatureOutOfSupportedRangeError
     {
         try
         {
-            _iceI_setTargetTemperatureAsync(temperature, context, true).waitForResponseOrUserEx();
+            return _iceI_setTargetTemperatureAsync(temperature, context, true).waitForResponseOrUserEx();
         }
         catch(TemperatureOutOfSupportedRangeError ex)
         {
@@ -40,12 +40,12 @@ public interface FridgePrx extends SmartDevicePrx
         }
     }
 
-    default java.util.concurrent.CompletableFuture<Void> setTargetTemperatureAsync(float temperature)
+    default java.util.concurrent.CompletableFuture<java.lang.Float> setTargetTemperatureAsync(float temperature)
     {
         return _iceI_setTargetTemperatureAsync(temperature, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<Void> setTargetTemperatureAsync(float temperature, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<java.lang.Float> setTargetTemperatureAsync(float temperature, java.util.Map<String, String> context)
     {
         return _iceI_setTargetTemperatureAsync(temperature, context, false);
     }
@@ -57,12 +57,16 @@ public interface FridgePrx extends SmartDevicePrx
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_setTargetTemperatureAsync(float iceP_temperature, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.Float> _iceI_setTargetTemperatureAsync(float iceP_temperature, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "setTargetTemperature", null, sync, _iceE_setTargetTemperature);
+        com.zeroc.IceInternal.OutgoingAsync<java.lang.Float> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "setTargetTemperature", null, sync, _iceE_setTargetTemperature);
         f.invoke(true, context, null, ostr -> {
                      ostr.writeFloat(iceP_temperature);
-                 }, null);
+                 }, istr -> {
+                     float ret;
+                     ret = istr.readFloat();
+                     return ret;
+                 });
         return f;
     }
 

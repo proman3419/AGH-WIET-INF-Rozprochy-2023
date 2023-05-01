@@ -17,12 +17,13 @@ package SmartHome;
 
 public interface SmartDevice extends com.zeroc.Ice.Object
 {
-    void setMode(Mode mode, com.zeroc.Ice.Current current)
+    Mode setMode(Mode mode, com.zeroc.Ice.Current current)
         throws ModeNotChangedError;
 
     Mode getMode(com.zeroc.Ice.Current current);
 
-    boolean isInStandbyMode(com.zeroc.Ice.Current current);
+    void notifyIfInStandbyMode(com.zeroc.Ice.Current current)
+        throws InStandbyModeError;
 
     /** @hidden */
     static final String[] _iceIds =
@@ -64,8 +65,11 @@ public interface SmartDevice extends com.zeroc.Ice.Object
         Mode iceP_mode;
         iceP_mode = Mode.ice_read(istr);
         inS.endReadParams();
-        obj.setMode(iceP_mode, current);
-        return inS.setResult(inS.writeEmptyParams());
+        Mode ret = obj.setMode(iceP_mode, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        Mode.ice_write(ostr, ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
     }
 
     /**
@@ -92,16 +96,15 @@ public interface SmartDevice extends com.zeroc.Ice.Object
      * @param inS -
      * @param current -
      * @return -
+     * @throws com.zeroc.Ice.UserException -
     **/
-    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_isInStandbyMode(SmartDevice obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_notifyIfInStandbyMode(SmartDevice obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
     {
         com.zeroc.Ice.Object._iceCheckMode(com.zeroc.Ice.OperationMode.Idempotent, current.mode);
         inS.readEmptyParams();
-        boolean ret = obj.isInStandbyMode(current);
-        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
-        ostr.writeBool(ret);
-        inS.endWriteParams(ostr);
-        return inS.setResult(ostr);
+        obj.notifyIfInStandbyMode(current);
+        return inS.setResult(inS.writeEmptyParams());
     }
 
     /** @hidden */
@@ -112,7 +115,7 @@ public interface SmartDevice extends com.zeroc.Ice.Object
         "ice_ids",
         "ice_isA",
         "ice_ping",
-        "isInStandbyMode",
+        "notifyIfInStandbyMode",
         "setMode"
     };
 
@@ -151,7 +154,7 @@ public interface SmartDevice extends com.zeroc.Ice.Object
             }
             case 5:
             {
-                return _iceD_isInStandbyMode(this, in, current);
+                return _iceD_notifyIfInStandbyMode(this, in, current);
             }
             case 6:
             {

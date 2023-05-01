@@ -17,7 +17,7 @@ package SmartHome;
 
 public interface Fridge extends SmartDevice
 {
-    void setTargetTemperature(float temperature, com.zeroc.Ice.Current current)
+    float setTargetTemperature(float temperature, com.zeroc.Ice.Current current)
         throws TemperatureOutOfSupportedRangeError;
 
     float getTargetTemperature(com.zeroc.Ice.Current current);
@@ -66,8 +66,11 @@ public interface Fridge extends SmartDevice
         float iceP_temperature;
         iceP_temperature = istr.readFloat();
         inS.endReadParams();
-        obj.setTargetTemperature(iceP_temperature, current);
-        return inS.setResult(inS.writeEmptyParams());
+        float ret = obj.setTargetTemperature(iceP_temperature, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeFloat(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
     }
 
     /**
@@ -118,7 +121,7 @@ public interface Fridge extends SmartDevice
         "ice_ids",
         "ice_isA",
         "ice_ping",
-        "isInStandbyMode",
+        "notifyIfInStandbyMode",
         "setMode",
         "setTargetTemperature"
     };
@@ -166,7 +169,7 @@ public interface Fridge extends SmartDevice
             }
             case 7:
             {
-                return SmartDevice._iceD_isInStandbyMode(this, in, current);
+                return SmartDevice._iceD_notifyIfInStandbyMode(this, in, current);
             }
             case 8:
             {
