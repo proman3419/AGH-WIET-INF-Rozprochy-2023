@@ -11,7 +11,8 @@ namespace SmartHomeClient.commandshandler.local
                 switch (command.action)
                 {
                     case "quit":
-                        Program.terminate = true;
+                        Console.WriteLine("Quitting");
+                        Program.quit = true;
                         return true;
                 }
             }

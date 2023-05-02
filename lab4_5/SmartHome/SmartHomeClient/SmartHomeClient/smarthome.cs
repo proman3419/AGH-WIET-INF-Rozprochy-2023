@@ -531,9 +531,9 @@ namespace SmartHome
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
     public enum Unit
     {
+        Unspecified,
         Gram,
-        Millilitre,
-        Unspecified
+        Millilitre
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
@@ -733,22 +733,22 @@ namespace SmartHome
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720")]
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722")]
     [global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724")]
-    public partial class InvalidIndexError : global::Ice.UserException
+    public partial class IndexOutOfListRangeError : global::Ice.UserException
     {
         #region Constructors
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        public InvalidIndexError()
+        public IndexOutOfListRangeError()
         {
         }
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        public InvalidIndexError(global::System.Exception ex) : base(ex)
+        public IndexOutOfListRangeError(global::System.Exception ex) : base(ex)
         {
         }
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        public InvalidIndexError(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : base(info, context)
+        public IndexOutOfListRangeError(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : base(info, context)
         {
         }
 
@@ -757,7 +757,7 @@ namespace SmartHome
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
         public override string ice_id()
         {
-            return "::SmartHome::InvalidIndexError";
+            return "::SmartHome::IndexOutOfListRangeError";
         }
 
         #region Object members
@@ -766,7 +766,7 @@ namespace SmartHome
         public override int GetHashCode()
         {
             int h_ = 5381;
-            global::IceInternal.HashUtil.hashAdd(ref h_, "::SmartHome::InvalidIndexError");
+            global::IceInternal.HashUtil.hashAdd(ref h_, "::SmartHome::IndexOutOfListRangeError");
             return h_;
         }
 
@@ -781,7 +781,7 @@ namespace SmartHome
             {
                 return true;
             }
-            InvalidIndexError o = other as InvalidIndexError;
+            IndexOutOfListRangeError o = other as IndexOutOfListRangeError;
             if(o == null)
             {
                 return false;
@@ -794,13 +794,13 @@ namespace SmartHome
         #region Comparison members
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        public static bool operator==(InvalidIndexError lhs, InvalidIndexError rhs)
+        public static bool operator==(IndexOutOfListRangeError lhs, IndexOutOfListRangeError rhs)
         {
             return Equals(lhs, rhs);
         }
 
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
-        public static bool operator!=(InvalidIndexError lhs, InvalidIndexError rhs)
+        public static bool operator!=(IndexOutOfListRangeError lhs, IndexOutOfListRangeError rhs)
         {
             return !Equals(lhs, rhs);
         }
@@ -812,7 +812,7 @@ namespace SmartHome
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.7.9")]
         protected override void iceWriteImpl(global::Ice.OutputStream ostr_)
         {
-            ostr_.startSlice("::SmartHome::InvalidIndexError", -1, true);
+            ostr_.startSlice("::SmartHome::IndexOutOfListRangeError", -1, true);
             ostr_.endSlice();
         }
 
@@ -4475,7 +4475,7 @@ namespace SmartHome
                     {
                         throw;
                     }
-                    catch(InvalidIndexError)
+                    catch(IndexOutOfListRangeError)
                     {
                         throw;
                     }

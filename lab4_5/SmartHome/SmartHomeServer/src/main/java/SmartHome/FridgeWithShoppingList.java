@@ -25,7 +25,7 @@ public interface FridgeWithShoppingList extends Fridge
 
     ShoppingListRecord removeShoppingListRecord(int id, com.zeroc.Ice.Current current)
         throws InStandbyModeError,
-               InvalidIndexError;
+               IndexOutOfListRangeError;
 
     /** @hidden */
     static final String[] _iceIds =

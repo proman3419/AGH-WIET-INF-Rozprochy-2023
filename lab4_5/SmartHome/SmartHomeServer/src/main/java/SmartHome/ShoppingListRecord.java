@@ -20,7 +20,7 @@ public class ShoppingListRecord extends com.zeroc.Ice.Value
     public ShoppingListRecord()
     {
         this.name = "";
-        this.unit = Unit.Gram;
+        this.unit = Unit.Unspecified;
     }
 
     public ShoppingListRecord(String name, int quantity, Unit unit)

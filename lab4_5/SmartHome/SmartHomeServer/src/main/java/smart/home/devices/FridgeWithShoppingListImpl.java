@@ -28,10 +28,10 @@ public class FridgeWithShoppingListImpl extends FridgeImpl implements FridgeWith
     }
 
     @Override
-    public ShoppingListRecord removeShoppingListRecord(int id, Current current) throws InStandbyModeError, InvalidIndexError {
+    public ShoppingListRecord removeShoppingListRecord(int id, Current current) throws InStandbyModeError, IndexOutOfListRangeError {
         notifyIfInStandbyMode(current);
         if (id < 0 || shoppingList.size() <= id) {
-            throw new InvalidIndexError();
+            throw new IndexOutOfListRangeError();
         }
         return shoppingList.remove(id);
     }

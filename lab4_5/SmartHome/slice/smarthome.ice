@@ -49,7 +49,7 @@ module SmartHome
         idempotent int getIceCubesCount() throws InStandbyModeError;
     };
 
-    enum Unit { Gram, Millilitre, Unspecified };
+    enum Unit { Unspecified, Gram, Millilitre };
     class ShoppingListRecord
     {
         string name;
@@ -64,13 +64,13 @@ module SmartHome
     };
     sequence<OrderedShoppingListRecord> orderedShoppingList;
 
-    exception InvalidIndexError {};
+    exception IndexOutOfListRangeError {};
     interface FridgeWithShoppingList extends Fridge
     {
         // Activities
         idempotent orderedShoppingList getShoppingList() throws InStandbyModeError;
         ShoppingListRecord addShoppingListRecord(ShoppingListRecord record) throws InStandbyModeError;
-        ShoppingListRecord removeShoppingListRecord(int id) throws InStandbyModeError, InvalidIndexError;
+        ShoppingListRecord removeShoppingListRecord(int id) throws InStandbyModeError, IndexOutOfListRangeError;
     };
 };
 

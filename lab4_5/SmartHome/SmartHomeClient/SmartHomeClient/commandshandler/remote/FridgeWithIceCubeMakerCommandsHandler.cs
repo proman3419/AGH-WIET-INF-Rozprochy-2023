@@ -21,10 +21,22 @@ namespace SmartHomeClient.commandshandler.remote
                         Console.WriteLine($"Ice cubes maker capacity: {iceCubesMakerCapacity}");
                         return true;
                     case "getIceCubes":
-                        int.TryParse(command.arguments[0], out int count);
-
-                        int receivedIceCubes = proxy.getIceCubes(count);
-                        Console.WriteLine($"Received {receivedIceCubes} ice cubes");
+                        if (!int.TryParse(command.arguments[0], out int count))
+                        {
+                            Console.Error.WriteLine("Invalid ice cubes count value");
+                        }
+                        else
+                        {
+                            try
+                            {
+                                int receivedIceCubes = proxy.getIceCubes(count);
+                                Console.WriteLine($"Received {receivedIceCubes} ice cubes");
+                            }
+                            catch (NotEnoughIceCubesError e)
+                            {
+                                Console.Error.WriteLine("There is not enough ice cubes in the ice maker");
+                            }
+                        }
                         return true;
                     case "getIceCubesCount":
                         int iceCubesCount = proxy.getIceCubesCount();

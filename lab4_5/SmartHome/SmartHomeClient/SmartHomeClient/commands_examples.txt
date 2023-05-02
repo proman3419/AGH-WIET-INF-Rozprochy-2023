@@ -1,18 +1,18 @@
-CO2LevelSensor1 isCO2LevelSafe
 CO2LevelSensor1 getCO2LevelInPPM
+CO2LevelSensor1 isCO2LevelSafe
 
-FridgeWithShoppingList1 getShoppingList
-FridgeWithShoppingList1 addShoppingListRecord eggs 2 Unspecified
-FridgeWithShoppingList1 setTargetTemperature 12
+Fridge1 setTargetTemperature 12
+Fridge1 getTargetTemperature
+Fridge1 getCurrentTemperature
 
 FridgeWithIceCubeMaker1 getIceCubesMakerCapacity
 FridgeWithIceCubeMaker1 getIceCubesCount
 FridgeWithIceCubeMaker1 getIceCubes 12
 FridgeWithIceCubeMaker1 getTargetTemperature
 
-Fridge1 getTargetTemperature
-Fridge1 setTargetTemperature 12
-Fridge1 getCurrentTemperature
-Fridge1 setTargetTemperature -12
+FridgeWithShoppingList1 getShoppingList
+FridgeWithShoppingList1 addShoppingListRecord eggs 2 Unspecified
+FridgeWithShoppingList1 setTargetTemperature 12
+FridgeWithShoppingList1 removeShoppingListRecord 0
 
 ! quit

@@ -10,13 +10,18 @@ import smart.home.devices.FridgeImpl;
 import smart.home.devices.FridgeWithIceCubeMakerImpl;
 import smart.home.devices.FridgeWithShoppingListImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ServantLocatorImpl implements ServantLocator {
     private static final Logger LOGGER = LogManager.getLogger(ServantLocatorImpl.class);
+    private final List<String> servantsNames = new ArrayList<>();
 
     @Override
     public LocateResult locate(Current current) throws UserException {
         String name = current.id.name;
-        LOGGER.info("locate '{}'", name);
+        servantsNames.add(name);
+        LOGGER.info("Locate '{}'", name);
         ObjectAdapter adapter = current.adapter;
 
         switch (name) {
@@ -49,5 +54,12 @@ public class ServantLocatorImpl implements ServantLocator {
     @Override
     public void finished(Current current, Object object, java.lang.Object o) throws UserException {
 
+    }
+
+    public void printServants() {
+        LOGGER.info("Devices connected to the server:");
+        for (String name : servantsNames) {
+            LOGGER.info("> {}", name);
+        }
     }
 }

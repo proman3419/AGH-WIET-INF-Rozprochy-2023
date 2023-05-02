@@ -17,10 +17,22 @@ namespace SmartHomeClient.commandshandler.remote
                 switch (command.action)
                 {
                     case "setTargetTemperature":
-                        float.TryParse(command.arguments[0], out float temperature);
-
-                        float setTargetTemperature = proxy.setTargetTemperature(temperature);
-                        Console.WriteLine($"Set target temperature to: {setTargetTemperature}[C]");
+                        if (!float.TryParse(command.arguments[0], out float temperature))
+                        {
+                            Console.Error.WriteLine("Invalid temperature value");
+                        }
+                        else
+                        {
+                            try
+                            {
+                                float setTargetTemperature = proxy.setTargetTemperature(temperature);
+                                Console.WriteLine($"Set target temperature to: {setTargetTemperature}[C]");
+                            }
+                            catch (TemperatureOutOfSupportedRangeError e)
+                            {
+                                Console.Error.WriteLine("Temperature out of supported range");
+                            }
+                        }
                         return true;
                     case "getTargetTemperature":
                         float targetTemperature = proxy.getTargetTemperature();

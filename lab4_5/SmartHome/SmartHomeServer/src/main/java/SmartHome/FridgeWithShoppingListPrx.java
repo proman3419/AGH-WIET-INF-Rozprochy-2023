@@ -137,14 +137,14 @@ public interface FridgeWithShoppingListPrx extends FridgePrx
 
     default ShoppingListRecord removeShoppingListRecord(int id)
         throws InStandbyModeError,
-               InvalidIndexError
+               IndexOutOfListRangeError
     {
         return removeShoppingListRecord(id, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
     default ShoppingListRecord removeShoppingListRecord(int id, java.util.Map<String, String> context)
         throws InStandbyModeError,
-               InvalidIndexError
+               IndexOutOfListRangeError
     {
         try
         {
@@ -154,7 +154,7 @@ public interface FridgeWithShoppingListPrx extends FridgePrx
         {
             throw ex;
         }
-        catch(InvalidIndexError ex)
+        catch(IndexOutOfListRangeError ex)
         {
             throw ex;
         }
@@ -199,7 +199,7 @@ public interface FridgeWithShoppingListPrx extends FridgePrx
     static final Class<?>[] _iceE_removeShoppingListRecord =
     {
         InStandbyModeError.class,
-        InvalidIndexError.class
+        IndexOutOfListRangeError.class
     };
 
     /**

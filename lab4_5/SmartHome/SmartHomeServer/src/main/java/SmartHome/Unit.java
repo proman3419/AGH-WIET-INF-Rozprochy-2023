@@ -17,9 +17,9 @@ package SmartHome;
 
 public enum Unit implements java.io.Serializable
 {
-    Gram(0),
-    Millilitre(1),
-    Unspecified(2);
+    Unspecified(0),
+    Gram(1),
+    Millilitre(2);
 
     public int value()
     {
@@ -31,11 +31,11 @@ public enum Unit implements java.io.Serializable
         switch(v)
         {
         case 0:
-            return Gram;
-        case 1:
-            return Millilitre;
-        case 2:
             return Unspecified;
+        case 1:
+            return Gram;
+        case 2:
+            return Millilitre;
         }
         return null;
     }
@@ -54,7 +54,7 @@ public enum Unit implements java.io.Serializable
     {
         if(v == null)
         {
-            ostr.writeEnum(SmartHome.Unit.Gram.value(), 2);
+            ostr.writeEnum(SmartHome.Unit.Unspecified.value(), 2);
         }
         else
         {
