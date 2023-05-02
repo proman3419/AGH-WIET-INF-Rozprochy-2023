@@ -1,0 +1,9 @@
+﻿CO2LevelSensor1.Proxy=CO2LevelSensor/CO2LevelSensor1:tcp -h 127.0.0.11 -p 10011 : udp -h 127.0.0.11 -p 10011
+FridgeWithShoppingList1.Proxy=FridgeWithShoppingList/FridgeWithShoppingList1:tcp -h 127.0.0.11 -p 10011 : udp -h 127.0.0.11 -p 10011
+FridgeWithIceCubeMaker1.Proxy=FridgeWithIceCubeMaker/FridgeWithIceCubeMaker1:tcp -h 127.0.0.11 -p 10011 : udp -h 127.0.0.11 -p 10011
+Fridge1.Proxy=Fridge/Fridge1:tcp -h 127.0.0.11 -p 10011 : udp -h 127.0.0.11 -p 10011
+
+CO2LevelSensor2.Proxy=CO2LevelSensor/CO2LevelSensor2:tcp -h 127.0.0.12 -p 10012 : udp -h 127.0.0.12 -p 10012
+FridgeWithShoppingList2.Proxy=FridgeWithShoppingList/FridgeWithShoppingList2:tcp -h 127.0.0.12 -p 10012 : udp -h 127.0.0.12 -p 10012
+FridgeWithIceCubeMaker2.Proxy=FridgeWithIceCubeMaker/FridgeWithIceCubeMaker2:tcp -h 127.0.0.12 -p 10012 : udp -h 127.0.0.12 -p 10012
+Fridge2.Proxy=Fridge/Fridge2:tcp -h 127.0.0.12 -p 10012 : udp -h 127.0.0.12 -p 10012

@@ -22,4 +22,4 @@ D:\Documents\agh\semestr_6\rozprochy\AGH-WIET-INF-Rozprochy-2023\lab4_5\SmartHom
 D:\Documents\agh\semestr_6\rozprochy\AGH-WIET-INF-Rozprochy-2023\lab4_5\SmartHome\SmartHomeClient\SmartHomeClient\obj\Debug\net6.0\SmartHomeClient.pdb
 D:\Documents\agh\semestr_6\rozprochy\AGH-WIET-INF-Rozprochy-2023\lab4_5\SmartHome\SmartHomeClient\SmartHomeClient\obj\Debug\net6.0\SmartHomeClient.genruntimeconfig.cache
 D:\Documents\agh\semestr_6\rozprochy\AGH-WIET-INF-Rozprochy-2023\lab4_5\SmartHome\SmartHomeClient\SmartHomeClient\obj\Debug\net6.0\ref\SmartHomeClient.dll
-D:\Documents\agh\semestr_6\rozprochy\AGH-WIET-INF-Rozprochy-2023\lab4_5\SmartHome\SmartHomeClient\SmartHomeClient\bin\Debug\net6.0\client.config
+D:\Documents\agh\semestr_6\rozprochy\AGH-WIET-INF-Rozprochy-2023\lab4_5\SmartHome\SmartHomeClient\SmartHomeClient\bin\Debug\net6.0\config.client

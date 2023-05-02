@@ -15,4 +15,10 @@ FridgeWithShoppingList1 addShoppingListRecord eggs 2 Unspecified
 FridgeWithShoppingList1 setTargetTemperature 12
 FridgeWithShoppingList1 removeShoppingListRecord 0
 
+
+CO2LevelSensor2 getCO2LevelInPPM
+
+FridgeWithIceCubeMaker2 getIceCubesCount
+
+
 ! quit

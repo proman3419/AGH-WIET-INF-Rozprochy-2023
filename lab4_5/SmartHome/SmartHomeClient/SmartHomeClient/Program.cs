@@ -17,7 +17,7 @@ namespace SmartHomeClient
             {
                 result[i] = args[i];
             }
-            result[i] = "--Ice.Config=client.config";
+            result[i] = "--Ice.Config=config.client";
             return result;
         }
 

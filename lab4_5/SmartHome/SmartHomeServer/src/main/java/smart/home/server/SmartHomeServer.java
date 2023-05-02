@@ -13,18 +13,26 @@ import java.lang.Exception;
 public class SmartHomeServer {
     private static final Logger LOGGER = LogManager.getLogger(SmartHomeServer.class);
     private static final String ADAPTER_NAME = "adapter";
-    private static final String ADAPTER_OPTIONS = "default -h localhost -p 10000";
     private static final String SERVANT_LOCATOR_PREFIX = "";
     private final Communicator communicator;
     private final ObjectAdapter adapter;
     private final ServantLocatorImpl servantLocator;
 
-    public SmartHomeServer(String[] args) {
+    public SmartHomeServer(int serverId, String[] args) {
         this.communicator = Util.initialize(args);
-        this.adapter = communicator.createObjectAdapterWithEndpoints(ADAPTER_NAME, ADAPTER_OPTIONS);
-        this.servantLocator = new ServantLocatorImpl();
+        String adapterEndpoints = getAdapterEndpoints(serverId);
+        this.adapter = communicator.createObjectAdapterWithEndpoints(ADAPTER_NAME, adapterEndpoints);
+        LOGGER.info("Added adapter with endpoints '{}'", adapterEndpoints);
+        this.servantLocator = new ServantLocatorImpl(String.valueOf(serverId));
         adapter.addServantLocator(servantLocator, SERVANT_LOCATOR_PREFIX);
         LOGGER.info("Initialized the server");
+    }
+
+    private String getAdapterEndpoints(int serverId) {
+        int offset = 10;
+        int offsetServerId = offset + serverId;
+        return "tcp -h 127.0.0.!! -p 100!! : udp -h 127.0.0.!! -p 100!!"
+                .replace("!!", String.valueOf(offsetServerId));
     }
 
     public void run() {
