@@ -1,4 +1,4 @@
-package dynamiccalls.action;
+package dynamiccalls.action.stateless;
 
 public class ImaginaryFriend {
     public String greet(String userName) {

@@ -1,4 +1,4 @@
-package dynamiccalls.complextype;
+package dynamiccalls.action.stateful.blog;
 
 
 import java.util.Date;

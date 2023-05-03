@@ -45,8 +45,8 @@ while (!quit)
         case "greet":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.ImaginaryFriend",
+                jarLocation: "DynamicCallsStatelessActions-1.0-SNAPSHOT.jar",
+                className: "dynamiccalls.action.stateless.ImaginaryFriend",
                 methodName: "greet",
                 data: "Andrew"
                 );
@@ -54,8 +54,8 @@ while (!quit)
         case "add":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.Calculator",
+                jarLocation: "DynamicCallsStatelessActions-1.0-SNAPSHOT.jar",
+                className: "dynamiccalls.action.stateless.Calculator",
                 methodName: "add",
                 data: "[1, 2, -3, 123]"
                 );
@@ -63,8 +63,8 @@ while (!quit)
         case "multiply":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.Calculator",
+                jarLocation: "DynamicCallsStatelessActions-1.0-SNAPSHOT.jar",
+                className: "dynamiccalls.action.stateless.Calculator",
                 methodName: "multiply",
                 data: "[1, 2, 3, 4, 5]"
                 );
@@ -72,8 +72,8 @@ while (!quit)
         case "subtract":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.Calculator",
+                jarLocation: "DynamicCallsStatelessActions-1.0-SNAPSHOT.jar",
+                className: "dynamiccalls.action.stateless.Calculator",
                 methodName: "subtract",
                 data: "[1000, 1, 3]"
                 );
@@ -81,8 +81,8 @@ while (!quit)
         case "divide":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.Calculator",
+                jarLocation: "DynamicCallsStatelessActions-1.0-SNAPSHOT.jar",
+                className: "dynamiccalls.action.stateless.Calculator",
                 methodName: "divide",
                 data: "[120, 4, 2]"
                 );
@@ -90,8 +90,8 @@ while (!quit)
         case "divideBy0":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.Calculator",
+                jarLocation: "DynamicCallsStatelessActions-1.0-SNAPSHOT.jar",
+                className: "dynamiccalls.action.stateless.Calculator",
                 methodName: "divide",
                 data: "[120, 4, 0]"
                 );
@@ -99,8 +99,8 @@ while (!quit)
         case "addEntry1":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.Blog",
+                jarLocation: "",
+                className: "dynamiccalls.action.stateful.blog.Blog",
                 methodName: "addEntry",
                 data: "{" +
                 "\"title\": \"Summer in Italy\", " +
@@ -113,8 +113,8 @@ while (!quit)
         case "addEntry2":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.Blog",
+                jarLocation: "",
+                className: "dynamiccalls.action.stateful.blog.Blog",
                 methodName: "addEntry",
                 data: "{" +
                 "\"title\": \"Trains\", " +
@@ -127,8 +127,8 @@ while (!quit)
         case "getEntries":
             execute(
                 client: client,
-                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamiccalls.action.Blog",
+                jarLocation: "",
+                className: "dynamiccalls.action.stateful.blog.Blog",
                 methodName: "getEntries",
                 data: ""
                 );

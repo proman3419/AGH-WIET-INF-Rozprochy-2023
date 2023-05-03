@@ -1,4 +1,4 @@
-package dynamiccalls.action;
+package dynamiccalls.action.stateless;
 
 import java.util.List;
 
