@@ -18,7 +18,7 @@ cd DynamicCalls/DynamicCallsStatelessActions
 
 ### Serwer
 ```bash
-cd DynamicCallsServer
+cd DynamicCalls/DynamicCallsServer
 ./run.sh
 ```
 
