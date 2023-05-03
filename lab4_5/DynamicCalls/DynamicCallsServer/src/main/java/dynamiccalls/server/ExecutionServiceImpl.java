@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,7 +28,7 @@ public class ExecutionServiceImpl extends ExecutionServiceGrpc.ExecutionServiceI
     }
 
     private String getErrorMessageWithName(Exception e) {
-        return String.format("{} - {}", e.getClass(), e.getMessage());
+        return String.format("%s - %s", e.getClass(), e.getMessage());
     }
 
     @Nullable
@@ -109,6 +110,8 @@ public class ExecutionServiceImpl extends ExecutionServiceGrpc.ExecutionServiceI
                         Object executionResult = getExecutionResult(clazz, method, request.getData(), responseBuilder);
                         responseBuilder.setData(GSON.toJson(executionResult));
                         LOGGER.info("Result: '{}'", responseBuilder.getData());
+                    } catch (InvocationTargetException e) {
+                        onError(getErrorMessageWithName((Exception) e.getTargetException()), responseBuilder);
                     } catch (Exception e) {
                         onError(getErrorMessageWithName(e), responseBuilder);
                     }

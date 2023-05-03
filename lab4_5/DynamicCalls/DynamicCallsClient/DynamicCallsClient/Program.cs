@@ -84,10 +84,19 @@ while (!quit)
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
                 className: "dynamiccalls.action.Calculator",
                 methodName: "divide",
-                data: "[120, 4, 5]"
+                data: "[120, 4, 2]"
                 );
             break;
-        case "addEntry":
+        case "divideBy0":
+            execute(
+                client: client,
+                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
+                className: "dynamiccalls.action.Calculator",
+                methodName: "divide",
+                data: "[120, 4, 0]"
+                );
+            break;
+        case "addEntry1":
             execute(
                 client: client,
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
@@ -98,6 +107,20 @@ while (!quit)
                 "\"content\": \"Summer in Italy is a magical time of year, filled with endless sunshine, delectable cuisine, and stunning scenery. From the rolling hills of Tuscany to the pristine beaches of the Amalfi Coast, there\'s no shortage of picturesque destinations to explore. Whether you\'re sipping on a refreshing Aperol Spritz in a charming piazza or taking a leisurely boat ride along the coast, Italy\'s summer offerings are sure to leave you with unforgettable memories. So pack your bags and get ready to bask in the warm Italian sun – summer in Italy is an experience you won\'t want to miss!\", " +
                 "\"tags\": [\"summer\", \"Italy\", \"adventure\"], " +
                 "\"addedDate\": \"12-07-2022 16:34\"" +
+                "}"
+                );
+            break;
+        case "addEntry2":
+            execute(
+                client: client,
+                jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
+                className: "dynamiccalls.action.Blog",
+                methodName: "addEntry",
+                data: "{" +
+                "\"title\": \"Trains\", " +
+                "\"content\": \"I like trains.\", " +
+                "\"tags\": [\"trains\", \"I\", \"like\"], " +
+                "\"addedDate\": \"03-01-2004 4:02\"" +
                 "}"
                 );
             break;
