@@ -16,7 +16,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-	<Protobuf Include="Protos\ExecutionService.proto" GrpcServices="Client" />
+	<Protobuf Include="..\..\proto\ExecutionService.proto" GrpcServices="Client" OutputDir="Executors/" GrpcOutputDir="Executors/" />
   </ItemGroup>
 
 </Project>
