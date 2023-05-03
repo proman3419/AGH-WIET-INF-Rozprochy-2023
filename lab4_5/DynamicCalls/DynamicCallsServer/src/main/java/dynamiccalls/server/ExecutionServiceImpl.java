@@ -1,12 +1,10 @@
-package dynamic.calls.server;
+package dynamiccalls.server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.protobuf.RpcCallback;
-import com.google.protobuf.RpcController;
-import dynamic.calls.Executors.ExecutionRequest;
-import dynamic.calls.Executors.ExecutionResponse;
-import dynamic.calls.Executors.ExecutionServiceGrpc;
+import dynamiccalls.Executors.ExecutionRequest;
+import dynamiccalls.Executors.ExecutionResponse;
+import dynamiccalls.Executors.ExecutionServiceGrpc;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

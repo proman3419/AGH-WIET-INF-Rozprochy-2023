@@ -1,5 +1,5 @@
 syntax = "proto3";
-package dynamic.calls.Executors;
+package dynamiccalls.Executors;
 option java_multiple_files = true;
 option csharp_namespace = "DynamicCallsClient";
 

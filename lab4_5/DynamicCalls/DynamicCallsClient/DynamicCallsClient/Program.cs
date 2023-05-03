@@ -3,23 +3,30 @@ using Grpc.Net.Client;
 using DynamicCallsClient;
 using Grpc.Net.Client.Configuration;
 
-async void execute(ExecutionService.ExecutionServiceClient client, String jarLocation, String className, String methodName, String data)
+void execute(ExecutionService.ExecutionServiceClient client, String jarLocation, String className, String methodName, String data)
 {
-    var reply = await client.executeAsync(new ExecutionRequest
+    try
     {
-        JarLocation = jarLocation,
-        ClassName = className,
-        MethodName = methodName,
-        Data = data
-    });
+        var reply = client.execute(new ExecutionRequest
+        {
+            JarLocation = jarLocation,
+            ClassName = className,
+            MethodName = methodName,
+            Data = data
+        });
 
-    if ("" != reply.Error)
-    {
-        Console.WriteLine($"Server returned an error: '{reply.Error}'");
+        if ("" != reply.Error)
+        {
+            Console.WriteLine($"Server returned an error: '{reply.Error}'");
+        }
+        else
+        {
+            Console.WriteLine($"Server returned a reply: '{reply.Data}'");
+        }
     }
-    else
+    catch (Grpc.Core.RpcException e)
     {
-        Console.WriteLine($"Server returned a reply: '{reply.Data}'");
+        Console.WriteLine($"RPC Error: {e.Message}");
     }
 }
 
@@ -27,9 +34,11 @@ const string HOSTNAME = "localhost";
 const int PORT = 13172;
 using var channel = GrpcChannel.ForAddress($"http://{HOSTNAME}:{PORT}");
 var client = new ExecutionService.ExecutionServiceClient(channel);
+var quit = false;
 
-for (; ; )
+while (!quit)
 {
+    Console.Write("> ");
     String executableName = Console.ReadLine();
     switch (executableName)
     {
@@ -37,7 +46,7 @@ for (; ; )
             execute(
                 client: client,
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamic.calls.action.ImaginaryFriend",
+                className: "dynamiccalls.action.ImaginaryFriend",
                 methodName: "greet",
                 data: "Andrew"
                 );
@@ -46,7 +55,7 @@ for (; ; )
             execute(
                 client: client,
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamic.calls.action.Calculator",
+                className: "dynamiccalls.action.Calculator",
                 methodName: "add",
                 data: "[1, 2, -3, 123]"
                 );
@@ -55,7 +64,7 @@ for (; ; )
             execute(
                 client: client,
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamic.calls.action.Calculator",
+                className: "dynamiccalls.action.Calculator",
                 methodName: "multiply",
                 data: "[1, 2, 3, 4, 5]"
                 );
@@ -64,7 +73,7 @@ for (; ; )
             execute(
                 client: client,
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamic.calls.action.Calculator",
+                className: "dynamiccalls.action.Calculator",
                 methodName: "subtract",
                 data: "[1000, 1, 3]"
                 );
@@ -73,7 +82,7 @@ for (; ; )
             execute(
                 client: client,
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamic.calls.action.Calculator",
+                className: "dynamiccalls.action.Calculator",
                 methodName: "divide",
                 data: "[120, 4, 5]"
                 );
@@ -82,7 +91,7 @@ for (; ; )
             execute(
                 client: client,
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamic.calls.action.Blog",
+                className: "dynamiccalls.action.Blog",
                 methodName: "addEntry",
                 data: "{" +
                 "\"title\": \"Summer in Italy\", " +
@@ -96,13 +105,17 @@ for (; ; )
             execute(
                 client: client,
                 jarLocation: "target\\DynamicCalls-1.0-SNAPSHOT.jar",
-                className: "dynamic.calls.action.Blog",
+                className: "dynamiccalls.action.Blog",
                 methodName: "getEntries",
                 data: ""
                 );
             break;
         case "quit":
-            Environment.Exit(0);
+            Console.WriteLine("Quitting");
+            quit = true;
+            break;
+        default:
+            Console.WriteLine("Invalid command");
             break;
     }
 }

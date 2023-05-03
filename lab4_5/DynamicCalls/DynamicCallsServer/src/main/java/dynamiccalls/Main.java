@@ -1,6 +1,6 @@
-package dynamic.calls;
+package dynamiccalls;
 
-import dynamic.calls.server.DynamicCallsServer;
+import dynamiccalls.server.DynamicCallsServer;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;

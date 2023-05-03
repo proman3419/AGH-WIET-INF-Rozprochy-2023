@@ -1,4 +1,4 @@
-package dynamic.calls.action;
+package dynamiccalls.action;
 
 import java.util.List;
 

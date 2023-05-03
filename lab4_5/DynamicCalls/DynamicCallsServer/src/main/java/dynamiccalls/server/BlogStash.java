@@ -1,6 +1,6 @@
-package dynamic.calls.server;
+package dynamiccalls.server;
 
-import dynamic.calls.complextype.BlogEntry;
+import dynamiccalls.complextype.BlogEntry;
 
 import java.util.ArrayList;
 import java.util.List;

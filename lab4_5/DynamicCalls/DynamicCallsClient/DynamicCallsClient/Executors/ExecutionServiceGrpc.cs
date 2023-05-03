@@ -10,7 +10,7 @@ using grpc = global::Grpc.Core;
 namespace DynamicCallsClient {
   public static partial class ExecutionService
   {
-    static readonly string __ServiceName = "dynamic.calls.Executors.ExecutionService";
+    static readonly string __ServiceName = "dynamiccalls.Executors.ExecutionService";
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
@@ -46,17 +46,17 @@ namespace DynamicCallsClient {
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::DynamicCallsClient.ExecutionRequest> __Marshaller_dynamic_calls_Executors_ExecutionRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DynamicCallsClient.ExecutionRequest.Parser));
+    static readonly grpc::Marshaller<global::DynamicCallsClient.ExecutionRequest> __Marshaller_dynamiccalls_Executors_ExecutionRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DynamicCallsClient.ExecutionRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::DynamicCallsClient.ExecutionResponse> __Marshaller_dynamic_calls_Executors_ExecutionResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DynamicCallsClient.ExecutionResponse.Parser));
+    static readonly grpc::Marshaller<global::DynamicCallsClient.ExecutionResponse> __Marshaller_dynamiccalls_Executors_ExecutionResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::DynamicCallsClient.ExecutionResponse.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Method<global::DynamicCallsClient.ExecutionRequest, global::DynamicCallsClient.ExecutionResponse> __Method_execute = new grpc::Method<global::DynamicCallsClient.ExecutionRequest, global::DynamicCallsClient.ExecutionResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
         "execute",
-        __Marshaller_dynamic_calls_Executors_ExecutionRequest,
-        __Marshaller_dynamic_calls_Executors_ExecutionResponse);
+        __Marshaller_dynamiccalls_Executors_ExecutionRequest,
+        __Marshaller_dynamiccalls_Executors_ExecutionResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor

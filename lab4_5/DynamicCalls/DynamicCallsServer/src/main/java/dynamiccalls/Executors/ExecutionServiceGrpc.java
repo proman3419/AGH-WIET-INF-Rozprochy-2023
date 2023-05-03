@@ -1,4 +1,4 @@
-package dynamic.calls.Executors;
+package dynamiccalls.Executors;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 
@@ -12,32 +12,32 @@ public final class ExecutionServiceGrpc {
 
   private ExecutionServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "dynamic.calls.Executors.ExecutionService";
+  public static final String SERVICE_NAME = "dynamiccalls.Executors.ExecutionService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<dynamic.calls.Executors.ExecutionRequest,
-      dynamic.calls.Executors.ExecutionResponse> getExecuteMethod;
+  private static volatile io.grpc.MethodDescriptor<dynamiccalls.Executors.ExecutionRequest,
+      dynamiccalls.Executors.ExecutionResponse> getExecuteMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "execute",
-      requestType = dynamic.calls.Executors.ExecutionRequest.class,
-      responseType = dynamic.calls.Executors.ExecutionResponse.class,
+      requestType = dynamiccalls.Executors.ExecutionRequest.class,
+      responseType = dynamiccalls.Executors.ExecutionResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<dynamic.calls.Executors.ExecutionRequest,
-      dynamic.calls.Executors.ExecutionResponse> getExecuteMethod() {
-    io.grpc.MethodDescriptor<dynamic.calls.Executors.ExecutionRequest, dynamic.calls.Executors.ExecutionResponse> getExecuteMethod;
+  public static io.grpc.MethodDescriptor<dynamiccalls.Executors.ExecutionRequest,
+      dynamiccalls.Executors.ExecutionResponse> getExecuteMethod() {
+    io.grpc.MethodDescriptor<dynamiccalls.Executors.ExecutionRequest, dynamiccalls.Executors.ExecutionResponse> getExecuteMethod;
     if ((getExecuteMethod = ExecutionServiceGrpc.getExecuteMethod) == null) {
       synchronized (ExecutionServiceGrpc.class) {
         if ((getExecuteMethod = ExecutionServiceGrpc.getExecuteMethod) == null) {
           ExecutionServiceGrpc.getExecuteMethod = getExecuteMethod =
-              io.grpc.MethodDescriptor.<dynamic.calls.Executors.ExecutionRequest, dynamic.calls.Executors.ExecutionResponse>newBuilder()
+              io.grpc.MethodDescriptor.<dynamiccalls.Executors.ExecutionRequest, dynamiccalls.Executors.ExecutionResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "execute"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  dynamic.calls.Executors.ExecutionRequest.getDefaultInstance()))
+                  dynamiccalls.Executors.ExecutionRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  dynamic.calls.Executors.ExecutionResponse.getDefaultInstance()))
+                  dynamiccalls.Executors.ExecutionResponse.getDefaultInstance()))
               .setSchemaDescriptor(new ExecutionServiceMethodDescriptorSupplier("execute"))
               .build();
         }
@@ -96,8 +96,8 @@ public final class ExecutionServiceGrpc {
 
     /**
      */
-    default void execute(dynamic.calls.Executors.ExecutionRequest request,
-        io.grpc.stub.StreamObserver<dynamic.calls.Executors.ExecutionResponse> responseObserver) {
+    default void execute(dynamiccalls.Executors.ExecutionRequest request,
+        io.grpc.stub.StreamObserver<dynamiccalls.Executors.ExecutionResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getExecuteMethod(), responseObserver);
     }
   }
@@ -131,8 +131,8 @@ public final class ExecutionServiceGrpc {
 
     /**
      */
-    public void execute(dynamic.calls.Executors.ExecutionRequest request,
-        io.grpc.stub.StreamObserver<dynamic.calls.Executors.ExecutionResponse> responseObserver) {
+    public void execute(dynamiccalls.Executors.ExecutionRequest request,
+        io.grpc.stub.StreamObserver<dynamiccalls.Executors.ExecutionResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getExecuteMethod(), getCallOptions()), request, responseObserver);
     }
@@ -156,7 +156,7 @@ public final class ExecutionServiceGrpc {
 
     /**
      */
-    public dynamic.calls.Executors.ExecutionResponse execute(dynamic.calls.Executors.ExecutionRequest request) {
+    public dynamiccalls.Executors.ExecutionResponse execute(dynamiccalls.Executors.ExecutionRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getExecuteMethod(), getCallOptions(), request);
     }
@@ -180,8 +180,8 @@ public final class ExecutionServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<dynamic.calls.Executors.ExecutionResponse> execute(
-        dynamic.calls.Executors.ExecutionRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<dynamiccalls.Executors.ExecutionResponse> execute(
+        dynamiccalls.Executors.ExecutionRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getExecuteMethod(), getCallOptions()), request);
     }
@@ -207,8 +207,8 @@ public final class ExecutionServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_EXECUTE:
-          serviceImpl.execute((dynamic.calls.Executors.ExecutionRequest) request,
-              (io.grpc.stub.StreamObserver<dynamic.calls.Executors.ExecutionResponse>) responseObserver);
+          serviceImpl.execute((dynamiccalls.Executors.ExecutionRequest) request,
+              (io.grpc.stub.StreamObserver<dynamiccalls.Executors.ExecutionResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -232,8 +232,8 @@ public final class ExecutionServiceGrpc {
           getExecuteMethod(),
           io.grpc.stub.ServerCalls.asyncUnaryCall(
             new MethodHandlers<
-              dynamic.calls.Executors.ExecutionRequest,
-              dynamic.calls.Executors.ExecutionResponse>(
+              dynamiccalls.Executors.ExecutionRequest,
+              dynamiccalls.Executors.ExecutionResponse>(
                 service, METHODID_EXECUTE)))
         .build();
   }
@@ -244,7 +244,7 @@ public final class ExecutionServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return dynamic.calls.Executors.ExecutionServiceOuterClass.getDescriptor();
+      return dynamiccalls.Executors.ExecutionServiceOuterClass.getDescriptor();
     }
 
     @java.lang.Override
