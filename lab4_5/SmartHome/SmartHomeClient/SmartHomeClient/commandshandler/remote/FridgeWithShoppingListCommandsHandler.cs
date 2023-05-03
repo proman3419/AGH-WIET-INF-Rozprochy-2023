@@ -1,5 +1,6 @@
 ﻿using Ice;
-using SmartHome;
+using SmartHomeIce;
+using SmartHomeClient.SmartHome;
 
 namespace SmartHomeClient.commandshandler.remote
 {

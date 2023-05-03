@@ -1,7 +1,8 @@
-﻿using SmartHome;
+﻿using SmartHomeIce;
 using SmartHomeClient.commandshandler;
 using SmartHomeClient.commandshandler.local;
 using SmartHomeClient.commandshandler.remote;
+using SmartHomeClient.SmartHome;
 
 namespace SmartHomeClient
 {
@@ -47,7 +48,12 @@ namespace SmartHomeClient
                     {
                         // All SmartDevices can throw the Exception
                         Console.Error.WriteLine("The device is in standby mode");
-                        break;
+                        handled = true;
+                    }
+                    catch (Ice.ConnectionRefusedException e)
+                    {
+                        Console.Error.WriteLine($"Couldn't connect to the server");
+                        handled = true;
                     }
                     if (handled)
                     {

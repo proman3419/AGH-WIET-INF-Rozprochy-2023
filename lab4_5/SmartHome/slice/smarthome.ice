@@ -1,7 +1,7 @@
 #ifndef SMARTHOME_ICE
 #define SMARTHOME_ICE
 
-module SmartHome
+module SmartHomeIce
 {
     enum Mode
     {
