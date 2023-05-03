@@ -12,18 +12,18 @@ Maksymalna punktacja: Ice: 6, gRPC: 7
 ## Uruchomienie
 ### Przygotowanie
 ```bash
-cd DynamicCalls/DynamicCallsStatelessActions
+cd DynamicCallsStatelessActions
 ./generate.sh
 ```
 
 ### Serwer
 ```bash
-cd DynamicCalls/DynamicCallsServer
+cd DynamicCallsServer
 ./run.sh
 ```
 
 ### Klient
 ```bash
-cd DynamicCalls/DynamicCallsClient/DynamicCallsClient
+cd DynamicCallsClient/DynamicCallsClient
 ./run.sh
 ```

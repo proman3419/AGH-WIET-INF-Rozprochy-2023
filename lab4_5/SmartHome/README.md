@@ -22,12 +22,12 @@ Maksymalna punktacja: 12
 ## Uruchomienie
 ### Serwer
 ```bash
-cd SmartHome/SmartHomeServer
+cd SmartHomeServer
 ./run.sh <server_id>
 ```
 
 ### Klient
 ```bash
-cd SmartHome/SmartHomeClient/SmartHomeClient
+cd SmartHomeClient/SmartHomeClient
 ./run.sh
 ```
