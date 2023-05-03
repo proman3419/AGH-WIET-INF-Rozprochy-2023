@@ -1,2 +1,0 @@
-obj\Debug\net6.0\Protos/ExecutionService.cs \
-obj\Debug\net6.0\Protos/ExecutionServiceGrpc.cs: Protos/ExecutionService.proto
