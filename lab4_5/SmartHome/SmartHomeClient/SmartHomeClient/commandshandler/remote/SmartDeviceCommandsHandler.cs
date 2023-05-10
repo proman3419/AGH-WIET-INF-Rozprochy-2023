@@ -23,8 +23,15 @@ namespace SmartHomeClient.commandshandler.remote
                         return true;
                     case "setMode":
                         Enum.TryParse(command.arguments[0], out mode);
-                        Mode setMode = proxy.setMode(mode);
-                        Console.WriteLine($"Set the device's mode to {setMode}");
+                        try
+                        {
+                            Mode setMode = proxy.setMode(mode);
+                            Console.WriteLine($"Set the device's mode to {setMode}");
+                        }
+                        catch (ModeNotChangedError e)
+                        {
+                            Console.WriteLine("The new mode is the same as the current one, not changing");
+                        }
                         return true;
                 }
             }

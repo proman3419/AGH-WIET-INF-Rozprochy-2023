@@ -15,7 +15,7 @@ module SmartHomeIce
     interface SmartDevice
     {
         // Parameters
-        Mode setMode(Mode mode) throws ModeNotChangedError;
+        idempotent Mode setMode(Mode mode) throws ModeNotChangedError;
         idempotent Mode getMode();
         idempotent void notifyIfInStandbyMode() throws InStandbyModeError;
     };
@@ -31,7 +31,7 @@ module SmartHomeIce
     interface Fridge extends SmartDevice
     {
         // Parameters
-        float setTargetTemperature(float temperature) throws TemperatureOutOfSupportedRangeError;
+        idempotent float setTargetTemperature(float temperature) throws TemperatureOutOfSupportedRangeError;
         idempotent float getTargetTemperature();
 
         // Activities
@@ -50,14 +50,14 @@ module SmartHomeIce
     };
 
     enum Unit { Unspecified, Gram, Millilitre };
-    class ShoppingListRecord
+    interface ShoppingListRecord
     {
         string name;
         int quantity;
         Unit unit;
     };
 
-    class OrderedShoppingListRecord
+    interface OrderedShoppingListRecord
     {
         int id;
         ShoppingListRecord shoppingListRecord;

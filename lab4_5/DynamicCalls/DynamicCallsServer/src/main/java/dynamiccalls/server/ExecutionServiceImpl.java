@@ -116,8 +116,8 @@ public class ExecutionServiceImpl extends ExecutionServiceGrpc.ExecutionServiceI
                         io.grpc.stub.StreamObserver<ExecutionResponse> responseObserver) {
         LOGGER.info("Handling request: '{}'", request);
         ExecutionResponse.Builder responseBuilder = ExecutionResponse.newBuilder();
+        
         URL jarUrl = getJarUrl(request.getJarLocation(), responseBuilder);
-
         if (checkIfNoError(responseBuilder)) {
             Class clazz = getClass(jarUrl, request.getClassName(), responseBuilder);
             if (checkIfNoError(responseBuilder)) {
