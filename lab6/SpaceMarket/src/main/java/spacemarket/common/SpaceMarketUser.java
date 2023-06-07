@@ -18,6 +18,7 @@ public abstract class SpaceMarketUser {
 
     public abstract void start();
     protected abstract Consumer createConsumer();
+    protected abstract void enterInputLoop();
 
     protected void connect(Service[] services) {
         ConnectionFactory factory = new ConnectionFactory();

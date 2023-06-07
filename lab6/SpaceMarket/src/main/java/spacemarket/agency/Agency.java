@@ -32,6 +32,7 @@ public class Agency extends SpaceMarketUser {
         try {
             channel.queueDeclare(getResponseQueueName(name), true, false, false, null);
             channel.queueBind(getResponseQueueName(name), SERVICE_RESPONSE_EXCHANGE_NAME, name);
+            channel.basicConsume(getResponseQueueName(name), false, createConsumer());
         } catch (IOException e) {
             LOGGER.error("Failed to connect, details: {}", e.getMessage());
         }
@@ -47,7 +48,8 @@ public class Agency extends SpaceMarketUser {
         }
     }
 
-    private void startSender() {
+    @Override
+    protected void enterInputLoop() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             try {
@@ -80,28 +82,16 @@ public class Agency extends SpaceMarketUser {
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
                                        byte[] body) throws IOException {
                 String message = new String(body, CHARSET_NAME);
-//                Integer serviceNumber = Integer.parseInt(message);
                 LOGGER.info("Completed service with id '{}'", message);
                 channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
     }
 
-    private void startReceiver() {
-        Consumer consumer = createConsumer();
-        try {
-            channel.basicConsume(getResponseQueueName(name), false, consumer);
-            channel.basicQos(1);
-        } catch (IOException e) {
-            LOGGER.error("Failed to start the receiver, details: {}", e.getMessage());
-        }
-    }
-
     @Override
     public void start() {
         LOGGER.info("Starting agency '{}'", name);
         connect(Service.values());
-        new Thread(this::startSender).start();
-        new Thread(this::startReceiver).start();
+        enterInputLoop();
     }
 }

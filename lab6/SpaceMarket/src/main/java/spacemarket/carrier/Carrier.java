@@ -9,7 +9,9 @@ import org.apache.logging.log4j.Logger;
 import spacemarket.common.Service;
 import spacemarket.common.SpaceMarketUser;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class Carrier extends SpaceMarketUser {
@@ -60,8 +62,25 @@ public class Carrier extends SpaceMarketUser {
     }
 
     @Override
+    protected void enterInputLoop() {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            try {
+                String input = br.readLine();
+                if (input.equals("quit")) {
+                    end();
+                    break;
+                }
+            } catch (IOException ignored) {
+                // ignored
+            }
+        }
+    }
+
+    @Override
     public void start() {
         LOGGER.info("Starting carrier offering services: {}", Arrays.stream(services).map(Service::toString).toList());
         connect(services);
+        enterInputLoop();
     }
 }
