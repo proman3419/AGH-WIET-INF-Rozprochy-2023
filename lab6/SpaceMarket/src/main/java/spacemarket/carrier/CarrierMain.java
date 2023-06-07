@@ -1,16 +1,17 @@
-package spacemarket.main;
+package spacemarket.carrier;
 
-import lombok.extern.slf4j.Slf4j;
-import spacemarket.Carrier;
-import spacemarket.Service;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import spacemarket.common.Service;
 
 import java.util.Arrays;
 
-@Slf4j
-public class Consumer {
+public class CarrierMain {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public static void main(String[] args) {
         if (args.length < 2) {
-            log.error("2 services' names are required");
+            LOGGER.error("2 services' names are required");
             return;
         }
         Service[] services = Arrays.stream(args)
@@ -18,7 +19,7 @@ public class Consumer {
                 .distinct()
                 .toArray(Service[]::new);
         if (services.length != 2) {
-            log.error("Duplicates or additional services detected");
+            LOGGER.error("Duplicates or additional services detected");
             return;
         }
         Carrier carrier = new Carrier(services);

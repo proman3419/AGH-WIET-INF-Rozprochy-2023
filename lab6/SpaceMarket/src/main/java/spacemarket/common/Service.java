@@ -1,8 +1,7 @@
-package spacemarket;
+package spacemarket.common;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Map.entry;
