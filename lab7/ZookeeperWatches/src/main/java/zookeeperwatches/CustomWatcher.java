@@ -11,14 +11,15 @@ import java.io.InputStreamReader;
 public class CustomWatcher implements Watcher {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int SESSION_TIMEOUT_MS = 3000;
-    private final String znodeName;
+    private static final int CLOSE_TIMEOUT_MS = 5000;
+    private final String zNodeName;
     private final String[] exec;
     private final ZooKeeper zk;
     private final Util util;
     private Process execProcess;
 
-    public CustomWatcher(String hostPort, String znodeName, String exec[]) throws IOException {
-        this.znodeName = znodeName;
+    public CustomWatcher(String hostPort, String zNodeName, String exec[]) throws IOException {
+        this.zNodeName = zNodeName;
         this.exec = exec;
         zk = new ZooKeeper(hostPort, SESSION_TIMEOUT_MS, this);
         util = new Util(zk);
@@ -26,7 +27,7 @@ public class CustomWatcher implements Watcher {
 
     public void start() {
         try {
-            zk.addWatch(znodeName, AddWatchMode.PERSISTENT_RECURSIVE);
+            zk.addWatch(zNodeName, AddWatchMode.PERSISTENT_RECURSIVE);
         } catch (KeeperException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -39,12 +40,16 @@ public class CustomWatcher implements Watcher {
             try {
                 String input = br.readLine();
                 if (input.equals("quit")) {
+                    zk.close(CLOSE_TIMEOUT_MS);
+                    killExecProcess();
                     break;
                 } else if (input.equals("tree")) {
-                    util.printTree(znodeName);
+                    util.printTree(zNodeName);
                 }
             } catch (IOException ignored) {
                 // ignored
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -61,9 +66,9 @@ public class CustomWatcher implements Watcher {
 
     private void handleNodeCreatedEvent(String watchedEventPath) {
         LOGGER.info("Created zNode `{}`", watchedEventPath);
-        if (watchedEventPath.startsWith(znodeName)) {
-            if (watchedEventPath.length() == znodeName.length()) {
-                LOGGER.info("Running exec `{}`", exec);
+        if (watchedEventPath.startsWith(zNodeName)) {
+            if (watchedEventPath.length() == zNodeName.length()) {
+                LOGGER.info("Running exec process `{}`", exec);
                 try {
                     execProcess = Runtime.getRuntime().exec(exec);
                 } catch (IOException e) {
@@ -71,7 +76,7 @@ public class CustomWatcher implements Watcher {
                 }
             } else {
                 try {
-                    LOGGER.info("zNode `{}` has {} children", znodeName, zk.getAllChildrenNumber(znodeName));
+                    LOGGER.info("zNode `{}` has {} children", zNodeName, zk.getAllChildrenNumber(zNodeName));
                 } catch (KeeperException | InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -81,13 +86,17 @@ public class CustomWatcher implements Watcher {
 
     private void handleNodeDeletedEvent(String watchedEventPath) {
         LOGGER.info("Deleted zNode `{}`", watchedEventPath);
-        if (znodeName.equals(watchedEventPath)) {
-            if (execProcess == null || !execProcess.isAlive()) {
-                LOGGER.info("Exec already dead");
-            } else {
-                LOGGER.info("Killing exec");
-                execProcess.destroy();
-            }
+        if (zNodeName.equals(watchedEventPath)) {
+            killExecProcess();
+        }
+    }
+
+    private void killExecProcess() {
+        if (execProcess == null || !execProcess.isAlive()) {
+            LOGGER.info("Exec process already dead");
+        } else {
+            LOGGER.info("Killing exec process");
+            execProcess.destroy();
         }
     }
 }

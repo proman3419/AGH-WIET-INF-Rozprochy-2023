@@ -15,8 +15,8 @@ public class Util {
         this.zk = zk;
     }
 
-    public void printTree(String nodePath) {
-        List<String> tree = getTree(nodePath);
+    public void printTree(String zNodeName) {
+        List<String> tree = getTree(zNodeName);
         for (String treePart : tree) {
             StringBuilder sb =  new StringBuilder();
             StringTokenizer tokenizer = new StringTokenizer(treePart, "/");
@@ -33,10 +33,10 @@ public class Util {
         }
     }
 
-    private List<String> getTree(String node) {
+    private List<String> getTree(String zNodeName) {
         List<String> tree = new ArrayList<>();
         Stack<String> stack = new Stack<>();
-        stack.push(node);
+        stack.push(zNodeName);
         while (!stack.empty()) {
             String current = stack.pop();
             try {
@@ -47,8 +47,8 @@ public class Util {
                 tree.add(current);
             } catch (KeeperException e) {
                 if (e.code().name().equals("NONODE")) {
-                    if (e.getPath().equals(node)) {
-                        LOGGER.info("zNode `{}` doesn't exist", node);
+                    if (e.getPath().equals(zNodeName)) {
+                        LOGGER.info("zNode `{}` doesn't exist", zNodeName);
                     } else {
                         LOGGER.warn("Expected zNode `{}` but was missing", e.getPath());
                     }
