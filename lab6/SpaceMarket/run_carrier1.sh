@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mvn compile && mvn exec:java -Dexec.mainClass=spacemarket.carrier.CarrierMain -Dexec.args="cargo satellite"
+./run_carrier.sh "cargo satellite"
