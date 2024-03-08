@@ -18,4 +18,4 @@ Można również skorzystać z dostarczonych skryptów.
 * `quit` - wyjście
 
 ## Diagram reprezentujący scenariusz opisany w treści zadania
-![diagram](https://github.com/proman3419/AGH-WIET-INF-Rozprochy-2023/blob/master/lab6/diagram.png)
+![diagram](diagram.png)

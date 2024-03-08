@@ -10,7 +10,7 @@ Gdzie:
 * `execPath` - ścieżka do uruchamianego programu
 * `execArgs` - opcjonalne argumenty dla uruchamianego programu
 
-Można również skorzystać z dostarczonych skryptów, zakładają one [tę konfigurację (Linux)](https://github.com/proman3419/AGH-WIET-INF-Rozprochy-2023/tree/master/lab7/conf).
+Można również skorzystać z dostarczonych skryptów, zakładają one [tę konfigurację (Linux)](conf).
 
 ## Interakcja
 * `quit` - wyjście
